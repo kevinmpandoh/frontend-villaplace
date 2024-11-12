@@ -1,6 +1,8 @@
 import React from 'react';
 import '@/styles/globals.css';
 import Image from 'next/image';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import Link from 'next/link';
 
 interface VillaProps {
@@ -8,8 +10,8 @@ interface VillaProps {
   location: string;
   price: number;
   imageUrl: string;
-  numBedrooms: number;
-  numBathrooms: number;
+  numBedrooms: string;
+  numBathrooms: string;
 }
 
 const VillaCard = ({ name, location, price, imageUrl, numBedrooms, numBathrooms }: VillaProps) => {
@@ -47,7 +49,7 @@ const VillaCard = ({ name, location, price, imageUrl, numBedrooms, numBathrooms 
               <span className="ml-1">{numBathrooms}</span>
             </div>
           </div>
-          <p className="text-green-600 font-semibold flex-nowrap items-center">Rp. {price.toLocaleString()}</p>
+          <p className="text-green-600 font-semibold items-center">Rp. {price.toLocaleString()}</p>
         </div>
       </div>
     </div>
@@ -60,61 +62,58 @@ const HomePage = () => {
       name: 'Villa Gitah',
       location: 'Lokasi',
       price: 3500000,
-      imageUrl: '/api/placeholder/400/300',
-      numBedrooms: 3,
-      numBathrooms: 2
+      imageUrl: '/assets/images/villa-gitah.png',
+      numBedrooms: "3 kamar",
+      numBathrooms: "2 kamar"
     },
     {
       name: 'Villa Bandung',
       location: 'Lokasi',
       price: 3500000,
-      imageUrl: '/api/placeholder/400/300',
-      numBedrooms: 3,
-      numBathrooms: 2
+      imageUrl: '/assets/images/villa-bandung.png',
+      numBedrooms: "3 kamar",
+      numBathrooms: "2 kamar"
+    },
+    {
+      name: 'Villa Gitah',
+      location: 'Lokasi',
+      price: 3500000,
+      imageUrl: '/assets/images/villa-gitah.png',
+      numBedrooms: "3 kamar",
+      numBathrooms: "2 kamar"
     },
     {
       name: 'Villa Bandung',
       location: 'Lokasi',
       price: 3500000,
-      imageUrl: '/api/placeholder/400/300',
-      numBedrooms: 3,
-      numBathrooms: 2
+      imageUrl: '/assets/images/villa-bandung.png',
+      numBedrooms: "3 kamar",
+      numBathrooms: "2 kamar"
     },
-    // Add more villa data as needed
+    {
+      name: 'Villa Gitah',
+      location: 'Lokasi',
+      price: 3500000,
+      imageUrl: '/assets/images/villa-gitah.png',
+      numBedrooms: "3 kamar",
+      numBathrooms: "2 kamar"
+    },
+    {
+      name: 'Villa Bandung',
+      location: 'Lokasi',
+      price: 3500000,
+      imageUrl: '/assets/images/villa-bandung.png',
+      numBedrooms: "3 kamar",
+      numBathrooms: "2 kamar"
+    },
   ];
 
   return (
-    <div className="min-h-screen ">
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Image 
-              src="/assets/images/logo.png" 
-              alt="VillaPlace Logo" 
-              width={40}
-              height={40}
-              className="h-10 w-10" />
-            </div>
-            <div className="flex space-x-8">
-              <a href="/" className="text-gray-700 hover:text-gray-900">Home</a>
-              <a href="/about" className="text-gray-700 hover:text-gray-900">About</a>
-              <a href="/kategori" className="text-gray-700 hover:text-gray-900">Kategori</a>
-              <a href="/contact" className="text-gray-700 hover:text-gray-900">Contact</a>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/registUser">
-              <button className="border border-brown-500 text-brown-500 hover:text-gray-900 px-3 py-1 rounded-lg">Daftar</button>
-              </Link>
-              <Link href="/login">
-              <button className="bg-brown-500 text-white px-3 py-1 rounded-md hover:bg-brown-600">+ Masuk</button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen">
+      
+      <Navbar />
 
-      <div className="relative h-[767px]">
+      <div className="relative w-full h-screen">
         <Image
           src="/assets/images/hero-img.png"
           alt="Hero Image"
@@ -129,7 +128,7 @@ const HomePage = () => {
             <div className="flex">
               <input
                 type="text"
-                className="w-full px-4 py-2 rounded-l-md text-gray-900"
+                className="w-full px-4 py-4 rounded-l-md text-gray-900"
                 placeholder="Cari villa..."
               />
               <button className="bg-brown-500 text-white px-8 py-2 rounded-r-md hover:bg-brown-600">
@@ -142,17 +141,21 @@ const HomePage = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <h2 className="text-4xl font-bold mb-14 text-center">Rekomendasi</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
           {villas.map((villa, index) => (
             <VillaCard key={index} {...villa} />
           ))}
         </div>
-        <div className="text-end mt-11">
-          <button className="text-green-600 hover:text-green-700 font-bold">
-            Klik untuk lainnya
-          </button>
+        <div className="text-end mt-11 mb-7">
+          <Link href="/user/category">
+            <button className="text-green-600 hover:text-green-700 font-bold">
+              Klik untuk lainnya..
+            </button>
+          </Link>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
