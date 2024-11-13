@@ -113,11 +113,13 @@ const HomePage = () => {
       
       <Navbar />
 
-      <div className="relative w-full h-screen">
+      {/* Hero Section */}
+      <div className="relative w-full h-[100vh] mt-[52px]">
         <Image
           src="/assets/images/hero-img.png"
           alt="Hero Image"
           layout="fill"
+          objectFit="cover"
           className="w-full h-full object-cover brightness-50"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
@@ -131,7 +133,7 @@ const HomePage = () => {
                 className="w-full px-4 py-4 rounded-l-md text-gray-900"
                 placeholder="Cari villa..."
               />
-              <button className="bg-brown-500 text-white px-8 py-2 rounded-r-md hover:bg-brown-600">
+              <button className="bg-[#B7906C] text-white px-8 py-2 rounded-r-md hover:bg-brown-600">
                 Cari
               </button>
             </div>
@@ -139,14 +141,15 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      {/* Content Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 mt-[-5rem]">
         <h2 className="text-4xl font-bold mb-14 text-center">Rekomendasi</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
           {villas.map((villa, index) => (
             <VillaCard key={index} {...villa} />
           ))}
         </div>
-        <div className="text-end mt-11 mb-7">
+        <div className="text-end mt-10">
           <Link href="/user/category">
             <button className="text-green-600 hover:text-green-700 font-bold">
               Klik untuk lainnya..

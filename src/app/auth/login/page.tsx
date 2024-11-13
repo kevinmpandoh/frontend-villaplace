@@ -5,7 +5,7 @@ import LoginForm from '@/components/LoginForm';
 const LoginPage = () => {
   return (
     <div className="flex min-h-screen">
-      {/* Bagian Kiri - Form */}
+      {/* Bagian Kiri Form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white">
         {/* Logo */}
         <div className="mb-8">

@@ -31,7 +31,7 @@ const RegisterUser = () => {
         </form>
 
         <p className="mt-4 text-gray-500">
-          Sudah punya akun? <Link href="/login" className="text-green-600 hover:underline">Masuk</Link>
+          Sudah punya akun? <Link href="/auth/login" className="text-green-600 hover:underline">Masuk</Link>
         </p>
       </div>
 
