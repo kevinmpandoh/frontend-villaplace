@@ -1,10 +1,12 @@
 // next.config.mjs
 const nextConfig = {
-    experimental: {
-      appDir: true,
-    },
-    reactStrictMode: true,
-  };
-  
-  export default nextConfig;
-  
+  images: {
+    domains: ["localhost"],
+  },
+  experimental: {
+    appDir: true,
+  },
+  reactStrictMode: true,
+};
+
+export default nextConfig;
