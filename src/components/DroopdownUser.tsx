@@ -11,14 +11,11 @@ const DropdownUser: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
-  // const [userData, setUserData] = useState<any>({});
-  const { data, loading, error } = useFetchData(
-    "http://localhost:8000/api/user/current-user",
-    {
-      method: "GET",
-      withCredentials: true,
-    }
-  );
+
+  const { data } = useFetchData("http://localhost:8000/api/user/current-user", {
+    method: "GET",
+    withCredentials: true,
+  });
 
   const handleLogout = async () => {
     try {
@@ -66,7 +63,7 @@ const DropdownUser: React.FC = () => {
 
   return (
     <>
-      {data ? (
+      {data && (
         <div className="relative">
           <Link
             ref={trigger}
@@ -120,7 +117,7 @@ const DropdownUser: React.FC = () => {
             <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
               <li>
                 <Link
-                  href="/profile"
+                  href="/profile/user"
                   className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
                 >
                   <svg
@@ -145,7 +142,7 @@ const DropdownUser: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/profile/bookings"
                   className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
                 >
                   <svg
@@ -190,15 +187,6 @@ const DropdownUser: React.FC = () => {
             </button>
           </div>
           {/* <!-- Dropdown End --> */}
-        </div>
-      ) : (
-        // Skeleton Loader
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col gap-1">
-            <div className="h-4 bg-gray-300 w-28 animate-pulse"></div>
-            <div className="h-4 bg-gray-300 w-20 animate-pulse"></div>
-          </div>
-          <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
         </div>
       )}
     </>

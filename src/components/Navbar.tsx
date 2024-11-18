@@ -1,15 +1,40 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import DropdownUser from "./DroopdownUser";
-import { cookies } from "next/headers";
+import Cookies from "js-cookie";
 
-const Navbar: React.FC = async () => {
-  const cookieStore = await cookies();
-  const tokenUser = cookieStore.get("tokenUser");
+const Navbar: React.FC = () => {
+  const [tokenUser, setTokenUser] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const checkToken = () => {
+      const token = Cookies.get("tokenUser");
+      if (token) {
+        setTokenUser(true);
+      } else {
+        setTokenUser(false);
+      }
+      setIsLoading(false);
+    };
+
+    // Cek token saat pertama kali komponen di-mount
+    checkToken();
+
+    // Interval untuk memeriksa perubahan token secara berkala
+    const intervalId = setInterval(() => {
+      setIsLoading(true);
+      checkToken();
+    }, 1000); // Periksa setiap 3 detik
+
+    // Bersihkan interval saat komponen di-unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
-    <nav className="bg-white shadow sticky top-0 left-0 right-0 z-50">
+    <nav className="bg-white shadow sticky mb-5  z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="flex justify-between items-center h-[5rem]">
           {/* Logo Section */}
@@ -61,7 +86,14 @@ const Navbar: React.FC = async () => {
             </li>
           </ul>
 
-          {tokenUser ? (
+          {isLoading ? (
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col gap-1">
+                <div className="h-4 bg-gray-300 w-20 animate-pulse"></div>
+              </div>
+              <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
+            </div>
+          ) : tokenUser ? (
             <DropdownUser />
           ) : (
             <div className="flex items-center space-x-4">
