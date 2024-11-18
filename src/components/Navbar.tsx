@@ -1,13 +1,17 @@
 "use client";
+
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import DropdownUser from "./DroopdownUser";
 import Cookies from "js-cookie";
+import { usePathname } from "next/navigation";
 
 const Navbar: React.FC = () => {
   const [tokenUser, setTokenUser] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const currentPath = usePathname();
 
   useEffect(() => {
     const checkToken = () => {
@@ -51,35 +55,30 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Navigation Links */}
-          <ul className="flex gap-10 items-center ">
+          <ul className="links flex gap-10 items-center ">
             <li>
-              <Link
-                href="/"
-                className="text-[#606060] hover:text-[#111111] font-semibold"
+              <Link href={"/"}
+                className={currentPath === "/" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
               >
                 Home
               </Link>
             </li>
             <li>
-              <Link
-                href="/about"
-                className="text-[#606060] hover:text-[#111111] font-semibold"
-              >
+              <Link href={"/user/about"}
+                className={currentPath === "/user/about" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}>
                 About
               </Link>
             </li>
             <li>
-              <Link
-                href="/user/category"
-                className="text-[#606060] hover:text-[#111111] font-semibold"
+              <Link href={"/user/category"}
+                className={currentPath === "/user/category" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
               >
                 Kategori
               </Link>
             </li>
             <li>
-              <Link
-                href="/contact"
-                className="text-[#606060] hover:text-[#111111] font-semibold"
+              <Link href={"/user/contact"}
+                className={currentPath === "/user/contact" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
               >
                 Contact
               </Link>

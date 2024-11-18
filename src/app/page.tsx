@@ -160,7 +160,7 @@ const HomePage = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <div className="w-full h-[100vh] ">
+      <div className="w-full h-[100vh] relative -mt-8 -mb-8">
         <Image
           src="/assets/images/hero-img.png"
           alt="Hero Image"
