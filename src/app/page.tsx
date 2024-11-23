@@ -196,7 +196,7 @@ const HomePage = () => {
           ))}
         </div>
         <div className="text-end mt-10">
-          <Link href="/user/category">
+          <Link href="/category">
             <button className="text-green-600 hover:text-green-700 font-bold">
               Klik untuk lainnya..
             </button>

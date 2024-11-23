@@ -18,7 +18,7 @@ interface VillaProps {
 
 const VillaCard = ({ villaId, name, location, price, imageUrl, numBedrooms, numBathrooms }: VillaProps) => {
   return (
-    <Link href={`/user/category/${villaId}`}>
+    <Link href={`/category/${villaId}`}>
       <div className="bg-white rounded-lg shadow-md overflow-hidden flex cursor-pointer">
 
         {/* Image Section */}

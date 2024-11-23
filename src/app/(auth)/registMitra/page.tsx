@@ -1,10 +1,10 @@
-// pages/registerUser.tsx
+// pages/registerMitra.tsx
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import RegisFormUser from "@/components/Auth/RegisFormUser";
+import RegisFormMitra from "@/components/Auth/RegisFormMitra";
 
-const RegisterUser = () => {
+const RegisterMitra = () => {
   return (
     <div className="flex min-h-screen">
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white">
@@ -17,11 +17,11 @@ const RegisterUser = () => {
           />
         </div>
 
-        <RegisFormUser />
+        <RegisFormMitra />
 
         <p className="mt-4 text-gray-500">
           Sudah punya akun?{" "}
-          <Link href="/auth/login" className="text-green-600 hover:underline">
+          <Link href="/login" className="text-green-600 hover:underline">
             Masuk
           </Link>
         </p>
@@ -40,4 +40,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default RegisterMitra;

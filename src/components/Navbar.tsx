@@ -64,21 +64,21 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link href={"/user/about"}
-                className={currentPath === "/user/about" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}>
+              <Link href={"/about"}
+                className={currentPath === "/about" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}>
                 About
               </Link>
             </li>
             <li>
-              <Link href={"/user/category"}
-                className={currentPath === "/user/category" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
+              <Link href={"/category"}
+            className={currentPath === "/category" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
               >
                 Kategori
               </Link>
             </li>
             <li>
-              <Link href={"/user/contact"}
-                className={currentPath === "/user/contact" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
+              <Link href={"/contact"}
+                className={currentPath === "/contact" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
               >
                 Contact
               </Link>
@@ -96,12 +96,12 @@ const Navbar: React.FC = () => {
             <DropdownUser />
           ) : (
             <div className="flex items-center space-x-4">
-              <Link href="/auth/registUser">
+              <Link href="/registUser">
                 <button className="border border-[#B7906C] text-[#C59E6C] hover:text-gray-900 px-4 py-1 rounded-md">
                   Daftar
                 </button>
               </Link>
-              <Link href="/auth/login">
+              <Link href="/login">
                 <button className="bg-[#B7906C] text-white px-3 py-1 rounded-md hover:bg-[#9e7850]">
                   + Masuk
                 </button>
