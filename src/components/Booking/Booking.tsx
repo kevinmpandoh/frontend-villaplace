@@ -27,8 +27,6 @@ const Booking = () => {
   const [BookingData, setBookingData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
-  console.log(filteredData, "FILTER");
-
   const { data, loading } = useFetchData("http://localhost:8000/api/pesanan", {
     withCredentials: true,
   });
