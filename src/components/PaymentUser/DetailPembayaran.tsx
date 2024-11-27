@@ -58,7 +58,7 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
                 Nama Lengkap
               </label>
               <div className="relative font-bold">
-                <h3>{data?.data.pesanan.nama_pembayar}</h3>
+                <h3>{data?.data.nama_pembayar}</h3>
               </div>
             </div>
 
@@ -70,7 +70,7 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
                 Email
               </label>
 
-              <h3 className="font-bold">{data?.data.pesanan.email_pembayar}</h3>
+              <h3 className="font-bold">{data?.data.email_pembayar}</h3>
             </div>
           </div>
         </div>

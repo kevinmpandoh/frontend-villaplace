@@ -13,14 +13,8 @@ import SkeletonLoader from "./SkeletonLoader";
 import useFetchData from "@/hooks/useFetchData";
 
 // Utils
-import { formatDate } from "@/utils/formatDate";
-import getPaymentImage from "@/utils/getPaymentImage";
-import calculateRemainingTime from "@/utils/calculateRemainingTime";
-import {
-  getStatusPaymentColor,
-  getStatusPaymentLabel,
-} from "@/utils/getStatusLabelAndColor";
 import PaymentCard from "./PaymentCard";
+import calculateCountdown from "@/utils/calculateCountdown";
 
 const PaymentUser = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -43,36 +37,20 @@ const PaymentUser = () => {
     }
   }, [data]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const updatedCountdowns: { [key: string]: string } = {};
-  //     PaymentData.forEach((item: any) => {
-  //       const countdown = calculateRemainingTime(item.tanggal_pembayaran, 24);
-  //       updatedCountdowns[item._id] = countdown.remaining;
-  //     });
-  //     setCountdowns(updatedCountdowns);
-  //   }, 1000);
-
-  //   return () => clearInterval(interval);
-  // }, [PaymentData]);
-
   useEffect(() => {
     const interval = setInterval(() => {
       const updatedCountdowns: { [key: string]: string } = {};
 
       PaymentData.forEach((item: any) => {
         if (item.status_pembayaran === "pending") {
-          updatedCountdowns[item._id] = calculateRemainingTime(
-            item.tanggal_pembayaran,
-            24
-          );
+          updatedCountdowns[item._id] = calculateCountdown(item.expiry_time);
         }
       });
 
       setCountdowns(updatedCountdowns);
     }, 1000);
 
-    return () => clearInterval(interval); // Bersihkan interval saat komponen unmount
+    return () => clearInterval(interval);
   }, [PaymentData]);
 
   useEffect(() => {
