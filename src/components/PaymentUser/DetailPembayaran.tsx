@@ -1,6 +1,14 @@
 import useFetchData from "@/hooks/useFetchData";
 import React from "react";
 
+import {
+  getStatusPaymentColor,
+  getStatusPaymentLabel,
+} from "@/utils/getStatusLabelAndColor";
+
+import { formatDate } from "@/utils/formatDate";
+import { calculateDays } from "@/utils/calculateDays";
+
 interface DetailPembayaranProps {
   pembayaranId: string;
 }
@@ -22,9 +30,9 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
           <div className="flex justify-between mb-2">
             <p>Status</p>
             <p
-              className={`inline-flex text-yellow-600 bg-yellow-600 border border-yellow-600 rounded-sm bg-opacity-10 py-1 px-3 text-sm font-bold `}
+              className={`inline-flex text-yellow-600 bg-yellow-600 border border-yellow-600 rounded-full bg-opacity-10 py-1 px-3 text-xs font-bold `}
             >
-              Menunggu Pembayaran
+              {getStatusPaymentLabel(data?.data.status_pembayaran)}
             </p>
           </div>
           <div className="flex justify-between mb-2">
@@ -33,7 +41,9 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
           </div>
           <div className="flex justify-between mb-4">
             <p>Tanggal Pembayaran</p>
-            <p className="font-semibold">{data?.data.tanggal_pembayaran}</p>
+            <p className="font-semibold">
+              {formatDate(data?.data.tanggal_pembayaran)}
+            </p>
           </div>
         </div>
 
@@ -65,7 +75,7 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
           </div>
         </div>
         <hr className="mt-10" />
-        <h2 className="mb-5 mt-10 font-bold text-xl">Pembayaran</h2>
+        <h2 className="mb-2 mt-4 font-bold text-xl">Pembayaran</h2>
         <div className="flex flex-col gap-7.5 ">
           <div className="p-5 border-b-2 border-y-meta-9">
             <div className="flex mb-2">
@@ -112,9 +122,15 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
                     {data?.data.pesanan.villa.nama}
                   </th>
                   <td className="px-6 py-4">
-                    Rp {data?.data.pesanan.villa.harga}
+                    Rp {data?.data.pesanan.villa.harga.toLocaleString("id-ID")}
                   </td>
-                  <td className="px-6 py-4">3 Hari</td>
+                  <td className="px-6 py-4">
+                    {calculateDays(
+                      data?.data.pesanan.tanggal_mulai,
+                      data?.data.pesanan.tanggal_selesai
+                    )}{" "}
+                    Hari
+                  </td>
                   <td className="px-6 py-4 font-semibold">
                     Rp {data?.data.jumlah_pembayaran}
                   </td>
@@ -125,17 +141,21 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
             <div className="p-5 border-b-2 flex flex-col justify-center items-end">
               <div className="flex justify-between w-1/3  mb-2">
                 <p className=" ">Sub Total</p>
-                <p className="font-semibold ">Rp 900.000</p>
+                <p className="font-semibold ">
+                  Rp {data?.data.pesanan.harga.toLocaleString("id-ID")}
+                </p>
               </div>
               <div className="flex justify-between w-1/3  mb-2">
-                <p className=" "> Biaya Layanan</p>
-                <p className="font-semibold ">Rp. 2.000</p>
+                <p className=" "> Diskon</p>
+                <p className="font-semibold ">-</p>
               </div>
             </div>
             <div className="p-5 flex flex-col justify-end items-end">
               <div className=" mb-2">
                 <p className="font-semibold text-md ">Total Pembayaran</p>
-                <p className="font-bold text-2xl text-[#089562]">Rp 902.000</p>
+                <p className="font-bold text-2xl text-[#089562]">
+                  Rp {data?.data.jumlah_pembayaran.toLocaleString("id-ID")}
+                </p>
               </div>
             </div>
           </div>

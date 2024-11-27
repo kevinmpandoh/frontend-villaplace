@@ -22,12 +22,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: [
-    "/profile/:path*",
-    // "/waiting-payment/:path*",
-    // "/order/:path*",
-    // "/review/:path*",
-    // "/profile/:path*",
-    "/auth/:path*",
-  ],
+  matcher: ["/user/:path*", "/auth/:path*"],
 };
