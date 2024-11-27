@@ -1,14 +1,14 @@
-import ChangePassword from "@/components/ChangePassword";
+import Favorite from "@/components/Favorite/Favorite";
 import React from "react";
 
 const page = () => {
   return (
-    <>
+    <div>
       <div className=" p-2 border-b-2 border-gray-200 mb-5">
-        <h1 className="text-lg font-bold">Ganti Password</h1>
+        <h1 className="text-lg font-bold">Favorite</h1>
       </div>
-      <ChangePassword />
-    </>
+      <Favorite />
+    </div>
   );
 };
 
