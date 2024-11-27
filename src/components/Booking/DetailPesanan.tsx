@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import useFetchData from "@/hooks/useFetchData";
+import { formatDate } from "@/utils/formatDate";
+import { getStatusColor, getStatusLabel } from "@/utils/getStatusLabelAndColor";
+import { calculateDays } from "@/utils/calculateDays";
 
 interface DetailPesananProps {
   pesananId: string;
@@ -15,21 +18,21 @@ const DetailPesanan: React.FC<DetailPesananProps> = ({ pesananId }) => {
   );
 
   return (
-    <div>
+    <>
       <div className="p-5 border-b-2 border-y-meta-9">
         <div className="flex justify-between mb-2">
           <p>Status</p>
           <p
-            className={`inline-flex text-yellow-600 bg-yellow-600 border border-yellow-600 rounded-sm bg-opacity-10 py-1 px-3 text-sm font-bold `}
+            className={`inline-flex ${getStatusColor(
+              data?.data.status
+            )} rounded-full border bg-opacity-10 py-1 px-3 text-xs font-bold `}
           >
-            {data?.data.status}
+            {getStatusLabel(data?.data.status)}
           </p>
         </div>
         <div className="flex justify-between">
           <p>Tanggal Pemesanan</p>
-          <p className="font-semibold">
-            {new Date(data?.data.createdAt).toLocaleDateString("id-ID")}
-          </p>
+          <p className="font-semibold">{formatDate(data?.data.createdAt)}</p>
         </div>
       </div>
       <div className="p-5 border-b-2 border-y-meta-9">
@@ -67,7 +70,7 @@ const DetailPesanan: React.FC<DetailPesananProps> = ({ pesananId }) => {
               <p className="w-40">Harga</p>
               <span className="mr-3">:</span>
               <p className="font-bold text-lg text-[#089562]">
-                {data?.data.villa.harga}
+                Rp. {data?.data.villa.harga.toLocaleString("id-ID")}
               </p>
             </div>
           </div>
@@ -85,20 +88,15 @@ const DetailPesanan: React.FC<DetailPesananProps> = ({ pesananId }) => {
           <p className="w-1/3">Tanggal Masuk</p>
           <span className="mr-3">:</span>
           <p className="font-semibold">
-            {new Date(data?.data.tanggal_mulai).toLocaleDateString("id-ID")}
+            {formatDate(data?.data.tanggal_mulai)}
           </p>
         </div>
         <div className="flex mb-2">
           <p className="w-1/3">Tanggal Keluar</p>
           <span className="mr-3">:</span>
           <p className="font-semibold">
-            {new Date(data?.data.tanggal_selesai).toLocaleDateString("id-ID")}
+            {formatDate(data?.data.tanggal_selesai)}
           </p>
-        </div>
-        <div className="flex mb-2">
-          <p className="w-1/3">Jumlah Hari</p>
-          <span className="mr-3">:</span>
-          <p className="font-semibold">3 Hari</p>
         </div>
         <div className="flex mb-2">
           <p className="w-1/3">Catatan</p>
@@ -111,24 +109,26 @@ const DetailPesanan: React.FC<DetailPesananProps> = ({ pesananId }) => {
         <h3 className="font-semibold mb-3 text-lg">Pembayaran</h3>
         <div className="flex justify-between mt-4 mb-2">
           <p>Harga Villa</p>
-          <p>
-            Rp
-            {data?.data.villa.harga}
-          </p>
+          <p>Rp {data?.data.villa.harga.toLocaleString("id-ID")}</p>
         </div>
         <div className="flex justify-between">
           <p>Total Lama Sewa</p>
-          <p>3 Hari</p>
+          <p>
+            {calculateDays(
+              data?.data.tanggal_mulai,
+              data?.data.tanggal_selesai
+            )}{" "}
+            Hari
+          </p>
         </div>
         <div className="flex justify-between mt-4 border-t border-y-meta-9">
           <p className="mt-2 text-lg font-bold">Total Pembayaran</p>
           <p className="font-bold text-lg mt-2">
-            Rp
-            {data?.data.harga}
+            Rp {data?.data.harga.toLocaleString("id-ID")}
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
