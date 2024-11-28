@@ -57,28 +57,49 @@ const Navbar: React.FC = () => {
           {/* Navigation Links */}
           <ul className="links flex gap-10 items-center ">
             <li>
-              <Link href={"/"}
-                className={currentPath === "/" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
+              <Link
+                href={"/"}
+                className={
+                  currentPath === "/"
+                    ? "text-[#111111] font-bold"
+                    : "text-[#606060] hover:text-[#111111] font-semibold"
+                }
               >
                 Home
               </Link>
             </li>
             <li>
-              <Link href={"/about"}
-                className={currentPath === "/about" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}>
+              <Link
+                href={"/about"}
+                className={
+                  currentPath === "/about"
+                    ? "text-[#111111] font-bold"
+                    : "text-[#606060] hover:text-[#111111] font-semibold"
+                }
+              >
                 About
               </Link>
             </li>
             <li>
-              <Link href={"/category"}
-            className={currentPath === "/category" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
+              <Link
+                href={"/category"}
+                className={
+                  currentPath === "/category"
+                    ? "text-[#111111] font-bold"
+                    : "text-[#606060] hover:text-[#111111] font-semibold"
+                }
               >
                 Kategori
               </Link>
             </li>
             <li>
-              <Link href={"/contact"}
-                className={currentPath === "/contact" ? "text-[#111111] font-bold" : "text-[#606060] hover:text-[#111111] font-semibold"}
+              <Link
+                href={"/contact"}
+                className={
+                  currentPath === "/contact"
+                    ? "text-[#111111] font-bold"
+                    : "text-[#606060] hover:text-[#111111] font-semibold"
+                }
               >
                 Contact
               </Link>
@@ -96,12 +117,12 @@ const Navbar: React.FC = () => {
             <DropdownUser />
           ) : (
             <div className="flex items-center space-x-4">
-              <Link href="/registUser">
+              <Link href="/auth/registUser">
                 <button className="border border-[#B7906C] text-[#C59E6C] hover:text-gray-900 px-4 py-1 rounded-md">
                   Daftar
                 </button>
               </Link>
-              <Link href="/login">
+              <Link href="/auth/login">
                 <button className="bg-[#B7906C] text-white px-3 py-1 rounded-md hover:bg-[#9e7850]">
                   + Masuk
                 </button>

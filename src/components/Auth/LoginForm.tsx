@@ -115,7 +115,7 @@ const LoginForm = () => {
         <p className="text-center text-gray-600">
           Tidak punya akun?{" "}
           <Link
-            href={isUser ? "/registUser" : "/registMitra"}
+            href={isUser ? "/auth/registUser" : "/auth/registMitra"}
             className="text-black font-bold"
           >
             Daftar sekarang

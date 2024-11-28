@@ -85,7 +85,7 @@ const PaymentCard: React.FC<PaymentCardProps> = ({
           <p className="text-form-strokedark mb-3">Pembayaran</p>
           <div className="font-bold text-slate-700 flex flex-col gap-2">
             <Image
-              src={getPaymentImage("bni")}
+              src={getPaymentImage(item.tipe_pembayaran)}
               width={60}
               height={60}
               alt="Pembayaran"
