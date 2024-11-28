@@ -12,7 +12,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { label: 'Beranda', icon: 'fa-home', href: '/dashboardMitra' },
-  { label: 'Manajemen Villa', icon: 'fa-building', href: '/manajemen-villa-mitra' },
+  { label: 'Manajemen Villa', icon: 'fa-building', href: '/manajemen-pengguna-mitra' },
   { label: 'Manajemen Ulasan', icon: 'fa-comment', href: '/ulasan-mitra' },
   { label: 'Manajemen Posting', icon: 'fa-file', href: '/posting-mitra' },
   { label: 'Transaksi', icon: 'fa-money-bill-alt', href: '/transaksi-mitra' },

@@ -59,7 +59,6 @@ const DetailVillaPage = ({ params }: { params: { villaId: string } }) => {
     <div className="min-h-screen bg-gray-100">
       
     <div className="pb-6 bg-gray-100">
-      <Navbar />
     </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-[80px] bg-white rounded-lg shadow-md mb-6">
@@ -112,9 +111,6 @@ const DetailVillaPage = ({ params }: { params: { villaId: string } }) => {
           </form>
         </div>
       </div>
-
-      <Footer />
-
     </div>
   );
 };

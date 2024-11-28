@@ -12,7 +12,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { label: 'Beranda', icon: 'fa-home', href: '/dashboardAdmin' },
-  { label: 'Manajemen Villa', icon: 'fa-building', href: '/manajemen-villa-admin' },
+  { label: 'Manajemen Pengguna', icon: 'fa-building', href: '/manajemen-pengguna-admin' },
   { label: 'Manajemen Ulasan', icon: 'fa-comment', href: '/ulasan-admin' },
   { label: 'Manajemen Posting', icon: 'fa-file', href: '/posting-admin' },
   { label: 'Transaksi', icon: 'fa-money-bill-alt', href: '/transaksi-admin' },
@@ -35,7 +35,7 @@ const SidebarAdmin = () => {
             alt="Villa Place Logo" 
             width={40}
             height={40}
-            className="object-contain"
+            className="rounded-full"
           />
         </div>
         <span className="text-xl font-bold">Villa Place</span>
@@ -51,7 +51,7 @@ const SidebarAdmin = () => {
                 activeItem === item.href ? 'bg-white text-green-500' : 'text-white hover:bg-green-600/20'
               }`}
             >
-              <i className={`fas ${item.icon} mr-3 w-5`} />
+              <i className={`fas ${item.icon} mr-1 w-5`} />
               <span>{item.label}</span>
             </Link>
           </li>
