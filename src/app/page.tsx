@@ -1,39 +1,52 @@
+"use client";
+
 import React from "react";
 import "@/styles/globals.css";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import useFetchData from "@/hooks/useFetchData";
+
+interface FotoVilla {
+  _id: string;
+  villa: string;
+  name: string;
+  url: string;
+  filepath: string;
+  __v: number;
+}
 
 interface VillaProps {
-  name: string;
-  location: string;
-  price: number;
-  imageUrl: string;
-  numBedrooms: string;
-  numBathrooms: string;
+  nama: string;
+  deskripsi: string;
+  lokasi: string;
+  fasilitas: string[];
+  harga: number;
+  foto_villa: FotoVilla[];
+  status: string;
 }
 
 const VillaCard = ({
-  name,
-  location,
-  price,
-  imageUrl,
-  numBedrooms,
-  numBathrooms,
+  nama,
+  lokasi,
+  fasilitas,
+  harga,
+  foto_villa,
 }: VillaProps) => {
+  const imageUrl = foto_villa?.[0]?.url || "/default-image.png";
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="relative h-48 w-full">
         <Image
           src={imageUrl}
-          alt={name}
+          alt={nama}
           layout="fill"
           className="rounded-t-lg w-full h-full object-cover"
         />
       </div>
       <div className="p-4">
-        <h3 className="text-xl font-semibold">{name}</h3>
+        <h3 className="text-xl font-semibold">{nama}</h3>
         <div className="flex items-center mt-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +68,7 @@ const VillaCard = ({
               d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
             />
           </svg>
-          <span className="ml-2 text-gray-600">{location}</span>
+          <span className="ml-2 text-gray-600">{lokasi}</span>
         </div>
         <div className="flex justify-between items-center mt-3">
           <div className="flex space-x-4">
@@ -74,7 +87,7 @@ const VillaCard = ({
                   d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                 />
               </svg>
-              <span className="ml-1">{numBedrooms}</span>
+              <span className="ml-1">{fasilitas[0]}</span>
             </div>
             <div className="flex items-center">
               <svg
@@ -91,11 +104,11 @@ const VillaCard = ({
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                 />
               </svg>
-              <span className="ml-1">{numBathrooms}</span>
+              <span className="ml-1">{fasilitas[1]}</span>
             </div>
           </div>
           <p className="text-green-600 font-semibold items-center">
-            Rp. {price.toLocaleString()}
+            Rp. {harga.toLocaleString()}
           </p>
         </div>
       </div>
@@ -103,63 +116,18 @@ const VillaCard = ({
   );
 };
 
-const HomePage = () => {
-  const villas = [
-    {
-      name: "Villa Gitah",
-      location: "Lokasi",
-      price: 3500000,
-      imageUrl: "/assets/images/villa-gitah.png",
-      numBedrooms: "3 kamar",
-      numBathrooms: "2 kamar",
-    },
-    {
-      name: "Villa Bandung",
-      location: "Lokasi",
-      price: 3500000,
-      imageUrl: "/assets/images/villa-bandung.png",
-      numBedrooms: "3 kamar",
-      numBathrooms: "2 kamar",
-    },
-    {
-      name: "Villa Gitah",
-      location: "Lokasi",
-      price: 3500000,
-      imageUrl: "/assets/images/villa-gitah.png",
-      numBedrooms: "3 kamar",
-      numBathrooms: "2 kamar",
-    },
-    {
-      name: "Villa Bandung",
-      location: "Lokasi",
-      price: 3500000,
-      imageUrl: "/assets/images/villa-bandung.png",
-      numBedrooms: "3 kamar",
-      numBathrooms: "2 kamar",
-    },
-    {
-      name: "Villa Gitah",
-      location: "Lokasi",
-      price: 3500000,
-      imageUrl: "/assets/images/villa-gitah.png",
-      numBedrooms: "3 kamar",
-      numBathrooms: "2 kamar",
-    },
-    {
-      name: "Villa Bandung",
-      location: "Lokasi",
-      price: 3500000,
-      imageUrl: "/assets/images/villa-bandung.png",
-      numBedrooms: "3 kamar",
-      numBathrooms: "2 kamar",
-    },
-  ];
+const HomePage: React.FC = () => {
+  const { data } = useFetchData("http://localhost:8000/api/villa", {
+    method: "GET",
+    withCredentials: true,
+  });
+
+  // Ensure data is an array by accessing the correct property
+  const villas = data?.data || [];
 
   return (
     <div className="min-h-screen">
       <Navbar />
-
-      {/* Hero Section */}
       <div className="w-full h-[100vh] relative -mt-8 -mb-8">
         <Image
           src="/assets/images/hero-img.png"
@@ -187,13 +155,27 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Content Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 mt-[-5rem]">
         <h2 className="text-4xl font-bold mb-14 text-center">Rekomendasi</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-          {villas.map((villa, index) => (
-            <VillaCard key={index} {...villa} />
-          ))}
+          {Array.isArray(villas) && villas.length > 0 ? (
+            villas.map((villa: VillaProps, index: number) => {
+              return (
+                <VillaCard
+                  key={index}
+                  nama={villa.nama}
+                  deskripsi={villa.deskripsi}
+                  lokasi={villa.lokasi}
+                  fasilitas={villa.fasilitas}
+                  harga={villa.harga}
+                  foto_villa={villa.foto_villa || []}
+                  status={villa.status}
+                />
+              );
+            })
+          ) : (
+            <p>No villas available.</p>
+          )}
         </div>
         <div className="text-end mt-10">
           <Link href="/category">
