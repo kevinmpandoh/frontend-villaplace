@@ -22,11 +22,11 @@ const StatCard: React.FC<StatCardProps> = ({ icon, title, value, bgColor }) => (
   </div>
 );
 
-const DashboardAdmin = () => {
+const DashboardMitra = () => {
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-12">
-        <h1 className="text-2xl font-bold">Admin Beranda</h1>
+        <h1 className="text-2xl font-bold">Mitra Beranda</h1>
         <div className="flex items-center space-x-6">
           <button className="text-gray-600 hover:text-gray-800">Pengaturan</button>
           <button className="text-gray-600 hover:text-gray-800">Keluar</button>
@@ -79,4 +79,4 @@ const DashboardAdmin = () => {
   );
 };
 
-export default DashboardAdmin;
+export default DashboardMitra;

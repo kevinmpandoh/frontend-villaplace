@@ -12,10 +12,10 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { label: 'Beranda', icon: 'fa-home', href: '/dashboardAdmin' },
-  { label: 'Manajemen Villa', icon: 'fa-building', href: '/ManajemenVillaAdmin' },
-  { label: 'Manajemen Ulasan', icon: 'fa-comment', href: '/UlasanAdmin' },
-  { label: 'Manajemen Posting', icon: 'fa-file', href: '/PostingAdmin' },
-  { label: 'Transaksi', icon: 'fa-money-bill-alt', href: '/TransaksiAdmin' },
+  { label: 'Manajemen Villa', icon: 'fa-building', href: '/manajemen-villa-admin' },
+  { label: 'Manajemen Ulasan', icon: 'fa-comment', href: '/ulasan-admin' },
+  { label: 'Manajemen Posting', icon: 'fa-file', href: '/posting-admin' },
+  { label: 'Transaksi', icon: 'fa-money-bill-alt', href: '/transaksi-admin' },
 ];
 
 const SidebarAdmin = () => {
