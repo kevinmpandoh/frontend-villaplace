@@ -13,29 +13,69 @@ import SkeletonLoader from "./SkeletonLoader";
 
 // Hooks
 import useFetchData from "@/hooks/useFetchData";
+import { useFetchUlasan } from "@/hooks/useFetchUlasan";
 
 // Utils
 import { formatDate } from "@/utils/formatDate";
 import { getStatusColor, getStatusLabel } from "@/utils/getStatusLabelAndColor";
 import { calculateDays } from "@/utils/calculateDays";
+import axios from "axios";
+import { object } from "yup";
+
+type Review = {
+  rating: number;
+  komentar: string;
+  villa: string;
+};
 
 const Booking = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentModalId, setCurrentModalId] = useState("");
+  const [currentModalPesananId, setCurrentModalPesananId] = useState("");
+  const [currentModalReviewId, setCurrentModalReviewId] = useState("");
   const [isModalReviewOpen, setIsModalReviewOpen] = useState(false);
   const [BookingData, setBookingData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [reviewData, setReviewData] = useState<Review[]>([]);
 
-  const { data, loading } = useFetchData("http://localhost:8000/api/pesanan", {
-    withCredentials: true,
-  });
+  const { handleFetchUlasan } = useFetchUlasan();
+
+  const { data, loading } = useFetchData(
+    "http://localhost:8000/api/pesanan/user",
+    {
+      withCredentials: true,
+    }
+  );
+
+  const { data: dataReview } = useFetchData(
+    "http://localhost:8000/api/ulasan/user",
+    {
+      withCredentials: true,
+    }
+  );
+
+  const handleSubmit = (values: { rating: number; komentar: string }) => {
+    const data = {
+      rating: values.rating,
+      komentar: values.komentar,
+      villa: currentModalReviewId,
+    };
+    handleFetchUlasan(data);
+    setReviewData([...reviewData, data]);
+    toggleModalReview(null);
+  };
 
   useEffect(() => {
     if (data) {
       setBookingData(data.data);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (dataReview) {
+      setReviewData(dataReview.data);
+    }
+  }, [dataReview]);
 
   useEffect(() => {
     // Filter data berdasarkan status
@@ -50,12 +90,12 @@ const Booking = () => {
   }, [selectedStatus, BookingData]);
 
   const toggleModal = (id: any) => {
-    setCurrentModalId(id);
+    setCurrentModalPesananId(id);
     setIsModalOpen(!isModalOpen);
   };
 
   const toggleModalReview = (id: any) => {
-    setCurrentModalId(id);
+    setCurrentModalReviewId(id);
     setIsModalReviewOpen(!isModalReviewOpen);
   };
   return (
@@ -141,11 +181,11 @@ const Booking = () => {
                 <div className="item-content">
                   <div className="flex">
                     <Image
-                      src={item.villa.foto_villa[0].url}
+                      src={item.villa.foto_villa[0]?.url || "/villa.jpg"}
                       width={150}
                       height={150}
                       alt="product"
-                      className="rounded-lg mr-4"
+                      className="rounded-lg mr-4 object-cover"
                     />
                     <div>
                       <p className="font-bold text-xl mb-2">
@@ -201,8 +241,18 @@ const Booking = () => {
 
                     {item.status === "completed" && (
                       <button
-                        onClick={() => toggleModalReview(item.id)}
-                        className="flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 dark:bg-green-600 dark:hover:bg-green-700"
+                        onClick={() => toggleModalReview(item.villa._id)}
+                        // className="flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 dark:bg-green-600 dark:hover:bg-green-700"
+                        className={`flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 dark:bg-green-600 dark:hover:bg-green-700 ${
+                          reviewData.some(
+                            (review: any) => review.villa === item.villa._id
+                          )
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
+                        disabled={reviewData.some(
+                          (review: any) => review.villa === item.villa._id
+                        )}
                       >
                         Review Villa
                       </button>
@@ -222,7 +272,7 @@ const Booking = () => {
           title="Detail Pesanan Villa"
           className="max-h-screen overflow-y-auto h-3/4"
         >
-          <DetailPesanan pesananId={currentModalId} />
+          <DetailPesanan pesananId={currentModalPesananId} />
         </Modal>
       )}
       {isModalReviewOpen && (
@@ -231,7 +281,7 @@ const Booking = () => {
           title="Beri Ulasan Villa"
           className="max-w-md"
         >
-          <Review villaId={currentModalId} />
+          <Review handleSubmit={handleSubmit} />
         </Modal>
       )}
     </>
