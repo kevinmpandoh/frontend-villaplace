@@ -24,8 +24,10 @@ const PaymentUser = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [countdowns, setCountdowns] = useState<{ [key: string]: string }>({});
 
+  console.log("PaymentData", PaymentData);
+
   const { data, loading } = useFetchData(
-    "http://localhost:8000/api/pembayaran",
+    "http://localhost:8000/api/pembayaran/user",
     {
       withCredentials: true,
     }
@@ -109,7 +111,7 @@ const PaymentUser = () => {
               Berhasil
             </button>
             <button
-              onClick={() => setSelectedStatus("canceled")}
+              onClick={() => setSelectedStatus("failed")}
               className={`${
                 selectedStatus === "canceled"
                   ? "bg-[#B7906C]   border-[#B7906C] text-white"

@@ -50,10 +50,10 @@ const PaymentCard: React.FC<PaymentCardProps> = ({
         <div className="flex">
           <Image
             src={item.pesanan.villa.foto_villa[0].url}
-            width={100}
-            height={100}
+            width={150}
+            height={150}
             alt="product"
-            className="rounded-lg mr-4"
+            className="rounded-lg mr-4 object-cover"
           />
           <div>
             <p className="font-bold">{item.pesanan.villa.nama}</p>

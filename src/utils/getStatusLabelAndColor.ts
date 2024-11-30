@@ -20,7 +20,7 @@ export const getStatusPaymentLabel = (status: string) => {
       return "Menunggu Pembayaran";
     case "success":
       return "Berhasil";
-    case "canceled":
+    case "failed":
       return "Dibatalkan";
     default:
       return "Tidak Diketahui";
@@ -48,7 +48,7 @@ export const getStatusPaymentColor = (status: string) => {
       return "bg-yellow-600 border-yellow-500 text-yellow-600";
     case "success":
       return "bg-green-600 border-green-500 text-green-600";
-    case "canceled":
+    case "failed":
       return "bg-red-500 border-red-500 text-red-500";
     default:
       return "bg-gray-100 border-gray-500 text-gray-800";
