@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import { useFormik } from "formik";
+
 import * as Yup from "yup";
-import { useChangePassword } from "../../hooks/useChangePassword";
+import { useFetchUser } from "../../hooks/useFetchUser";
 
 const ChangePassword = () => {
-  const { handleChangePassword, loading } = useChangePassword();
+  // const { handleChangePassword, loading, error } = useChangePassword();
+  const { handleChangePassword, loading, error } = useFetchUser();
 
   // Formik setup
   const formik = useFormik({
@@ -26,9 +28,19 @@ const ChangePassword = () => {
         )
         .required("Konfirmasi password wajib diisi"),
     }),
-    onSubmit: (values) => {
-      const { currentPassword, newPassword } = values;
-      handleChangePassword({ currentPassword, newPassword });
+    onSubmit: (values, formikHelpers) => {
+      try {
+        if (error) {
+          console.log("error", error);
+          formikHelpers.setFieldError("currentPassword", error);
+        } else {
+          const { currentPassword, newPassword } = values;
+          handleChangePassword({ currentPassword, newPassword });
+          formikHelpers.resetForm();
+        }
+      } catch (err: any) {
+        console.error(err);
+      }
     },
   });
 

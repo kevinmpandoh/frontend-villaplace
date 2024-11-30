@@ -45,7 +45,16 @@ export const changePassword = async (data: {
   currentPassword: string;
   newPassword: string;
 }) => {
-  return axios.put(`${API_BASE_URL}/user/change-password`, data, {
-    withCredentials: true,
-  });
+  try {
+    const response = await axios.put(
+      `${API_BASE_URL}/user/change-password`,
+      data,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response ? error.response.data : error;
+  }
 };

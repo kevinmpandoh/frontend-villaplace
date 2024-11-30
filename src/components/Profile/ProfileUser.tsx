@@ -4,12 +4,12 @@ import ProfilePictureUploader from "./ProfilePictureUploader";
 import ProfileDisplay from "./ProfileDisplay";
 import EditProfileModal from "./EditProfileModal";
 import useFetchData from "../../hooks/useFetchData";
-import { useUpdateUser } from "../../hooks/useUpdateUser";
+import { useFetchUser } from "../../hooks/useFetchUser";
 import { User } from "../../types/User";
 import Swal from "sweetalert2";
 
 const ProfileUser = () => {
-  const { handleUpdateUser, loading, error, success } = useUpdateUser();
+  const { handleUpdateUser, error } = useFetchUser();
   const [showModal, setShowModal] = useState(false);
   const [userData, setUserData] = useState({
     _id: "",
@@ -35,12 +35,6 @@ const ProfileUser = () => {
     try {
       const updatedUser = await handleUpdateUser(userData._id, values);
       setShowModal(false);
-      Swal.fire({
-        title: "Berhasil!",
-        text: "Profil Anda berhasil diperbarui.",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
       setUserData(updatedUser.data);
     } catch (err) {
       if (error.errors) {

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { deleteFavorite } from "../services/favoriteService";
 
-export const useDeleteFavorite = () => {
-  const [data, setData] = useState<any>(null);
+export const useFetchFavorite = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
   const [success, setSuccess] = useState<boolean>(false);
