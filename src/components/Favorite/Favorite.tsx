@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import useFetchData from "@/hooks/useFetchData";
-import { useDeleteFavorite } from "@/hooks/useDeleteFavorite";
+import { useFetchFavorite } from "@/hooks/useFetchFavorite";
 import SkeletonFavorite from "./SkeletonFavorite";
 import Empty from "../Empty";
 import FavoriteCard from "./FavoriteCard";
 
 const Favorite: React.FC = () => {
-  const { handleDeleteFavorite } = useDeleteFavorite();
+  const { handleDeleteFavorite } = useFetchFavorite();
   const [favorites, setFavorites] = useState([]);
 
   const { data, error, loading } = useFetchData(
