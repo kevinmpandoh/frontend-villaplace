@@ -37,37 +37,40 @@ const DetailPesanan: React.FC<DetailPesananProps> = ({ pesananId }) => {
       </div>
       <div className="p-5 border-b-2 border-y-meta-9">
         <h3 className=" font-semibold mb-3 text-lg">Villa</h3>
-        <div className="flex gap-10 mt-5">
+        <div className="flex flex-col md:flex-row gap-10 mt-5">
           <Image
-            src={data?.data.villa.foto_villa[0]?.url || "/villa.jpg"}
+            src={
+              data?.data.villa.foto_villa[0]?.url ||
+              "/assets/images/default-villa.jpg"
+            }
             width={200}
             height={200}
             className="rounded-md"
             alt={"Foto Villa"}
           ></Image>
           <div>
-            <div className="flex mb-2">
-              <p className="w-40">Nama Villa</p>
+            <div className="flex  mb-2">
+              <p className="md:w-40 w-30 ">Nama Villa</p>
               <span className="mr-3">:</span>
               <p className="font-semibold">{data?.data.villa.nama}</p>
             </div>
             <div className="flex mb-2">
-              <p className="w-40">Lokasi</p>
+              <p className="md:w-40 w-30">Lokasi</p>
               <span className="mr-3">:</span>
               <p className="font-semibold">Manado</p>
             </div>
             <div className="flex mb-2">
-              <p className="w-40">Kategori</p>
+              <p className="md:w-40 w-30">Kategori</p>
               <span className="mr-3">:</span>
               <p className="font-semibold">{data?.data.villa.kategori}</p>
             </div>
             <div className="flex mb-2">
-              <p className="w-40">Fasilitas</p>
+              <p className="md:w-40 w-30">Fasilitas</p>
               <span className="mr-3">:</span>
               <p className="font-semibold">{data?.data.villa.fasilitas}</p>
             </div>
             <div className="flex mb-2">
-              <p className="w-40">Harga</p>
+              <p className="md:w-40 w-30">Harga</p>
               <span className="mr-3">:</span>
               <p className="font-bold text-lg text-[#089562]">
                 Rp. {data?.data.villa.harga.toLocaleString("id-ID")}

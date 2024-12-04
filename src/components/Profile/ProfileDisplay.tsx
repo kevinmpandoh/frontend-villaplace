@@ -13,7 +13,7 @@ const ProfileDisplay: React.FC<ProfileDisplayProps> = ({
   userData,
   onEdit,
 }) => (
-  <div className="w-[60%]">
+  <div className="md:w-[60%] w-full">
     <div className="max-w-2xl mt-10 mx-auto">
       <div>
         <div className="flex mb-8">

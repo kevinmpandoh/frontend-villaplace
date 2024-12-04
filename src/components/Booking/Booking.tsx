@@ -19,8 +19,6 @@ import { useFetchUlasan } from "@/hooks/useFetchUlasan";
 import { formatDate } from "@/utils/formatDate";
 import { getStatusColor, getStatusLabel } from "@/utils/getStatusLabelAndColor";
 import { calculateDays } from "@/utils/calculateDays";
-import axios from "axios";
-import { object } from "yup";
 
 type Review = {
   rating: number;
@@ -101,11 +99,11 @@ const Booking = () => {
   return (
     <>
       <div className=" mb-5 ">
-        <div className="flex mb-4 items-center">
+        <div className="flex mb-4 items-start sm:items-center ">
           <div className="mr-4">
             <p className="font-semibold">Status</p>
           </div>
-          <div className="w-full items-center space-x-2">
+          <div className="w-full items-center flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedStatus("All")}
               className={`${
@@ -177,17 +175,20 @@ const Booking = () => {
                   {getStatusLabel(item.status)}
                 </p>
               </div>
-              <div className="flex">
-                <div className="item-content">
-                  <div className="flex">
+              <div className="flex flex-col md:flex-row w-full  ">
+                <div className="md:item-content w-full ">
+                  <div className="flex flex-col sm:flex-row">
                     <Image
-                      src={item.villa.foto_villa[0]?.url || "/villa.jpg"}
+                      src={
+                        item.villa.foto_villa[0]?.url ||
+                        "/assets/images/default-villa.jpg"
+                      }
                       width={150}
                       height={150}
-                      alt="product"
-                      className="rounded-lg mr-4 object-cover"
+                      alt="villa"
+                      className="rounded-lg mr-4 w-full h-45 sm:w-45 object-cover"
                     />
-                    <div>
+                    <div className="">
                       <p className="font-bold text-xl mb-2">
                         {item.villa.nama}
                       </p>
@@ -223,7 +224,7 @@ const Booking = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col justify-between w-1/3">
+                <div className="flex flex-col w-full justify-between md:w-1/3">
                   <div className="flex flex-col justify-end items-end">
                     <p className="text-form-strokedark">Total Pembayaran</p>
                     <p className="font-bold text-lg">

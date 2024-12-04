@@ -30,7 +30,9 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
           <div className="flex justify-between mb-2">
             <p>Status</p>
             <p
-              className={`inline-flex text-yellow-600 bg-yellow-600 border border-yellow-600 rounded-full bg-opacity-10 py-1 px-3 text-xs font-bold `}
+              className={`inline-flex ${getStatusPaymentColor(
+                data?.data.status_pembayaran
+              )} border rounded-full bg-opacity-10 py-1 px-3 text-xs font-bold `}
             >
               {getStatusPaymentLabel(data?.data.status_pembayaran)}
             </p>
@@ -40,9 +42,11 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
             <p className="font-semibold">#{data?.data.kode_pembayaran}</p>
           </div>
           <div className="flex justify-between mb-4">
-            <p>Tanggal Pembayaran</p>
+            <p>Tanggal Transaksi</p>
             <p className="font-semibold">
-              {formatDate(data?.data.tanggal_pembayaran)}
+              {data?.data.tanggal_pembayaran
+                ? formatDate(data?.data.tanggal_pembayaran)
+                : "-"}
             </p>
           </div>
         </div>
@@ -78,20 +82,24 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
         <h2 className="mb-2 mt-4 font-bold text-xl">Pembayaran</h2>
         <div className="flex flex-col gap-7.5 ">
           <div className="p-5 border-b-2 border-y-meta-9">
-            <div className="flex mb-2">
-              <p className="w-1/3">Metode Pembayaran</p>
-              <span className="mr-3">:</span>
-              <p className="font-semibold">{data?.data.metode_pembayaran}</p>
+            <div className="flex mb-2 flex-col md:flex-row">
+              <p className="w-full md:w-1/3">Metode Pembayaran</p>
+              <span className="mr-3 hidden sm:block">:</span>
+              <p className="font-semibold">
+                {data?.data.metode_pembayaran === "bank_transfer"
+                  ? "Bank Transfer"
+                  : "-"}
+              </p>
             </div>
-            <div className="flex mb-2">
-              <p className="w-1/3">Tipe Pembayaran</p>
-              <span className="mr-3">:</span>
-              <p className="font-semibold">BRI</p>
+            <div className="flex flex-col md:flex-row mb-2">
+              <p className="w-full md:w-1/3">Nama Bank</p>
+              <span className="mr-3 hidden sm:block">:</span>
+              <p className="font-semibold uppercase">{data?.data.bank}</p>
             </div>
-            <div className="flex mb-2">
-              <p className="w-1/3">Nomor Virtual Account</p>
-              <span className="mr-3">:</span>
-              <p className="font-semibold">{data?.data.va_number || "-"}</p>
+            <div className="flex mb-2 flex-col md:flex-row">
+              <p className="w-full md:w-1/3">Nomor Virtual Account</p>
+              <span className="mr-3 hidden sm:block">:</span>
+              <p className="font-semibold">{data?.data.nomor_va || "-"}</p>
             </div>
           </div>
 
@@ -138,7 +146,7 @@ const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
               </tbody>
             </table>
 
-            <div className="p-5 border-b-2 flex flex-col justify-center items-end">
+            <div className="p-5 border-b-2 flex flex-col justify-center items-end w-full">
               <div className="flex justify-between w-1/3  mb-2">
                 <p className=" ">Sub Total</p>
                 <p className="font-semibold ">

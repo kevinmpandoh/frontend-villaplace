@@ -24,13 +24,13 @@ const PaymentCard: React.FC<PaymentCardProps> = ({
   return (
     <div className="box-3 mb-4">
       <div className="flex justify-between text-sm mb-4 items-center ">
-        <div className="inline-flex items-center ">
+        <div className="flex flex-col sm:flex-row gap-2 items-start ">
           <p>{formatDate(item.tanggal_pembayaran)}</p>
-          <div className="border-r border-form-strokedark h-5 mx-2"></div>
+          <div className="border-r border-form-strokedark h-5 mx-2 hidden sm:block"></div>
           <p className="text-form-strokedark">
             <span className="text-sm">#{item.kode_pembayaran}</span>
           </p>
-          <div className="border-r border-form-strokedark h-5 mx-2"></div>
+          <div className="border-r border-form-strokedark h-5 mx-2 hidden sm:block"></div>
           {item.status_pembayaran === "pending" && (
             <div className="text-md font-semibold">
               Bayar dalam:
@@ -46,14 +46,17 @@ const PaymentCard: React.FC<PaymentCardProps> = ({
           {getStatusPaymentLabel(item.status_pembayaran)}
         </p>
       </div>
-      <div className="flex flex-row justify-between">
-        <div className="flex">
+      <div className="flex flex-col sm:flex-row justify-between gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <Image
-            src={item.pesanan.villa.foto_villa[0].url}
+            src={
+              item.pesanan.villa.foto_villa[0]?.url ||
+              "/assets/images/default-villa.jpg"
+            }
             width={150}
             height={150}
             alt="product"
-            className="rounded-lg mr-4 object-cover"
+            className="rounded-lg mr-4 w-full h-45 sm:w-45 object-cover"
           />
           <div>
             <p className="font-bold">{item.pesanan.villa.nama}</p>
@@ -85,20 +88,26 @@ const PaymentCard: React.FC<PaymentCardProps> = ({
           <p className="text-form-strokedark mb-3">Pembayaran</p>
           <div className="font-bold text-slate-700 flex flex-col gap-2">
             <Image
-              src={getPaymentImage(item.tipe_pembayaran)}
+              src={getPaymentImage(item.bank)}
               width={60}
               height={60}
               alt="Pembayaran"
             />
-            <p>{item.metode_pembayaran}</p>
+            <p>
+              {item.metode_pembayaran === "bank_transfer"
+                ? "Bank Transfer"
+                : "-"}
+            </p>
           </div>
         </div>
 
-        <div className="border-line px-10 justify-start">
-          <p>Total Pembayaran</p>
-          <p className="font-bold">
-            Rp {item.jumlah_pembayaran.toLocaleString("id-ID")}
-          </p>
+        <div className="flex border-line px-2 md:px-10 justify-end">
+          <div>
+            <p>Total Pembayaran</p>
+            <p className="font-bold">
+              Rp {item.jumlah_pembayaran.toLocaleString("id-ID")}
+            </p>
+          </div>
         </div>
       </div>
       <div className="flex justify-end items-center mt-7 gap-2">
@@ -110,14 +119,18 @@ const PaymentCard: React.FC<PaymentCardProps> = ({
           Lihat Detail
         </button>
 
-        <Link href={`#`}>
-          <button
-            type="button"
-            className="flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 me-2 dark:bg-green-600 dark:hover:bg-green-700"
-          >
-            Cara Pembayaran
-          </button>
-        </Link>
+        {/* Cek jika ada pdf_url, kalo ada baru di munculin */}
+        {item.pdf_url && (
+          <Link href={item.pdf_url}>
+            <button
+              type="button"
+              className="flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 me-2 dark:bg-green-600 dark:hover:bg-green-700"
+            >
+              {/* di dalamnya adalah cara untuk melakukan pembayaran nya */}
+              Cara Bayar
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );

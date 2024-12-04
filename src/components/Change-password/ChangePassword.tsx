@@ -45,15 +45,15 @@ const ChangePassword = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className="max-w-2xl mt-20 mx-auto">
-      <div className="flex justify-between mb-10">
+    <form onSubmit={formik.handleSubmit} className="max-w-2xl mt-8 mx-auto">
+      <div className="flex justify-between mb-10 flex-col md:flex-row">
         <label
           htmlFor="currentPassword"
           className="text-md font-semibold text-black dark:text-white"
         >
           Password Lama
         </label>
-        <div className="w-2/3">
+        <div className="md:w-2/3 w-full">
           <input
             type="password"
             id="currentPassword"
@@ -73,14 +73,14 @@ const ChangePassword = () => {
         </div>
       </div>
 
-      <div className="flex justify-between mb-10">
+      <div className="flex justify-between gap-2 flex-col md:flex-row mb-10">
         <label
           htmlFor="newPassword"
           className="text-md font-semibold text-black dark:text-white"
         >
           Password Baru
         </label>
-        <div className="w-2/3">
+        <div className="md:w-2/3 w-full">
           <input
             type="password"
             id="newPassword"
@@ -99,14 +99,14 @@ const ChangePassword = () => {
         </div>
       </div>
 
-      <div className="flex justify-between mb-10">
+      <div className="flex justify-between mb-10 flex-col md:flex-row">
         <label
           htmlFor="confirmPassword"
           className="text-md font-semibold text-black dark:text-white"
         >
           Konfirmasi Password
         </label>
-        <div className="w-2/3">
+        <div className="md:w-2/3 w-full">
           <input
             type="password"
             id="confirmPassword"

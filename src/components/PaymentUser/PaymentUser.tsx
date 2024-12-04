@@ -24,8 +24,6 @@ const PaymentUser = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [countdowns, setCountdowns] = useState<{ [key: string]: string }>({});
 
-  console.log("PaymentData", PaymentData);
-
   const { data, loading } = useFetchData(
     "http://localhost:8000/api/pembayaran/user",
     {
@@ -75,11 +73,11 @@ const PaymentUser = () => {
   return (
     <>
       <div className="mb-5 text-[#212121]">
-        <div className="flex mb-4 items-center">
+        <div className="flex mb-4 items-start sm:items-center">
           <div className="mr-4">
             <p className="font-semibold">Status</p>
           </div>
-          <div className="w-full items-center space-x-2">
+          <div className="w-full items-center flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedStatus("All")}
               className={`${
