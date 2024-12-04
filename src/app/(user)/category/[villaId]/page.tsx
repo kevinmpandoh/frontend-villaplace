@@ -1,4 +1,4 @@
-import DetailVilla from "./DetailVilla";
+import DetailVilla from "@/components/DetailVilla/DetailVilla";
 import { cookies } from "next/headers";
 
 const DetailVillaPage = async ({ params }: { params: { villaId: string } }) => {
