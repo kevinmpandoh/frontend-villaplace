@@ -21,8 +21,6 @@ interface Villa {
 const PostingMitra = () => {
   const [villa, setVilla] = useState<Villa[]>([]);
   const [status, setStatus] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
   const [searchInput, setSearchInput] = useState<string>(""); // State baru untuk input pencarian
 
   useEffect(() => {
@@ -112,7 +110,6 @@ const PostingMitra = () => {
     });
   };
 
-  const indexOfLastItem = currentPage * itemsPerPage;
   return (
     <>
       <div>
@@ -187,6 +184,7 @@ const PostingMitra = () => {
                   </button>
                 </div>
                 {/* Input Pencarian */}
+
                 <form className="max-w-md ml-2 mb-5">
                   <label
                     htmlFor="default-search"
@@ -229,6 +227,7 @@ const PostingMitra = () => {
                     </button>
                   </div>
                 </form>
+
                 <div className="bg-white overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg  shadow-lg">
@@ -353,50 +352,7 @@ const PostingMitra = () => {
                         )}
                       </tbody>
                     </table>
-                    <div className="flex justify-between mt-4 items-center">
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() =>
-                            setCurrentPage((prev) => Math.max(prev - 1, 1))
-                          }
-                          className="p-2 bg-gray-200 rounded"
-                        >
-                          Prev
-                        </button>
-                        <div className="flex space-x-1">
-                          {Array.from(
-                            {
-                              length: Math.ceil(
-                                filteredVilla.length / itemsPerPage
-                              ),
-                            },
-                            (_, i) => (
-                              <button
-                                key={i}
-                                onClick={() => setCurrentPage(i + 1)}
-                                className={`p-2 rounded ${
-                                  currentPage === i + 1
-                                    ? "bg-brown-500 text-white"
-                                    : "bg-gray-200"
-                                }`}
-                              >
-                                {i + 1}
-                              </button>
-                            )
-                          )}
-                        </div>
-                        <button
-                          className="p-2 bg-gray-200 rounded"
-                          onClick={() => setCurrentPage((prev) => prev + 1)}
-                          disabled={
-                            currentPage * itemsPerPage >= filteredVilla.length
-                          }
-                        >
-                          Next
-                        </button>
-                      </div>{" "}
-                    </div>
-                  </div>
+                  </div>{" "}
                 </div>
               </div>
             </div>
