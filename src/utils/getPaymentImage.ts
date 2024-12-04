@@ -6,6 +6,7 @@ const getPaymentImage = (tipePembayaran: string) => {
     bca: "/assets/logo/bca.png",
     ovo: "/assets/logo/ovo.webp",
     gopay: "/assets/logo/gopay.webp",
+    cimb: "/assets/logo/cimb.svg",
   };
   return images[tipePembayaran.toLowerCase()] || "/assets/logo/default.webp";
 };

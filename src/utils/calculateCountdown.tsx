@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 const calculateCountdown = (expiryTime: string) => {
-  const now = dayjs().add(8, "hour"); // Waktu saat ini
+  const now = dayjs(); // Waktu saat ini
   const expiry = dayjs(expiryTime); // Waktu kadaluwarsa
 
   const diffInSeconds = expiry.diff(now, "second");
