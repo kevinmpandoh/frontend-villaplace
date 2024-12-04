@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { postUlasan, getUlasan } from "@/services/ulasanService";
+import { useState } from "react";
+import { postUlasan, deleteUlasan } from "@/services/ulasanService";
 import Swal from "sweetalert2";
 
 export const useFetchUlasan = () => {
@@ -28,7 +28,7 @@ export const useFetchUlasan = () => {
     } catch (err: any) {
       Swal.fire({
         title: "Error",
-        text: err.response?.data?.message || "Failed to add ulasan",
+        text: err.response?.data?.message || "Gagal menambahkan ulasan",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -39,5 +39,37 @@ export const useFetchUlasan = () => {
     }
   };
 
-  return { handleFetchUlasan, loading, error, success };
+  const handleDeleteUlasan = async (id: string) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const result = await deleteUlasan(id);
+
+      Swal.fire({
+        title: "Deleted",
+        text: "Ulasan berhasil dihapus",
+        icon: "success",
+        confirmButtonText: "OK",
+        timer: 3000,
+      });
+      setSuccess(true);
+
+      return result;
+    } catch (err: any) {
+      Swal.fire({
+        title: "Error",
+        text: err.response?.data?.message || "Gagal menghapus ulasan",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { handleFetchUlasan, handleDeleteUlasan, loading, error, success };
 };

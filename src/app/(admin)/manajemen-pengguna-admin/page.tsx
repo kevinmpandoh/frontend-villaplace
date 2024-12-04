@@ -1,33 +1,38 @@
-import React from "react";
-import Link from "next/link";
+"use client";
 
-const ManajemenVillaAdmin = () => {
+import React, { useState } from "react";
+import ModalAdmin from "@/components/Admin/modalAdd";
+import TableAdmin from "@/components/Admin/table-management";
+
+const ManajemenPengguna = () => {
+  const [showModal, setShowModal] = useState(false); // State for modal visibility
+
   return (
     <div>
       <div className="flex justify-between border-2 rounded-xl items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Pengguna</h1>
-          <p>Desctiption</p>
+          <p>Halaman untuk me manajemen segala role pengguna</p>
         </div>
-        <div className="flex items-center space-x-6">
-          <Link href="/dashboardAdmin">
-            <button className="border rounded-lg px-3 py-2 bg-green-600 text-white font-semibold hover:text-gray-800">
-              + Tambah Pengguna
-            </button>
-          </Link>
+        <div>
+          <button
+            type="button"
+            onClick={() => setShowModal(true)} // Open modal when clicked
+            className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mt-7 mr-10"
+          >
+            <p>+ Tambah Admin</p>
+          </button>
         </div>
       </div>
 
-      <div className='p-8'>
-        <div className="bg-white rounded-xl p-6 border-2 border-gray-200">
-          <h2 className="text-xl font-bold mb-6">Pengguna</h2>
-          <div className="h-[400px] w-full bg-gray-50 rounded-xl flex items-center justify-center">
-            <p className="text-gray-500">Area untuk grafik pengguna</p>
-          </div>
-        </div>
+      <div className="p-8 bg-gray-100 min-h-screen">
+        <TableAdmin />
       </div>
+
+      {/* Pass the state and setter function to ModalAdmin */}
+      <ModalAdmin showModal={showModal} setShowModal={setShowModal} />
     </div>
   );
 };
 
-export default ManajemenVillaAdmin;
+export default ManajemenPengguna;
