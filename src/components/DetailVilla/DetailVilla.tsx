@@ -42,8 +42,6 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isFavorited, setIsFavorited] = useState(false);
 
-  console.log(token, "token");
-
   useEffect(() => {
     const fetchFavoriteStatus = async () => {
       if (!token) return;

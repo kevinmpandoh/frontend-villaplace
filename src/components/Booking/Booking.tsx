@@ -36,8 +36,6 @@ const Booking = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [reviewData, setReviewData] = useState<Review[]>([]);
 
-  console.log("Review Data", reviewData);
-
   const { handleFetchUlasan } = useFetchUlasan();
 
   const { data, loading } = useFetchData(

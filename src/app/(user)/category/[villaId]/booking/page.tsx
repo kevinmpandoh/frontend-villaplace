@@ -64,8 +64,6 @@ const BookingUser = async ({ params }: { params: { villaId: string } }) => {
   const villa = await getDataVilla({ villaId });
   const bookedDates = await getBookingDates({ villaId });
 
-  console.log("bookedDate", bookedDates);
-
   return (
     <div className="bg-gray-50">
       <Booking villa={villa} bookedDates={bookedDates} />

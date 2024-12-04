@@ -151,9 +151,6 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
             }
           );
 
-          console.log("midtransData", midtransData);
-          console.log("result", result);
-
           const dataBooking = {
             nama_pembayar: formData.fullName,
             email_pembayar: formData.email,
@@ -172,8 +169,6 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
             alert("Gagal membuat pesanan");
             return;
           }
-
-          console.log("response", response);
 
           const dataPayment = {
             nama_pembayar: formData.fullName,
