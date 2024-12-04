@@ -111,7 +111,7 @@ const TableAdmin = () => {
     const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
     return (
       <div className="overflow-x-auto">
-        <table className="min-w-full table-auto border-collapse border border-black-300 rounded-lg">
+        <table className="min-w-full table-auto border-collapse border border-black-300 rounded-lg  shadow-lg">
           <thead className="bg-brown-500 text-white">
             <tr>
               <th className="p-3 text-center border border-gray-300">No</th>
@@ -205,10 +205,8 @@ const TableAdmin = () => {
   };
   return (
     
-        <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-gray-200">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">
-            Tabel Pengguna
-          </h2>
+        <div className="bg-white rounded-xl p-6  border-gray-200">
+          
           <div className="mb-5 flex items-center space-x-6">
             <label
               htmlFor="status"

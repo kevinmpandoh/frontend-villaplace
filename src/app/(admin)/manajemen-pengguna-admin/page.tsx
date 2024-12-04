@@ -3,13 +3,45 @@
 import React, { useState } from "react";
 import ModalAdmin from "@/components/Admin/modalAdd";
 import TableAdmin from "@/components/Admin/table-management";
+import { Tab } from "@mui/icons-material";
 
 const ManajemenPengguna = () => {
   const [showModal, setShowModal] = useState(false); // State for modal visibility
 
   return (
     <div>
-      <div className="flex justify-between border-2 rounded-xl items-center mb-3 bg-white p-6 m-8">
+      <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-8">
+        <nav aria-label="Breadcrumb">
+          <ol className="flex space-x-2 text-sm font-medium">
+            <li>
+              <a
+                href="/dashboardAdmin"
+                className="text-gray-500 hover:text-gray-700"
+              >
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <span className="text-gray-500">/</span>
+            </li>
+            <li>
+        <a href="/manajemen-pengguna-admin" className="text-gray-500 hover:text-gray-700">
+          Manajemen Pengguna
+        </a>
+      </li>
+      <li>
+        <span className="text-gray-500">/</span>
+      </li>
+      <li>
+        <span className="text-gray-500"></span> {/* Empty span here */}
+        Admin
+      </li>
+          </ol>
+        </nav>
+      </div>
+
+      {/* Header and button */}
+      <div className="flex justify-between border-2 shadow-lg rounded-xl items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Pengguna</h1>
           <p>Halaman untuk me manajemen segala role pengguna</p>
@@ -25,8 +57,15 @@ const ManajemenPengguna = () => {
         </div>
       </div>
 
-      <div className="p-8 bg-gray-100 min-h-screen">
-        <TableAdmin />
+      {/* Main content */}
+      <div className="p-8">
+        <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-200">
+          <h2 className="text-xl font-bold mb-6">Admin</h2>
+          <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
+          <div className="mt-5">
+            <TableAdmin />
+          </div>
+        </div>
       </div>
 
       {/* Pass the state and setter function to ModalAdmin */}
