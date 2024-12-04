@@ -111,7 +111,7 @@ const TableAdmin = () => {
     const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
     return (
       <div className="overflow-x-auto">
-        <table className="min-w-full table-auto border-collapse border border-black-300 rounded-lg  shadow-lg">
+        <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg  shadow-lg">
           <thead className="bg-brown-500 text-white">
             <tr>
               <th className="p-3 text-center border border-gray-300">No</th>
@@ -127,7 +127,7 @@ const TableAdmin = () => {
             {currentData.length > 0 ? (
               currentData.map((user, idx) => (
                 <tr key={idx} className="border border-gray-300">
-                  <td className="p-3 border border-gray-300">
+                  <td className="p-3 border text-center border-gray-300">
                     {indexOfFirstItem + idx + 1}
                   </td>
                   <td className="p-3 border border-gray-300">{user.nama}</td>
@@ -135,7 +135,7 @@ const TableAdmin = () => {
                   <td className="p-3 border border-gray-300">
                     {user.no_telepon ? user.no_telepon : "-"}
                   </td>
-                  <td className="p-3 border border-gray-300">
+                  <td className="p-3 border text-center border-gray-300">
                     <button
                       type="button"
                       className="text-red-500 hover:text-red-700"
