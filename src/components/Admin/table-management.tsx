@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { User } from "@/types/User";
@@ -22,17 +22,20 @@ const TableAdmin = () => {
   const [mitraList, setMitraList] = useState<Mitra[]>([]);
   const [adminList, setAdminList] = useState<Admin[]>([]);
   const { data: userData, loading: userLoading } = useFetchData(
-    `http://localhost:8000/api/user?searchQuery=${searchTerm}`,
+    `http://localhost:8000/api/user`,
     { withCredentials: true }
   );
   const { data: mitraData, loading: mitraLoading } = useFetchData(
-    `http://localhost:8000/api/owner?searchQuery=${searchTerm}`,
+    `http://localhost:8000/api/owner`,
     { withCredentials: true }
   );
   const { data: adminData, loading: adminLoading } = useFetchData(
-    `http://localhost:8000/api/admin?searchQuery=${searchTerm}`,
+    `http://localhost:8000/api/admin`,
     { withCredentials: true }
   );
+ useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   const { handleDeleteAdmin } = useFetchAdmin();
   const { handleDeleteUser } = useFetchUser();
@@ -103,8 +106,10 @@ const TableAdmin = () => {
     }
 
     const filteredData = data.filter((item) =>
-      item.nama.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+        item.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.no_telepon?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
