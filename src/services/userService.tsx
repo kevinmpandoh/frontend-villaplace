@@ -58,3 +58,14 @@ export const changePassword = async (data: {
     throw error.response ? error.response.data : error;
   }
 };
+
+export const deleteUser = async (id: string): Promise<{ status: string; message: string }> => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/user/${id}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || error.message || "Failed to delete user";
+  }
+};

@@ -1,20 +1,48 @@
 import { useState } from "react";
-import { updateUser, changePassword, deleteUser } from "../services/userService";
-import { User } from "../types/User";
+import { updateAdmin, changePassword, createAdmin, deleteAdmin } from "../services/adminService";
+import { Admin } from "../types/Admin";
 import Swal from "sweetalert2";
 
-export const useFetchUser = () => {
+export const useFetchAdmin = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const handleUpdateUser = async (id: string, data: Omit<User, "_id">) => {
+  const handleCreateAdmin = async (data: Omit<Admin, "_id">) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
-      const result = await updateUser(id, data);
+      const result = await createAdmin(data);
+      Swal.fire({
+        title: "Berhasil!",
+        text: "Admin baru berhasil dibuat.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+      setSuccess(true);
+      return result;
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Gagal membuat admin");
+      Swal.fire({
+        title: "Error",
+        text: err.response?.data?.message || "Gagal membuat admin",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+}
+  const handleUpdateAdmin = async (id: string, data: Omit<Admin, "_id">) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const result = await updateAdmin(id, data);
       Swal.fire({
         title: "Berhasil!",
         text: "Profil Anda berhasil diperbarui.",
@@ -60,17 +88,17 @@ export const useFetchUser = () => {
     }
   };
 
-  const handleDeleteUser = async (id: string) => {
+  const handleDeleteAdmin = async (id: string) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
-      const response = await deleteUser(id);
+      const response = await deleteAdmin(id);
 
       Swal.fire({
         title: "Berhasil!",
-        text: "User berhasil dihapus.",
+        text: "Admin berhasil dihapus.",
         icon: "success",
         confirmButtonText: "OK",
       });
@@ -80,7 +108,7 @@ export const useFetchUser = () => {
     } catch (err: any) {
       Swal.fire({
         title: "Error",
-        text: err.message || "Gagal menghapus user.",
+        text: err.message || "Gagal menghapus admin.",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -92,5 +120,6 @@ export const useFetchUser = () => {
     }
   };
 
-  return { handleUpdateUser, handleChangePassword, handleDeleteUser, loading, error, success };
+
+  return { handleCreateAdmin, handleUpdateAdmin, handleChangePassword, handleDeleteAdmin, loading, error, success };
 };

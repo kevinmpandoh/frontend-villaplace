@@ -1,20 +1,20 @@
 import { useState } from "react";
-import { updateUser, changePassword, deleteUser } from "../services/userService";
-import { User } from "../types/User";
+import { updateMitra, changePassword, deleteMitra } from "../services/mitraService";
+import { Mitra } from "../types/Mitra";
 import Swal from "sweetalert2";
 
-export const useFetchUser = () => {
+export const useFetchMitra = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const handleUpdateUser = async (id: string, data: Omit<User, "_id">) => {
+  const handleUpdateMitra = async (id: string, data: Omit<Mitra, "_id">) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
-      const result = await updateUser(id, data);
+      const result = await updateMitra(id, data);
       Swal.fire({
         title: "Berhasil!",
         text: "Profil Anda berhasil diperbarui.",
@@ -60,37 +60,37 @@ export const useFetchUser = () => {
     }
   };
 
-  const handleDeleteUser = async (id: string) => {
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
+    const handleDeleteMitra = async (id: string) => {
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+  
+      try {
+        const response = await deleteMitra(id);
+  
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Mitra berhasil dihapus.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+  
+        setSuccess(true);
+        return response;
+      } catch (err: any) {
+        Swal.fire({
+          title: "Error",
+          text: err.message || "Gagal menghapus mitra.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+  
+        setError(err);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    try {
-      const response = await deleteUser(id);
-
-      Swal.fire({
-        title: "Berhasil!",
-        text: "User berhasil dihapus.",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
-
-      setSuccess(true);
-      return response;
-    } catch (err: any) {
-      Swal.fire({
-        title: "Error",
-        text: err.message || "Gagal menghapus user.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-
-      setError(err);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { handleUpdateUser, handleChangePassword, handleDeleteUser, loading, error, success };
+  return { handleUpdateMitra, handleChangePassword, handleDeleteMitra, loading, error, success };
 };
