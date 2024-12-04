@@ -1,4 +1,4 @@
-import Booking from "@/components/Booking/Booking";
+import BookingProfile from "@/components/Booking/Booking";
 
 export const metadata = {
   title: "Pesanan | Villaplace",
@@ -11,7 +11,7 @@ const Order = () => {
         <h1 className="text-lg font-bold">Pesanan saya</h1>
       </div>
 
-      <Booking />
+      <BookingProfile />
     </>
   );
 };
