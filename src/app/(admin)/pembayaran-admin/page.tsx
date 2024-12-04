@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const UlasanAdmin = () => {
+const PembayaranAdmin = () => {
   return (
     <div>
       <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-8">
@@ -20,7 +20,16 @@ const UlasanAdmin = () => {
               <span className="text-gray-500">/</span>
             </li>
             <li>
-          Manajemen Ulasan
+        <a href="/pembayaran-admin" className="text-gray-500 hover:text-gray-700">
+          Transaksi
+        </a>
+      </li>
+      <li>
+        <span className="text-gray-500">/</span>
+      </li>
+      <li>
+        <span className="text-gray-500"></span>
+        Pembayaran
       </li>
           </ol>
         </nav>
@@ -28,14 +37,14 @@ const UlasanAdmin = () => {
 
       <div className="flex justify-between border-2 shadow-lg rounded-xl items-center mb-3 bg-white p-6 m-8">
         <div>
-          <h1 className="text-2xl font-bold mb-2">Manajemen Ulasan</h1>
+          <h1 className="text-2xl font-bold mb-2">Manajemen Pembayaran</h1>
           <p>Description</p>
         </div>
       </div>
 
       <div className="p-8">
         <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-200">
-          <h2 className="text-xl font-bold mb-6">Ulasan</h2>
+          <h2 className="text-xl font-bold mb-6">Pembayaran</h2>
           <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
           <div className="mt-5">
           <div className="bg-white rounded-xl p-6  border-gray-200">
@@ -48,4 +57,4 @@ const UlasanAdmin = () => {
   );
 };
 
-export default UlasanAdmin;
+export default PembayaranAdmin;
