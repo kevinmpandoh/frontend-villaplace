@@ -94,7 +94,7 @@ const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
   };
 
   return (
-    <form action="" className="w-[40%] rounded-md p-5 border shadow">
+    <form action="" className="md:w-[40%] w-full rounded-md p-5 border shadow">
       <div className="flex flex-col justify-center items-center">
         <label
           htmlFor="upload"

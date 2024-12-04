@@ -55,7 +55,7 @@ const ProfileUser = () => {
 
   return (
     <>
-      <div className="flex gap-10">
+      <div className="flex gap-10 md:flex-row flex-col">
         <ProfilePictureUploader userId={userData._id} />
         <ProfileDisplay userData={userData} onEdit={() => setShowModal(true)} />
         {showModal && (
