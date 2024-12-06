@@ -38,9 +38,9 @@ const menuItems: MenuItem[] = [
     label: "Manajemen Pengguna",
     icon: <FontAwesomeIcon icon={faUsers} />,
     subItems: [
-      { label: "Admin", href: "/manajemen-pengguna-admin" },
-      { label: "Mitra", href: "/manajemen-pengguna-admin/mitra" },
-      { label: "User", href: "/manajemen-pengguna-admin/user" },
+      { label: "Admin", href: "/manajemen-pengguna/admin" },
+      { label: "Mitra", href: "/manajemen-pengguna/mitra" },
+      { label: "User", href: "/manajemen-pengguna/user" },
     ],
   },
   { label: "Manajemen Ulasan", icon: <FontAwesomeIcon icon={faComments} />, href: "/ulasan-admin" },

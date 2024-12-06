@@ -2,12 +2,6 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/api/ulasan";
 
-
-export const getAllUlasan = async () => {
-  const response = await axios.get(API_URL);
-  return response.data;
-};
-
 export const getUlasan = async () => {
   const response = await axios.get(API_URL, { withCredentials: true });
   return response.data;

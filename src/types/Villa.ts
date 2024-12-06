@@ -17,5 +17,6 @@ export interface FotoVilla {
     harga: number;
     foto_villa: FotoVilla[];
     status: string;
+    kategori: string[];
   }
   

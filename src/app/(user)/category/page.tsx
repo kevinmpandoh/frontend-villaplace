@@ -63,7 +63,7 @@ const Category = () => {
         villa.kategori.some((cat) => filters.kategori.includes(cat));
 
       const matchesKamar =
-        !filters.kamar || villa.kamar === filters.kamar;
+        !filters.kamar || villa.fasilitas[0]?.includes(filters.kamar.toString());
 
       return matchesSearch && matchesPrice && matchesKategori && matchesKamar;
     });
@@ -220,6 +220,7 @@ const Category = () => {
                 harga={villa.harga}
                 foto_villa={villa.foto_villa}
                 status={villa.status}
+                kategori={villa.kategori}
               />
             ))
           ) : (
