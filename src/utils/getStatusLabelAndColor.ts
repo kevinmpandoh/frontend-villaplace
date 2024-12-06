@@ -21,7 +21,7 @@ export const getStatusPaymentLabel = (status: string) => {
     case "success":
       return "Berhasil";
     case "failed":
-      return "Dibatalkan";
+      return "Gagal";
     default:
       return "Tidak Diketahui";
   }

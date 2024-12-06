@@ -170,7 +170,7 @@ const PostingMitra = () => {
           </nav>
         </div>
 
-        <div className="flex justify-between border-2 shadow-lg rounded-xl items-center mb-3 bg-white p-6 m-8">
+        <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
           <div>
             <h1 className="text-2xl font-bold mb-2">Manajemen Posting Admin</h1>
             <p>Description</p>

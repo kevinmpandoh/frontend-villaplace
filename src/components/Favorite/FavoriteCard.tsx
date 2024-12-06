@@ -17,17 +17,20 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
   activeDropdown,
 }) => {
   return (
-    <div key={favorite._id} className="w-[49%] mb-5">
+    <div key={favorite._id} className="md:w-[49%] w-full md:mb-5">
       <div className="box-3 mb-4">
         <div className="flex mb-2">
           <div className="item-content">
             <div className="flex justify-between">
               <div className="flex w-full ">
                 <Image
-                  src={favorite.villa.foto_villa[0]?.url || "/villa.jpg"}
+                  src={
+                    favorite.villa.foto_villa[0]?.url ||
+                    "/assets/images/villa-default.png"
+                  }
                   width={120}
                   height={120}
-                  alt="product"
+                  alt="villa"
                   className="rounded-lg mr-2 object-cover border"
                 />
                 <div className="flex flex-col gap-2">
@@ -95,7 +98,7 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
           </div>
         </div>
         <div className="flex justify-end items-center">
-          <Link href={`/villa/${favorite.villa._id}`}>
+          <Link href={`/category/${favorite.villa._id}`}>
             <button
               type="button"
               className="flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 me-2 dark:bg-green-600 dark:hover:bg-green-700"

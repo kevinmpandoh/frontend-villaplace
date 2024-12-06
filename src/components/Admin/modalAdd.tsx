@@ -1,42 +1,47 @@
-"use client";
-
-import React, { useState } from "react";
-import Swal from "sweetalert2"; // Ensure you have Swal imported
-import { Admin } from "@/types/Admin";
+import React from "react";
+import Swal from "sweetalert2";
 import { useFetchAdmin } from "../../hooks/useFetchAdmin";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-// Accept showModal and setShowModal as props
-const ModalAdmin = ({ showModal, setShowModal }: { showModal: boolean; setShowModal: React.Dispatch<React.SetStateAction<boolean>> }) => {
-  const [adminDataCreate, setAdminData] = useState({
-    nama: "",
-    email: "",
-    password: "",
-  });
+const ModalAdmin = ({
+  showModal,
+  setShowModal,
+}: {
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { handleCreateAdmin } = useFetchAdmin();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setAdminData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  // Form validation schema
+  const validationSchema = Yup.object({
+    nama: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email format").required("Email is required"),
+    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const { nama, email, password } = adminDataCreate;
-    if (!nama || !email || !password) {
-      Swal.fire("Error", "All fields are required", "error");
-      return;
-    }
-
-    handleCreateAdmin(adminDataCreate)
-      .then(() => {
-        Swal.fire("Success", "Admin added successfully!", "success");
-        setShowModal(false);
-        setAdminData({ nama: "", email: "", password: "" });
-      })
-      .catch((error) => {
-        Swal.fire("Error", error.message, "error");
-      });
-  };
+  // Formik setup
+  const formik = useFormik({
+    initialValues: {
+      nama: "",
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: (values, { resetForm }) => {
+      handleCreateAdmin(values)
+        .then(() => {
+          Swal.fire("Success", "Admin added successfully!", "success").then(() => {
+            setShowModal(false);
+            resetForm(); // Reset form values after submission
+            window.location.reload(); // Reload the page after success
+          });
+        })
+        .catch((error) => {
+          Swal.fire("Error", error.message, "error");
+        });
+    },
+  });
 
   return (
     <>
@@ -44,7 +49,7 @@ const ModalAdmin = ({ showModal, setShowModal }: { showModal: boolean; setShowMo
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div className="bg-white rounded-lg p-6 w-96">
             <h2 className="text-xl font-bold mb-4">Add New Admin</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
               <div className="mb-4">
                 <label
                   htmlFor="nama"
@@ -54,13 +59,22 @@ const ModalAdmin = ({ showModal, setShowModal }: { showModal: boolean; setShowMo
                 </label>
                 <input
                   type="text"
-                  name="nama"
                   id="nama"
-                  value={adminDataCreate.nama}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-                  placeholder="Admin Name"
+                  name="nama"
+                  value={formik.values.nama}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={`mt-4 bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5
+                  ${
+                    formik.touched.nama && formik.errors.nama
+                      ? "border-red-500"
+                      : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                  }
+                  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                 />
+                {formik.touched.nama && formik.errors.nama && (
+                  <div className="text-red-500 text-sm">{formik.errors.nama}</div>
+                )}
               </div>
 
               <div className="mb-4">
@@ -72,13 +86,21 @@ const ModalAdmin = ({ showModal, setShowModal }: { showModal: boolean; setShowMo
                 </label>
                 <input
                   type="email"
-                  name="email"
                   id="email"
-                  value={adminDataCreate.email}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-                  placeholder="Admin Email"
+                  name="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={`mt-4 bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5
+                  ${
+                    formik.touched.email && formik.errors.email
+                      ? "border-red-500"
+                      : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                  }`}
                 />
+                {formik.touched.email && formik.errors.email && (
+                  <div className="text-red-500 text-sm">{formik.errors.email}</div>
+                )}
               </div>
 
               <div className="mb-4">
@@ -90,26 +112,34 @@ const ModalAdmin = ({ showModal, setShowModal }: { showModal: boolean; setShowMo
                 </label>
                 <input
                   type="password"
-                  name="password"
                   id="password"
-                  value={adminDataCreate.password}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-                  placeholder="Password"
+                  name="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={`mt-4 bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5
+                  ${
+                    formik.touched.password && formik.errors.password
+                      ? "border-red-500"
+                      : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                  }`}
                 />
+                {formik.touched.password && formik.errors.password && (
+                  <div className="text-red-500 text-sm">{formik.errors.password}</div>
+                )}
               </div>
 
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)} // Close modal without submitting
-                  className="px-4 py-2 bg-gray-500 text-white rounded-md"
+                  onClick={() => setShowModal(false)}
+                  className="flex items-center font-semibold text-white bg-[#666666] hover:bg-gray-800 rounded text-sm px-3 py-2 dark:bg-gray-600 dark:hover:bg-gray-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-green-600 text-white rounded-md"
+                  className="flex items-center font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-2 dark:bg-green-600 dark:hover:bg-green-700"
                 >
                   Add Admin
                 </button>

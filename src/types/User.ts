@@ -3,4 +3,5 @@ export interface User {
   nama: string;
   email: string;
   no_telepon: string;
+  foto_profile: string;
 }
