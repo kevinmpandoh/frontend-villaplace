@@ -59,27 +59,22 @@ export const useFetchAdmin = () => {
     }
   };
 
-  const handleChangePassword = async (data: {
-    currentPassword: string;
-    newPassword: string;
-  }) => {
+  const handleChangePassword = async (data: { currentPassword: string; newPassword: string }) => {
     setLoading(true);
-    setError(null);
-    setSuccess(false);
     try {
       const response = await changePassword(data);
+      console.log("Password changed successfully:", response);  // Verify response
       Swal.fire({
         title: "Success",
         text: response.data.message || "Password successfully changed!",
         icon: "success",
         confirmButtonText: "OK",
       });
-      setSuccess(true);
     } catch (err: any) {
-      setError(err.errors.currentPassword || "Failed to change password");
+      console.error("Error:", err);
       Swal.fire({
         title: "Error",
-        text: err.errors.currentPassword || "Failed to change password",
+        text: err?.errors?.currentPassword || "Failed to change password",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -87,6 +82,7 @@ export const useFetchAdmin = () => {
       setLoading(false);
     }
   };
+  
 
   const handleDeleteAdmin = async (id: string) => {
     setLoading(true);
