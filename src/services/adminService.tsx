@@ -23,7 +23,7 @@ export const updateAdmin = async (
   data: Omit<Admin, "_id">
 ): Promise<{ status: string; data: Admin }> => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/user/${id}`, data, {
+    const response = await axios.put(`${API_BASE_URL}/admin/${id}`, data, {
       withCredentials: true,
     });
     return response.data;
