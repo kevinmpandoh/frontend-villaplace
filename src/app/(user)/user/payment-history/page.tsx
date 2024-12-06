@@ -1,5 +1,5 @@
 import React from "react";
-import PaymentUser from "@/components/PaymentUser/PaymentUser";
+import PaymentUser from "@/components/Payment/PaymentUser/PaymentUser";
 
 export const metadata = {
   title: "Pesanan | Villaplace",

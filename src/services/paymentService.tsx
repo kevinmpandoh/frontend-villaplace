@@ -1,8 +1,15 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/pesanan";
+const API_URL = "http://localhost:8000/api/pembayaran";
 
-export const getPesanan = async (query: string) => {
+export const getPembayaran = async () => {
+  const response = await axios.get(API_URL, {
+    withCredentials: true,
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
+};
+export const getAllPayment = async (query: string) => {
   const response = await axios.get(`${API_URL}?${query}`, {
     withCredentials: true,
     headers: { "Content-Type": "application/json" },
@@ -10,15 +17,7 @@ export const getPesanan = async (query: string) => {
   return response.data;
 };
 
-export const getPesananById = async (id: string) => {
-  const response = await axios.get(`${API_URL}/${id}`, {
-    withCredentials: true,
-    headers: { "Content-Type": "application/json" },
-  });
-  return response.data;
-};
-
-export const getPesananByOwner = async (query: string) => {
+export const getAllPaymentOwner = async (query: string) => {
   const response = await axios.get(`${API_URL}/owner?${query}`, {
     withCredentials: true,
     headers: { "Content-Type": "application/json" },
@@ -26,7 +25,14 @@ export const getPesananByOwner = async (query: string) => {
   return response.data;
 };
 
-export const createPesanan = async (data: any) => {
+export const getPaymentById = async (id: string) => {
+  const response = await axios.get(`${API_URL}/${id}`, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
+export const createPembayaran = async (data: any) => {
   const response = await axios.post(API_URL, data, {
     withCredentials: true,
     headers: { "Content-Type": "application/json" },
@@ -34,18 +40,16 @@ export const createPesanan = async (data: any) => {
   return response.data;
 };
 
-export const updatePesanan = async (id: string, data: any) => {
+export const updatePayment = async (id: string, data: any) => {
   const response = await axios.put(`${API_URL}/${id}`, data, {
     withCredentials: true,
-    headers: { "Content-Type": "application/json" },
   });
   return response.data;
 };
 
-export const deletePesanan = async (id: string) => {
+export const deletePayment = async (id: string) => {
   const response = await axios.delete(`${API_URL}/${id}`, {
     withCredentials: true,
-    headers: { "Content-Type": "application/json" },
   });
   return response.data;
 };

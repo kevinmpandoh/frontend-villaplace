@@ -5,8 +5,8 @@ import Link from "next/link";
 
 // Components
 import DetailPembayaran from "./DetailPembayaran";
-import Modal from "../Modal";
-import Empty from "../Empty";
+import Modal from "../../Modal";
+import Empty from "../../Empty";
 import SkeletonLoader from "./SkeletonLoader";
 
 // Hooks
