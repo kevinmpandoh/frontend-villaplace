@@ -20,21 +20,22 @@ const PesananAdmin = () => {
               <span className="text-gray-500">/</span>
             </li>
             <li>
-        <a href="/pesanan-admin" className="text-gray-500 hover:text-gray-700">
-Transaksi        </a>
-      </li>
-      <li>
-        <span className="text-gray-500">/</span>
-      </li>
-      <li>
-        <span className="text-gray-500"></span>
-        Pesanan
-      </li>
+              <a href="/pesanan-admin" className="text-gray-500 hover:text-gray-700">
+                Transaksi        
+              </a>
+            </li>
+            <li>
+              <span className="text-gray-500">/</span>
+            </li>
+            <li>
+              <span className="text-gray-500"></span>
+              Pesanan
+            </li>
           </ol>
         </nav>
       </div>
 
-      <div className="flex justify-between border-2 shadow-lg rounded-xl items-center mb-3 bg-white p-6 m-8">
+      <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Pesanan</h1>
           <p>Description</p>

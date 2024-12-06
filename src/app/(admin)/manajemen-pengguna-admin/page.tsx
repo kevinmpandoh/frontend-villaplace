@@ -41,7 +41,7 @@ const ManajemenPengguna = () => {
       </div>
 
       {/* Header and button */}
-      <div className="flex justify-between border-2 shadow-lg rounded-xl items-center mb-3 bg-white p-6 m-8">
+      <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Pengguna</h1>
           <p>Halaman untuk me manajemen segala role pengguna</p>

@@ -22,7 +22,28 @@ const StatCard: React.FC<StatCardProps> = ({ icon, title, value, bgColor }) => (
 const DashboardAdmin = () => {
   return (
     <div>
-      <div className="border-2 rounded-xl shadow-lg items-center mb-3 bg-white p-6 m-8">
+      <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-8">
+        <nav aria-label="Breadcrumb">
+          <ol className="flex space-x-2 text-sm font-medium">
+            <li>
+              <a
+                href="/dashboardAdmin"
+                className="text-gray-500 hover:text-gray-700"
+              >
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <span className="text-gray-500">/</span>
+            </li>
+            <li>
+              Beranda
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      <div className="border-2 rounded-md shadow-lg items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold">Beranda</h1>
         </div>

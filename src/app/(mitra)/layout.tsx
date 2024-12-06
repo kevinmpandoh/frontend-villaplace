@@ -8,9 +8,9 @@ export default function MitraLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-200">
       <SidebarMitra />
-      <main className="ml-64 min-h-screen">
+      <main className="lg:ml-64 min-h-screen">
         {children}
       </main>
     </div>

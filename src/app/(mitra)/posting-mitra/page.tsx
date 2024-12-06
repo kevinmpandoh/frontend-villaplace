@@ -114,7 +114,7 @@ const PostingMitra = () => {
     <>
       <div className="p-8">
         {/* MANAJEMENT POSTING */}
-        <div className="border-2 rounded-xl md:flex md:justify-between mb-5">
+        <div className="border-2 rounded-md md:flex md:justify-between mb-5">
           <div className="bg-white p-3">
             <h2 className="text-2xl font-semibold mb-3">Manajemen Posting</h2>
             <p className="text-lg font-normal text-gray-500">Description</p>
