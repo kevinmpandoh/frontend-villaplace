@@ -1,6 +1,7 @@
 // app/admin/layout.tsx
 import React from 'react';
 import SidebarAdmin from '@/components/SidebarAdmin';
+import Footer from '@/components/Footer';
 
 export default function AdminLayout({
   children,
@@ -13,6 +14,9 @@ export default function AdminLayout({
       <main className="lg:ml-64 min-h-screen">
         {children}
       </main>
+      <div className='lg:ml-64'>
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import ModalAdmin from "@/components/Admin/modalAdd";
 import TableManajemen from "@/components/Admin/table-management";
+import Footer from "@/components/Footer";
 
 const ManajemenPengguna = () => {
   const [showModal, setShowModal] = useState(false); // State for modal visibility
 
   return (
+    <>
     <div>
       <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-8">
         <nav aria-label="Breadcrumb">
@@ -64,9 +66,9 @@ const ManajemenPengguna = () => {
           </div>
         </div>
       </div>
-
       <ModalAdmin showModal={showModal} setShowModal={setShowModal} />
     </div>
+    </>
   );
 };
 

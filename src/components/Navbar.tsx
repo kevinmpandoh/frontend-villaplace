@@ -10,6 +10,7 @@ import { Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
+  SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet";
 
@@ -160,6 +161,9 @@ const Navbar: React.FC = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[300px]">
                 <div className="flex flex-col gap-8 mt-8">
+                  <SheetTitle className="text-2xl font-bold">
+                    Villa Place
+                  </SheetTitle>
                   <NavLinks />
                   {isLoading ? (
                     <div className="flex items-center gap-4">
