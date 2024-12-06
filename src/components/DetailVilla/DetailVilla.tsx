@@ -16,6 +16,7 @@ interface Villa {
   _id: string;
   nama: string;
   lokasi: string;
+  deskripsi: string;
   foto_villa: { url: string }[];
   pemilik_villa: {
     nama: string;
@@ -319,15 +320,7 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
                 </div>
                 <div className="mb-4">
                   <h2 className="text-lg font-semibold mb-2">Deskripsi</h2>
-                  <p className="text-gray-700">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Itaque illum perspiciatis nesciunt iure molestiae sapiente
-                    ad, vitae laudantium. Consectetur cupiditate sit porro
-                    asperiores veritatis ullam corporis beatae rerum quod
-                    perferendis eligendi, nam numquam obcaecati modi odio
-                    expedita? Molestias, sapiente adipisci enim laboriosam, eos
-                    ea eaque eius praesentium dicta iusto accusantium.
-                  </p>
+                  <p className="text-gray-700">{detailVilla.deskripsi}</p>
                 </div>
 
                 <div className="mb-10">

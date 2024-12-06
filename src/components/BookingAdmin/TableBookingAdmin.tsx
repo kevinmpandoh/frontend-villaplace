@@ -2,30 +2,27 @@
 // React
 import React from "react";
 import Image from "next/image";
-import Swal from "sweetalert2";
 
 // Hooks
-import useFetchPayment from "@/hooks/useFetchPayment";
+import useFetchBooking from "@/hooks/useFetchBooking";
 
 // Komponen
 import Pagination from "@/components/Pagination";
-import StatusPayment from "@/components/Payment/StatusPayment";
+import StatusBooking from "@/components/BookingAdmin/StatusBooking";
 import SearchInput from "@/components/SearchInput";
-import ButtonDetail from "../ButtonDetail";
-import ButtonDelete from "../ButtonDelete";
-import ButtonEdit from "../ButtonEdit";
 
 // Types
-import { TablePaymentAdminProps } from "@/types/Props/TablePaymentProps";
+import { TableBookingAdminProps } from "@/types/Props/TableBookingAdminProps";
 
 // Utils
-import {
-  getStatusPaymentColor,
-  getStatusPaymentLabel,
-} from "@/utils/getStatusLabelAndColor";
 import { formatDate } from "@/utils/formatDate";
+import ButtonDetail from "./ButtonDetail";
+import ButtonDelete from "./ButtonDelete";
+import ButtonEdit from "./ButtonEdit";
+import Booking from "@/types/Booking";
+import { getStatusColor, getStatusLabel } from "@/utils/getStatusLabelAndColor";
 
-const TablePayment = ({
+const TableBookingAdmin = ({
   search,
   filteredData,
   selectedStatus,
@@ -36,14 +33,14 @@ const TablePayment = ({
   handleSelectStatus,
   toggleModal,
   toggleModalEdit,
-}: TablePaymentAdminProps) => {
-  const { loading, success, error } = useFetchPayment();
+}: TableBookingAdminProps) => {
+  const { loading, success, error } = useFetchBooking();
 
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between gap-2 my-4">
         <SearchInput search={search} handleSearch={handleSearch} />
-        <StatusPayment
+        <StatusBooking
           selectedStatus={selectedStatus}
           handleSelectStatus={handleSelectStatus}
         />
@@ -80,16 +77,16 @@ const TablePayment = ({
                   #
                 </th>
                 <th className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white">
-                  Nama Pembayar
+                  User
                 </th>
                 <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white">
                   Villa
                 </th>
                 <th className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white">
-                  Metode Pembayaran
+                  Pesanan
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                  Total Pembayaran
+                  Total
                 </th>
                 <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                   Status
@@ -100,23 +97,42 @@ const TablePayment = ({
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((paymentItem, key) => (
+              {filteredData.map((bookingItem: Booking, key: number) => (
                 <tr key={key}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">{key + 1}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <h5 className="font-medium text-black dark:text-white">
-                      {paymentItem.nama_pembayar}
-                    </h5>
-                    <p className="text-sm">{paymentItem.email_pembayar}</p>
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                      <div className="rounded-full mr-2">
+                        <Image
+                          src={
+                            "http://localhost:8000/images/user-profile/" +
+                              bookingItem?.user.foto_profile ||
+                            "/assets/images/default-villa.jpg"
+                          }
+                          width={48}
+                          height={48}
+                          alt="User Profile"
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <h5 className="font-semibold text-black dark:text-white">
+                          {bookingItem.user.nama}
+                        </h5>
+                        <p className="text-sm text-gray-500">
+                          {bookingItem.user.email}
+                        </p>
+                      </div>
+                    </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                      <div className="rounded-md bg-yellow-500">
+                      <div className="rounded-md">
                         <Image
                           src={
-                            paymentItem.pesanan.villa.foto_villa[0]?.url ||
+                            bookingItem.villa.foto_villa[0]?.url ||
                             "/assets/images/default-villa.jpg"
                           }
                           width={70}
@@ -126,56 +142,52 @@ const TablePayment = ({
                       </div>
                       <div className="flex flex-col">
                         <p className="text-sm text-black dark:text-white">
-                          {paymentItem.pesanan.villa.nama}
+                          {bookingItem.villa.nama}
                         </p>
                         <p className="text-sm font-semibold text-black dark:text-white">
-                          Rp{" "}
-                          {paymentItem.pesanan.villa.harga.toLocaleString(
-                            "id-ID"
-                          )}
+                          Rp {bookingItem.villa.harga.toLocaleString("id-ID")}
                         </p>
                       </div>
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <h5 className="font-semibold capitalize text-black dark:text-white">
-                      {paymentItem.metode_pembayaran === "bank_transfer"
-                        ? "Bank Transfer"
-                        : "Lainnya"}{" "}
-                      | <span className="uppercase">{paymentItem.bank}</span>
+                      Check In - Check Out
                     </h5>
                     <p className="text-sm text-slate-700">
-                      {formatDate(paymentItem.tanggal_pembayaran)}
+                      {formatDate(bookingItem.tanggal_mulai)}
+                    </p>
+                    <p className="text-sm text-slate-700">
+                      {formatDate(bookingItem.tanggal_selesai)}
                     </p>
                     <p className="text-xs text-gray-400">
-                      #{paymentItem.kode_pembayaran}
+                      {bookingItem.jumlah_orang} Orang
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="dark:text-white text-primary font-bold">
-                      Rp.{" "}
-                      {paymentItem.jumlah_pembayaran.toLocaleString("id-ID")}
+                      Rp. {bookingItem.harga.toLocaleString("id-ID")}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p
-                      className={`inline-flex rounded-full font-semibold capitalize bg-opacity-10 py-1 px-3 text-sm ${getStatusPaymentColor(
-                        paymentItem.status_pembayaran
+                      className={`inline-flex rounded-full font-semibold capitalize bg-opacity-10 py-1 px-3 text-sm ${getStatusColor(
+                        bookingItem.status
                       )}`}
                     >
-                      {getStatusPaymentLabel(paymentItem.status_pembayaran)}
+                      {getStatusLabel(bookingItem.status)}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex items-center ">
                       <ButtonDetail
-                        onClick={() => toggleModal(paymentItem._id)}
+                        onClick={() => toggleModal(bookingItem._id)}
                       />
                       <ButtonDelete
-                        onClick={() => handleDelete(paymentItem._id)}
+                        onClick={() => handleDelete(bookingItem._id)}
                       />
                       <ButtonEdit
-                        onClick={() => toggleModalEdit(paymentItem._id)}
+                        onClick={() => toggleModalEdit(bookingItem._id)}
                       />
                     </div>
                   </td>
@@ -195,4 +207,4 @@ const TablePayment = ({
   );
 };
 
-export default TablePayment;
+export default TableBookingAdmin;
