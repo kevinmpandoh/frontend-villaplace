@@ -57,7 +57,7 @@ const menuItems: MenuItem[] = [
 
 const ProfileSection = ({ onClose, isMobile = false }: { onClose?: () => void; isMobile?: boolean }) => (
   <div className={`flex items-center ${isMobile ? 'flex-col space-y-4' : 'space-x-6'}`}>
-    <Link href="/dashboardAdmin" className={`${isMobile ? 'w-full pr-6' : ''}`}>
+    <Link href="/profile-admin" className={`${isMobile ? 'w-full pr-6' : ''}`}>
       <button 
         onClick={onClose}
         className={`text-gray-600 font-semibold flex items-center space-x-2

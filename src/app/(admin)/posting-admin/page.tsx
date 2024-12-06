@@ -109,6 +109,41 @@ const PostingMitra = () => {
       }
     });
   };
+  const handleChangeStatus = async (id: string, status: string) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:8000/api/villa/${id}/change-status`,
+        { status }, // Mengirim status baru dalam body request
+        { withCredentials: true }
+      );
+      console.log(response.data);
+
+      // Menampilkan notifikasi sukses
+      Swal.fire({
+        title: "Berhasil",
+        text: "Status berhasil diperbarui!",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+
+      // Memperbarui status villa secara lokal
+      setVilla((prevData) =>
+        prevData.map((villa) =>
+          villa._id === id ? { ...villa, status } : villa
+        )
+      );
+    } catch (err) {
+      console.error("Error updating status:", err);
+
+      // Menampilkan notifikasi kesalahan
+      Swal.fire({
+        title: "Gagal",
+        text: "Gagal memperbarui status.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
 
   return (
     <>
@@ -129,7 +164,7 @@ const PostingMitra = () => {
               </li>
               <li>
                 <span className="text-gray-500"></span>
-                Manajemen Posting
+                Manajemen Posting Admin
               </li>
             </ol>
           </nav>
@@ -137,24 +172,16 @@ const PostingMitra = () => {
 
         <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
           <div>
-            <h1 className="text-2xl font-bold mb-2">Manajemen Posting</h1>
+            <h1 className="text-2xl font-bold mb-2">Manajemen Posting Admin</h1>
             <p>Description</p>
           </div>
-          <Link href="/tambahVilla">
-            <button
-              type="button"
-              className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mt-7 mr-10"
-            >
-              <p>+ Tambah Postingan</p>
-            </button>
-          </Link>
         </div>
 
         <div className="p-8">
           <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-200">
             <h2 className="text-xl font-bold mb-6">Posting</h2>
             <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
-            <div className="mt-5">
+            <div className="mt-2">
               <div className="bg-white rounded-xl p-6  border-gray-200">
                 {/* Tombol Filter */}
                 <div className="ml-2 mb-5">
@@ -260,6 +287,9 @@ const PostingMitra = () => {
                           <th className="p-3 text-center border border-gray-300">
                             Action
                           </th>
+                          <th className="p-3 text-center border border-gray-300">
+                            Status
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -347,12 +377,41 @@ const PostingMitra = () => {
                                   />
                                 </button>
                               </td>
+                              <td className="p-3 text-center justify-center gap-5 border-2 border-r-8 ">
+                                {/* Tombol untuk mengubah status */}
+                                <div className="mt-2 flex flex-col gap-4">
+                                  <button
+                                    className="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-sm"
+                                    onClick={() =>
+                                      handleChangeStatus(data._id, "success")
+                                    }
+                                  >
+                                    Success
+                                  </button>
+                                  <button
+                                    className="px-2 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm"
+                                    onClick={() =>
+                                      handleChangeStatus(data._id, "pending")
+                                    }
+                                  >
+                                    Pending
+                                  </button>
+                                  <button
+                                    className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm"
+                                    onClick={() =>
+                                      handleChangeStatus(data._id, "rejected")
+                                    }
+                                  >
+                                    Reject
+                                  </button>
+                                </div>
+                              </td>
                             </tr>
                           ))
                         )}
                       </tbody>
                     </table>
-                  </div>{" "}
+                  </div>
                 </div>
               </div>
             </div>
