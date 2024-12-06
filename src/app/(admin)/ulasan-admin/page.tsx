@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-
+import TableUlasan from "@/components/Admin/table-ulasan";
 const UlasanAdmin = () => {
   return (
     <div>
@@ -19,14 +19,12 @@ const UlasanAdmin = () => {
             <li>
               <span className="text-gray-500">/</span>
             </li>
-            <li>
-          Manajemen Ulasan
-      </li>
+            <li>Manajemen Ulasan</li>
           </ol>
         </nav>
       </div>
 
-      <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
+      <div className="flex justify-between border-2 shadow-lg rounded-xl items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Ulasan</h1>
           <p>Description</p>
@@ -38,13 +36,13 @@ const UlasanAdmin = () => {
           <h2 className="text-xl font-bold mb-6">Ulasan</h2>
           <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
           <div className="mt-5">
-          <div className="bg-white rounded-xl p-6  border-gray-200">
-            Your Data Here
+            <div className="bg-white rounded-xl p-6  border-gray-200">
+              <TableUlasan />
             </div>
           </div>
         </div>
       </div>
-      </div>
+    </div>
   );
 };
 

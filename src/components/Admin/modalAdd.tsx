@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Ensure you have Swal imported
-import { Admin } from "@/types/Admin";
+import Swal from "sweetalert2"; 
 import { useFetchAdmin } from "../../hooks/useFetchAdmin";
 
-// Accept showModal and setShowModal as props
 const ModalAdmin = ({ showModal, setShowModal }: { showModal: boolean; setShowModal: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const [adminDataCreate, setAdminData] = useState({
     nama: "",
@@ -29,9 +27,11 @@ const ModalAdmin = ({ showModal, setShowModal }: { showModal: boolean; setShowMo
 
     handleCreateAdmin(adminDataCreate)
       .then(() => {
-        Swal.fire("Success", "Admin added successfully!", "success");
-        setShowModal(false);
-        setAdminData({ nama: "", email: "", password: "" });
+        Swal.fire("Success", "Admin added successfully!", "success").then(() => {
+          setShowModal(false);
+          setAdminData({ nama: "", email: "", password: "" });
+          window.location.reload();  // Reload the page after the user clicks OK
+        });
       })
       .catch((error) => {
         Swal.fire("Error", error.message, "error");
@@ -102,7 +102,7 @@ const ModalAdmin = ({ showModal, setShowModal }: { showModal: boolean; setShowMo
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)} // Close modal without submitting
+                  onClick={() => setShowModal(false)}
                   className="px-4 py-2 bg-gray-500 text-white rounded-md"
                 >
                   Cancel
