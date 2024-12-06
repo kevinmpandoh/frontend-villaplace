@@ -6,14 +6,16 @@ import Image from "next/image";
 import DropdownUser from "./DroopdownUser";
 import Cookies from "js-cookie";
 import { usePathname } from "next/navigation";
-
 import { Menu } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger
+} from "@/components/ui/sheet";
 
 const Navbar: React.FC = () => {
   const [tokenUser, setTokenUser] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isOpen, setIsOpen] = useState(false);
 
   const currentPath = usePathname();
 
@@ -42,52 +44,48 @@ const Navbar: React.FC = () => {
     <ul className="flex flex-col md:flex-row md:gap-10 gap-6">
       <li>
         <Link
-          href={"/"}
+          href="/"
           className={
             currentPath === "/"
               ? "text-[#111111] font-bold"
               : "text-[#606060] hover:text-[#111111] font-semibold"
           }
-          onClick={() => setIsOpen(false)}
         >
           Home
         </Link>
       </li>
       <li>
         <Link
-          href={"/about"}
+          href="/about"
           className={
             currentPath === "/about"
               ? "text-[#111111] font-bold"
               : "text-[#606060] hover:text-[#111111] font-semibold"
           }
-          onClick={() => setIsOpen(false)}
         >
           About
         </Link>
       </li>
       <li>
         <Link
-          href={"/category"}
+          href="/category"
           className={
             currentPath === "/category"
               ? "text-[#111111] font-bold"
               : "text-[#606060] hover:text-[#111111] font-semibold"
           }
-          onClick={() => setIsOpen(false)}
         >
           Kategori
         </Link>
       </li>
       <li>
         <Link
-          href={"/contact"}
+          href="/contact"
           className={
             currentPath === "/contact"
               ? "text-[#111111] font-bold"
               : "text-[#606060] hover:text-[#111111] font-semibold"
           }
-          onClick={() => setIsOpen(false)}
         >
           Contact
         </Link>
@@ -98,14 +96,14 @@ const Navbar: React.FC = () => {
   const AuthButtons = () => (
     <>
       <hr className="w-full h-[1px] bg-gray-200 my-4 md:hidden" />
-      <div className="flex flex-col md:flex-row w-full md:w-auto items-start md:items-center gap-4 md:space-x-4">
+      <div className="flex flex-col md:flex-row w-full md:w-auto items-start md:items-center gap-4">
         <Link href="/auth/registUser" className="w-full md:w-auto">
           <button className="border border-[#B7906C] text-[#C59E6C] hover:text-gray-900 px-4 py-1 rounded-md w-full">
             Daftar
           </button>
         </Link>
         <Link href="/auth/login" className="w-full md:w-auto">
-          <button className="bg-[#B7906C] text-white px-3 py-1 rounded-md hover:bg-[#9e7850] w-full">
+          <button className="bg-[#B7906C] text-white px-4 py-1 rounded-md hover:bg-[#9e7850] w-full">
             + Masuk
           </button>
         </Link>
@@ -114,9 +112,9 @@ const Navbar: React.FC = () => {
   );
 
   return (
-    <nav className="bg-white shadow sticky z-50">
+    <nav className="bg-white shadow sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-[5rem]">
+        <div className="flex justify-between items-center h-20">
           {/* Logo Section */}
           <div className="flex items-center">
             <Link href="/">
@@ -126,16 +124,17 @@ const Navbar: React.FC = () => {
                 width={40}
                 height={40}
                 className="h-12 w-12"
+                priority
               />
             </Link>
           </div>
 
-          {/* Navigasi Section */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center">
             <NavLinks />
           </div>
 
-          {/* Auth Section */}
+          {/* Desktop Auth Section */}
           <div className="hidden md:block">
             {isLoading ? (
               <div className="flex items-center gap-4">
@@ -151,15 +150,15 @@ const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu */}
           <div className="md:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <Sheet>
               <SheetTrigger asChild>
-                <button className="p-2">
+                <button className="p-2 hover:bg-gray-100 rounded-md">
                   <Menu className="h-6 w-6" />
                 </button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px]">
+              <SheetContent side="right" className="w-[300px] sm:w-[300px]">
                 <div className="flex flex-col gap-8 mt-8">
                   <NavLinks />
                   {isLoading ? (
