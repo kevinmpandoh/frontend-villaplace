@@ -1,63 +1,81 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import Image from "next/image";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-
-interface VillaFormData {
+import { useParams } from "next/navigation";
+import Image from "next/image";
+interface Villa {
   nama: string;
-  lokasi: string;
-  harga: number;
   deskripsi: string;
+  lokasi: string;
   kategori: string[];
-  foto_villa: File[];
-  kamar: string;
-  kamar_mandi: string;
+  // fasilitas: string[];
+  harga: number;
+  kamar: number; // Ubah ke number
+  kamar_mandi: number; // Ubah ke number
+  foto_villa: string[];
 }
 
 const VillaForm = () => {
-  const [formData, setFormData] = useState<VillaFormData>({
+  const [villa, setVilla] = useState<Villa>({
     nama: "",
-    lokasi: "",
-    harga: 0,
     deskripsi: "",
+    lokasi: "",
     kategori: [],
+    // fasilitas: [],
+    harga: 0,
+    kamar: 0,
+    kamar_mandi: 0,
     foto_villa: [],
-    kamar: "",
-    kamar_mandi: "",
   });
-
   const [images, setImages] = useState<{ file: File; timestamp: number }[]>([]);
+  const { id } = useParams();
+
+  // const handleChange = (
+  //   e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   const { name, value } = e.target;
+
+  //   setVilla((prevData) => ({
+  //     ...prevData,
+  //     [name]:
+  //       name === "harga" || name === "kamar" || name === "kamar_mandi"
+  //         ? Number(value) // Konversi ke number
+  //         : value,
+  //   }));
+  // };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
 
-    if (name === "fasilitas" || name === "kategori") {
-      setFormData((prevData) => ({
+    setVilla((prevData) => {
+      const updatedData = {
         ...prevData,
-        [name]: value.split(",").map((item) => item.trim()),
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
+        [name]:
+          name === "harga" || name === "kamar" || name === "kamar_mandi"
+            ? Number(value)
+            : value,
+      };
+
+      console.log("Updated field:", name, "=>", value); // Debugging
+      console.log("Updated villa state:", updatedData); // Debugging
+      return updatedData;
+    });
   };
 
+  //!
   const handleArrayChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     field: "kategori"
   ) => {
     const value = e.target.value;
-    setFormData((prevData) => ({
+    setVilla((prevData) => ({
       ...prevData,
       [field]: value.split(",").map((item) => item.trim()),
     }));
   };
-
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files).map((file) => ({
@@ -67,31 +85,68 @@ const VillaForm = () => {
       setImages((prevImages) => [...prevImages, ...files]);
     }
   };
+  useEffect(() => {
+    const getDataByID = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/villa/${id}`,
+          { withCredentials: true }
+        );
+
+        const data = response.data.data;
+        // setVilla(data); // Sinkronkan seluruh data ke state villa
+        // console.log(response, "VILLA ID");
+        setVilla({
+          ...data,
+          kamar: Number(data.kamar), // Pastikan tipe number
+          kamar_mandi: Number(data.kamar_mandi), // Pastikan tipe number
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getDataByID();
+  }, [id]);
+  //! muncul 0 kamar
+  // useEffect(() => {
+  //   const getDataByID = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:8000/api/villa/${id}`,
+  //         { withCredentials: true }
+  //       );
+
+  //       const data = response.data.data;
+  //       setVilla(data); // Sinkronkan data dari API ke state villa
+  //       console.log("Villa data fetched:", data); // Debugging
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   getDataByID();
+  // }, [id]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // let fasilitas = [];
+    // fasilitas.push("Kamar " + villa.kamar, "K. Mandi" + villa.kamar_mandi);
 
-    let fasilitas = [];
-    fasilitas.push(
-      "Kamar " + formData.kamar,
-      "K. Mandi" + formData.kamar_mandi
-    );
+    const updatedVilla = {
+      ...villa,
+      fasilitas: [
+        `Kamar ${villa.kamar}`, // Tambahkan data kamar
+        `K. Mandi ${villa.kamar_mandi}`, // Tambahkan data kamar mandi
+      ],
+    };
 
     try {
-      // Create Villa
-      const response = await axios.post(
-        "http://localhost:8000/api/villa",
-        {
-          nama: formData.nama,
-          lokasi: formData.lokasi,
-          harga: formData.harga,
-          fasilitas: fasilitas,
-          deskripsi: formData.deskripsi,
-          kategori: formData.kategori,
-        },
+      const response = await axios.put(
+        `http://localhost:8000/api/villa/${id}`,
+        updatedVilla, // Kirim seluruh state villa
         { withCredentials: true }
       );
-
       const villaData = response.data.data;
       const villaId = villaData._id;
 
@@ -109,11 +164,12 @@ const VillaForm = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+      console.log(response, "VILLA");
 
       Swal.fire({
         icon: "success",
-        title: "Villa Created!",
-        text: "Your villa has been successfully created.",
+        title: "Villa Updated!",
+        text: "Your villa has been successfully updated.",
       }).then(() => {
         window.location.href = "/posting-mitra";
       });
@@ -121,7 +177,7 @@ const VillaForm = () => {
       console.error(error);
       Swal.fire({
         icon: "error",
-        title: "Error Creating Villa",
+        title: "Error Updating Villa",
         text: error.response?.data?.message || error.message,
       });
     }
@@ -129,7 +185,9 @@ const VillaForm = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-8 bg-white border shadow-xl rounded-md my-16">
-      <h1 className="text-2xl font-bold mb-6 text-center">Formulir Villa</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        Edit Formulir Villa
+      </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="namaVilla" className="block text-sm font-medium mb-2">
@@ -139,7 +197,7 @@ const VillaForm = () => {
             type="text"
             name="nama"
             id="namaVilla"
-            value={formData.nama}
+            value={villa.nama}
             onChange={handleChange}
             className="w-full border rounded p-2"
             required
@@ -154,7 +212,7 @@ const VillaForm = () => {
               type="text"
               name="lokasi"
               id="lokasi"
-              value={formData.lokasi}
+              value={villa.lokasi}
               onChange={handleChange}
               className="w-full border rounded p-2"
               required
@@ -168,7 +226,7 @@ const VillaForm = () => {
               type="number"
               name="harga"
               id="harga"
-              value={formData.harga}
+              value={villa.harga}
               onChange={handleChange}
               className="w-full border rounded p-2"
               required
@@ -181,6 +239,7 @@ const VillaForm = () => {
             <input
               type="number"
               name="kamar"
+              value={villa.kamar}
               onChange={handleChange}
               className="border rounded w-full p-2"
               required
@@ -191,6 +250,7 @@ const VillaForm = () => {
             <input
               type="number"
               name="kamar_mandi"
+              value={villa.kamar_mandi}
               onChange={handleChange}
               className="border rounded w-full p-2"
               required
@@ -204,7 +264,7 @@ const VillaForm = () => {
           <textarea
             name="deskripsi"
             id="deskripsi"
-            value={formData.deskripsi}
+            value={villa.deskripsi}
             onChange={handleChange}
             className="w-full border rounded p-2"
             required
@@ -220,6 +280,7 @@ const VillaForm = () => {
             id="kategori"
             onChange={(e) => handleArrayChange(e, "kategori")}
             className="w-full border rounded p-2"
+            value={villa.kategori}
             required
           />
         </div>
@@ -231,6 +292,7 @@ const VillaForm = () => {
                 <Image
                   src={URL.createObjectURL(img.file)}
                   alt={`Preview ${index + 1}`}
+                  value={villa.foto_villa}
                   layout="fill"
                   objectFit="cover"
                   className="rounded-md"
@@ -268,3 +330,5 @@ const VillaForm = () => {
 };
 
 export default VillaForm;
+
+//!

@@ -1,10 +1,10 @@
-import FormulirVilla from "@/components/FormulirVilla";
+import EditForm from "@/components/EditForm";
 import React from "react";
 
 const EditVilla = () => {
   return (
     <>
-      <FormulirVilla />
+      <EditForm />
     </>
   );
 };
