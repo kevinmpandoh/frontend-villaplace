@@ -11,9 +11,6 @@ const StatusBooking = ({
 }: StatusBookingProps) => {
   return (
     <div className="flex mb-4 items-start sm:items-center">
-      <div className="mr-4">
-        <p className="font-semibold">Status</p>
-      </div>
       <div className="w-full items-center flex flex-wrap gap-2">
         <button
           onClick={() => handleSelectStatus("All")}
@@ -23,7 +20,7 @@ const StatusBooking = ({
               : "text-[#5e6c84]"
           } py-1 px-2.5 rounded font-semibold border-2`}
         >
-          Semua
+          All
         </button>
         <button
           onClick={() => handleSelectStatus("pending")}
@@ -63,7 +60,7 @@ const StatusBooking = ({
               : "text-[#5e6c84]"
           } py-1 px-2.5 rounded font-semibold border-2`}
         >
-          Dibatalkan
+          Failed
         </button>
       </div>
     </div>

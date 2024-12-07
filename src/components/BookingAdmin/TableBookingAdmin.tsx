@@ -72,26 +72,26 @@ const TableBookingAdmin = ({
         ) : (
           <table className="w-full table-auto">
             <thead>
-              <tr className="bg-gray-200 text-left dark:bg-meta-4">
-                <th className="min-w-[20px] py-4 px-4 font-medium text-black dark:text-white">
+              <tr className="bg-primary text-left dark:bg-meta-4">
+                <th className="min-w-[20px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   #
                 </th>
-                <th className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   User
                 </th>
-                <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[220px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Villa
                 </th>
-                <th className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Pesanan
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Total
                 </th>
-                <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Status
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">
+                <th className="py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Aksi
                 </th>
               </tr>
@@ -100,7 +100,7 @@ const TableBookingAdmin = ({
               {filteredData.map((bookingItem: Booking, key: number) => (
                 <tr key={key}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{key + 1}</p>
+                    <p className="text-gray-800 dark:text-white">{key + 1}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -118,7 +118,7 @@ const TableBookingAdmin = ({
                         />
                       </div>
                       <div className="flex flex-col">
-                        <h5 className="font-semibold text-black dark:text-white">
+                        <h5 className="font-semibold text-gray-800 dark:text-white">
                           {bookingItem.user.nama}
                         </h5>
                         <p className="text-sm text-gray-500">
@@ -141,17 +141,17 @@ const TableBookingAdmin = ({
                         />
                       </div>
                       <div className="flex flex-col">
-                        <p className="text-sm text-black dark:text-white">
+                        <p className="text-sm text-gray-800 dark:text-white">
                           {bookingItem.villa.nama}
                         </p>
-                        <p className="text-sm font-semibold text-black dark:text-white">
+                        <p className="text-sm font-semibold text-gray-800 dark:text-white">
                           Rp {bookingItem.villa.harga.toLocaleString("id-ID")}
                         </p>
                       </div>
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <h5 className="font-semibold capitalize text-black dark:text-white">
+                    <h5 className="font-semibold capitalize text-gray-800 dark:text-white">
                       Check In - Check Out
                     </h5>
                     <p className="text-sm text-slate-700">
@@ -165,7 +165,7 @@ const TableBookingAdmin = ({
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="dark:text-white text-primary font-bold">
+                    <p className="dark:text-white text-gray-800 font-bold">
                       Rp. {bookingItem.harga.toLocaleString("id-ID")}
                     </p>
                   </td>
@@ -175,7 +175,7 @@ const TableBookingAdmin = ({
                         bookingItem.status
                       )}`}
                     >
-                      {getStatusLabel(bookingItem.status)}
+                      {bookingItem.status}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

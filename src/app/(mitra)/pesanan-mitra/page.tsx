@@ -2,14 +2,15 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@/components/Modal";
 import useFetchBooking from "@/hooks/useFetchBooking";
-import Swal from "sweetalert2";
 import TableBookingOwner from "@/components/BookingOwner/TableBookingOwner";
 import Booking from "@/types/Booking";
 import DetailBooking from "@/components/BookingOwner/DetailBooking";
+import ButtonAdd from "@/components/BookingOwner/ButtonAdd";
+import AddBooking from "@/components/BookingOwner/AddBooking";
 
 const PesananAdmin = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [isModalEditOpen, setIsModalEditOpen] = React.useState(false);
+  const [isModalAddOpen, setIsModalAddOpen] = React.useState(false);
   const [currentModalId, setCurrentModalId] = useState("");
   const [dataBooking, setDataBooking] = useState<Booking[]>([]);
   const [pagination, setPagination] = useState<any>(null);
@@ -19,12 +20,7 @@ const PesananAdmin = () => {
   const [search, setSearch] = useState("");
   const [detailBooking, setDetailBooking] = useState<any>();
 
-  const {
-    handleUpdateBooking,
-    handleGetBookingById,
-    handleGetBookingByOwner,
-    handleDeleteBooking,
-  } = useFetchBooking();
+  const { handleGetBookingById, handleGetBookingByOwner } = useFetchBooking();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,43 +79,8 @@ const PesananAdmin = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleModalEdit = (id: any) => {
-    setCurrentModalId(id);
-    setIsModalEditOpen(!isModalEditOpen);
-  };
-
-  const handleSubmit = (id: string, updatedBooking: any) => {
-    handleUpdateBooking(id, updatedBooking);
-    Swal.fire({
-      icon: "success",
-      title: "Success",
-      text: "Pembayaran berhasil diubah",
-    });
-    setFilteredData((prevData) =>
-      prevData.map((item) => (item._id === id ? updatedBooking : item))
-    );
-    toggleModalEdit(null);
-  };
-
-  const handleDelete = (id: string) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        handleDeleteBooking(id);
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      } else {
-        Swal.fire("Cancelled", "Your file is safe :)", "error");
-      }
-    });
-
-    setFilteredData((prevData) => prevData.filter((item) => item._id !== id));
+  const toggleModalAdd = () => {
+    setIsModalAddOpen(!isModalAddOpen);
   };
 
   const handleCurrentPage = (currentPage: number) => {
@@ -133,6 +94,11 @@ const PesananAdmin = () => {
   const handleSelectStatus = (selectedStatus: string) => {
     setSelectedStatus(selectedStatus);
   };
+
+  const handleAddBooking = () => {
+    setIsModalAddOpen(false);
+  };
+
   return (
     <div>
       <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-8">
@@ -174,12 +140,7 @@ const PesananAdmin = () => {
           <p>Description</p>
         </div>
         <div>
-          <button
-            type="button"
-            className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mt-7 mr-10"
-          >
-            <p>+ Tambah Pesanan</p>
-          </button>
+          <ButtonAdd onClick={toggleModalAdd} />
         </div>
       </div>
 
@@ -208,6 +169,16 @@ const PesananAdmin = () => {
           className="max-h-screen overflow-y-auto h-3/4"
         >
           <DetailBooking detailBooking={detailBooking} />
+        </Modal>
+      )}
+
+      {isModalAddOpen && (
+        <Modal
+          onClose={() => toggleModalAdd()}
+          title="Tambah Pesanan"
+          className="max-h-screen max-w-lg overflow-y-auto h-2/3"
+        >
+          <AddBooking handleAddBooking={handleAddBooking} />
         </Modal>
       )}
     </div>
