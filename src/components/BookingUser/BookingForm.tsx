@@ -60,6 +60,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               value={formData.fullName}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              required
             />
           </div>
           <div>
@@ -67,11 +68,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
               Email
             </label>
             <input
-              type="text"
+              type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              required
             />
           </div>
         </div>
@@ -86,6 +88,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               value={formData.guests}
               onChange={handleChange}
               className="mt-1 w-1/3 block border border-gray-300 rounded-md shadow-sm p-2"
+              required
             />
           </div>
         </div>

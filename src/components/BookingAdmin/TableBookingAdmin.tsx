@@ -12,7 +12,7 @@ import StatusBooking from "@/components/BookingAdmin/StatusBooking";
 import SearchInput from "@/components/SearchInput";
 
 // Types
-import { TableBookingAdminProps } from "@/types/Props/TableBookingAdminProps";
+import { TableBookingAdminProps } from "@/types/Props/TableBookingProps";
 
 // Utils
 import { formatDate } from "@/utils/formatDate";
