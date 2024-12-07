@@ -12,8 +12,6 @@ import Pagination from "@/components/Pagination";
 import StatusPayment from "@/components/Payment/StatusPayment";
 import SearchInput from "@/components/SearchInput";
 import ButtonDetail from "../ButtonDetail";
-import ButtonDelete from "../ButtonDelete";
-import ButtonEdit from "../ButtonEdit";
 
 // Types
 import { TablePaymentProps } from "@/types/Props/TablePaymentProps";

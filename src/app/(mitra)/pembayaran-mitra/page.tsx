@@ -22,7 +22,7 @@ const PembayaranAdmin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `limit=5&page=${currentPage}`;
+      let query = `limit=2&page=${currentPage}`;
       if (search) {
         query += `&searchQuery=${search}`;
       }

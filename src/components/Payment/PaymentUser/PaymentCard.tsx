@@ -120,8 +120,8 @@ const PaymentCard: React.FC<PaymentCardProps> = ({
         </button>
 
         {/* Cek jika ada pdf_url, kalo ada baru di munculin */}
-        {item.pdf_url && (
-          <Link href={item.pdf_url}>
+        {item.pdf_url && item.status_pembayaran === "pending" && (
+          <Link href={item.pdf_url} target="_blank">
             <button
               type="button"
               className="flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 me-2 dark:bg-green-600 dark:hover:bg-green-700"
