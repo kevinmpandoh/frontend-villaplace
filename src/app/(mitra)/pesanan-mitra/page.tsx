@@ -5,6 +5,7 @@ import useFetchBooking from "@/hooks/useFetchBooking";
 import Swal from "sweetalert2";
 import TableBookingOwner from "@/components/BookingOwner/TableBookingOwner";
 import Booking from "@/types/Booking";
+import DetailBooking from "@/components/BookingOwner/DetailBooking";
 
 const PesananAdmin = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -27,10 +28,9 @@ const PesananAdmin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `limit=2&page=${currentPage}`;
+      let query = `limit=5&page=${currentPage}`;
 
       const data = await handleGetBookingByOwner(query);
-      console.log(data, "DATA");
       if (data && data.data) {
         let filteredData = data.data.filter((item: Booking) => {
           const matchesSearch =
@@ -201,6 +201,15 @@ const PesananAdmin = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <Modal
+          onClose={() => toggleModal(null)}
+          title="Detail Pesanan"
+          className="max-h-screen overflow-y-auto h-3/4"
+        >
+          <DetailBooking detailBooking={detailBooking} />
+        </Modal>
+      )}
     </div>
   );
 };
