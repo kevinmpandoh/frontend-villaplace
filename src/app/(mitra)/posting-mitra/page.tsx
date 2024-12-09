@@ -239,7 +239,11 @@ const PostingMitra = () => {
                     </td>
                     <td className="p-3 border border-black">{data.harga}</td>
                     <td className="p-3 border border-black">{data.lokasi}</td>
-                    <td className="p-3 border border-black">{data.kategori}</td>
+                    <td className="p-3 border  border-black">
+                      {Array.isArray(data.kategori)
+                        ? data.kategori.join(", ")
+                        : data.kategori}
+                    </td>
                     <td className="p-3 border border-black">
                       <span
                         className={`px-3 py-1 rounded-full text-white text-sm ${
