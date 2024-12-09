@@ -172,7 +172,7 @@ const VillaForm = () => {
         title: "Villa Updated!",
         text: "Your villa has been successfully updated.",
       }).then(() => {
-        window.location.href = "/posting-mitra";
+        window.location.href = "/posting-admin";
       });
     } catch (error: any) {
       console.error(error);
@@ -187,7 +187,7 @@ const VillaForm = () => {
   return (
     <div className="max-w-5xl mx-auto p-8 bg-white border shadow-xl rounded-md my-16">
       <h1 className="text-2xl font-bold mb-6 text-center">
-        Edit Formulir Villa
+        Edit Formulir Villa admin
       </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
