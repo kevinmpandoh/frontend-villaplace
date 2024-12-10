@@ -32,7 +32,7 @@ const LoginForm = () => {
         if (isUser) {
           router.push("/");
         } else {
-          router.push("/dashboardMitra");
+          router.push("/dashboard/mitra");
         }
       }
     } catch (error: any) {
@@ -115,7 +115,7 @@ const LoginForm = () => {
         <p className="text-center text-gray-600">
           Tidak punya akun?{" "}
           <Link
-            href={isUser ? "/auth/registUser" : "/auth/registMitra"}
+            href={isUser ? "/auth/register/user" : "/auth/register/mitra"}
             className="text-black font-bold"
           >
             Daftar sekarang

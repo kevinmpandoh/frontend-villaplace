@@ -62,7 +62,14 @@ const DetailBooking = ({ detailBooking }: Props) => {
             <div className="flex mb-2">
               <p className="md:w-40 w-30">Fasilitas</p>
               <span className="mr-3">:</span>
-              <p className="font-semibold">{detailBooking?.villa.fasilitas}</p>
+              <div className="flex flew-wrap gap-2">
+                {detailBooking?.villa.fasilitas.map((fasilitas, index) => (
+                  <p key={index} className="font-semibold">
+                    {fasilitas}
+                  </p>
+                ))}
+              </div>
+              {/* <p className="font-semibold">{detailBooking?.villa.fasilitas}</p> */}
             </div>
             <div className="flex mb-2">
               <p className="md:w-40 w-30">Harga</p>

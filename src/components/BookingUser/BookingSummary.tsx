@@ -2,13 +2,13 @@ import React from "react";
 import Image from "next/image";
 
 interface BookingSummaryProps {
-  handleSubmit: () => void;
+  // handleSubmit: () => void;
   villa: any;
   rentalDays: number;
 }
 
 const BookingSummary: React.FC<BookingSummaryProps> = ({
-  handleSubmit,
+  // handleSubmit,
   villa,
   rentalDays,
 }) => {
@@ -86,12 +86,6 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
               Rp {(villa.harga * rentalDays).toLocaleString("id-ID")}
             </span>
           </div>
-          <button
-            onClick={handleSubmit}
-            className="w-full mt-5 font-semibold bg-primary text-white py-2 rounded-md"
-          >
-            Konfirmasi Pemesanan
-          </button>
         </div>
       </div>
     </div>

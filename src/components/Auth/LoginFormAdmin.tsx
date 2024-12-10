@@ -28,7 +28,7 @@ const LoginForm = () => {
 
       if (res.status === 200) {
         if (isUser) {
-          router.push("/dashboardAdmin");
+          router.push("/dashboard/admin");
         } else {
           router.push("/auth/login/admin");
         }
@@ -41,7 +41,7 @@ const LoginForm = () => {
   return (
     <div className="w-full max-w-sm">
       {/* Tabs */}
-      
+
       {/* Error Message */}
       {error && <p className="text-red-500">{error}</p>}
 

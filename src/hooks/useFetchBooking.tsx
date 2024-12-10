@@ -1,5 +1,6 @@
 import {
   createPesanan,
+  createPesananOwner,
   getPesananById,
   getPesananByOwner,
   updatePesanan,
@@ -77,6 +78,24 @@ const useFetchBooking = () => {
     }
   };
 
+  const handleCreateBookingOwner = async (dataBooking: any) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const result = await createPesananOwner(dataBooking);
+      setSuccess(true);
+
+      return result;
+    } catch (err: any) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleUpdateBooking = async (id: string, dataBooking: any) => {
     setLoading(true);
     setError(null);
@@ -115,6 +134,7 @@ const useFetchBooking = () => {
 
   return {
     handleCreateBooking,
+    handleCreateBookingOwner,
     handleGetAllBooking,
     handleGetBookingById,
     handleGetBookingByOwner,

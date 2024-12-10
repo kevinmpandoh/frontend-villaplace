@@ -108,8 +108,8 @@ const TableBookingAdmin = ({
                         <Image
                           src={
                             "http://localhost:8000/images/user-profile/" +
-                              bookingItem?.user.foto_profile ||
-                            "/assets/images/default-villa.jpg"
+                              bookingItem?.user?.foto_profile &&
+                            "/assets/images/profile-default.png"
                           }
                           width={48}
                           height={48}
@@ -119,10 +119,10 @@ const TableBookingAdmin = ({
                       </div>
                       <div className="flex flex-col">
                         <h5 className="font-semibold text-gray-800 dark:text-white">
-                          {bookingItem.user.nama}
+                          {bookingItem.user?.nama ?? "-"}
                         </h5>
                         <p className="text-sm text-gray-500">
-                          {bookingItem.user.email}
+                          {bookingItem.user?.email ?? "-"}
                         </p>
                       </div>
                     </div>

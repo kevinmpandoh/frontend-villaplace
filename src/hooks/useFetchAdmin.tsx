@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { updateAdmin, changePassword, createAdmin, deleteAdmin } from "../services/adminService";
+import {
+  updateAdmin,
+  changePassword,
+  createAdmin,
+  deleteAdmin,
+} from "../services/adminService";
 import { Admin } from "../types/Admin";
 import Swal from "sweetalert2";
 
@@ -35,7 +40,7 @@ export const useFetchAdmin = () => {
     } finally {
       setLoading(false);
     }
-}
+  };
   const handleUpdateAdmin = async (id: string, data: Omit<Admin, "_id">) => {
     setLoading(true);
     setError(null);
@@ -59,30 +64,24 @@ export const useFetchAdmin = () => {
     }
   };
 
-  const handleChangePassword = async (data: { currentPassword: string; newPassword: string }) => {
+  const handleChangePassword = async (data: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
     setLoading(true);
     try {
-      const response = await changePassword(data);
-      console.log("Password changed successfully:", response);  // Verify response
-      Swal.fire({
-        title: "Success",
-        text: response.data.message || "Password successfully changed!",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      await changePassword(data);
+      setSuccess(true);
     } catch (err: any) {
-      console.error("Error:", err);
-      Swal.fire({
-        title: "Error",
-        text: err?.errors?.currentPassword || "Failed to change password",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      if (err.errors) {
+        setError(err.errors);
+      }
+
+      throw err;
     } finally {
       setLoading(false);
     }
   };
-  
 
   const handleDeleteAdmin = async (id: string) => {
     setLoading(true);
@@ -116,6 +115,13 @@ export const useFetchAdmin = () => {
     }
   };
 
-
-  return { handleCreateAdmin, handleUpdateAdmin, handleChangePassword, handleDeleteAdmin, loading, error, success };
+  return {
+    handleCreateAdmin,
+    handleUpdateAdmin,
+    handleChangePassword,
+    handleDeleteAdmin,
+    loading,
+    error,
+    success,
+  };
 };
