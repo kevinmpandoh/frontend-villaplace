@@ -1,7 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const About = () => {
   return (
@@ -101,7 +99,7 @@ const About = () => {
         </section>
 
         {/* Testimoni Section */}
-        <section className="px-8 py-16 md:px-16 lg:px-24 bg-gray-100">
+        {/* <section className="px-8 py-16 md:px-16 lg:px-24 bg-gray-100">
           <h2 className="text-4xl font-bold text-center mb-8">Testimoni</h2>
           <div className="flex justify-center">
             <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/2">
@@ -124,7 +122,7 @@ const About = () => {
               </p>
             </div>
           </div>
-        </section>
+        </section> */}
       </div>
     </>
   );

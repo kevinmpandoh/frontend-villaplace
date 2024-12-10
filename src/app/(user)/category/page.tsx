@@ -125,9 +125,9 @@ const Category = () => {
 
           {/* Filters */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-4 rounded-lg shadow">
-            {/* Price Range Filter */}
+            {/* Range Harga Filter */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-md font-semibold">
                 Range Harga
               </label>
               <div className="flex space-x-2">
@@ -159,8 +159,8 @@ const Category = () => {
             </div>
 
             {/* Category Filter */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+            <div className="ml-4 space-y-2">
+              <label className="block text-md font-semibold">
                 Kategori
               </label>
               <div className="space-y-2">
@@ -180,7 +180,7 @@ const Category = () => {
 
             {/* Room Filter */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-md font-semibold">
                 Jumlah Kamar
               </label>
               <select
@@ -207,7 +207,7 @@ const Category = () => {
         </h2>
 
         {/* Villa Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 sm:gap-6 md:gap-x-20 md:gap-y-10">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-y-8 sm:gap-x-8 md:gap-x-10 md:gap-y-10 md:px-3 ">
           {paginatedVillas.length > 0 ? (
             paginatedVillas.map((villa: VillaProps) => (
               <VillaCard
@@ -232,7 +232,7 @@ const Category = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="mt-8 flex justify-center space-x-2">
+          <div className="mt-10 flex justify-center space-x-2">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
@@ -246,7 +246,7 @@ const Category = () => {
                 onClick={() => setCurrentPage(page)}
                 className={`px-4 py-2 rounded ${
                   currentPage === page
-                    ? "bg-brown-500 text-white"
+                    ? "bg-green-500 text-white"
                     : "bg-white text-brown-500 border border-brown-500"
                 }`}
               >

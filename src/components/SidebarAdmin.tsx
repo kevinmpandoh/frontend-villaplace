@@ -119,8 +119,8 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
             <Image
               src="/assets/images/logo.png"
               alt="Villa Place Logo"
-              width={40}
-              height={40}
+              width={50}
+              height={50}
               className="rounded-full"
             />
           </div>
@@ -130,7 +130,7 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
 
       {/* Menu Content Sidebar */}
       <div className="flex-1 py-4">
-        <ul className="space-y-4 pr-6">
+        <ul className="space-y-4 pr-5">
           {menuItems.map((item) => {
             const isActive = item.href === pathname || isParentActive(item.subItems);
 
