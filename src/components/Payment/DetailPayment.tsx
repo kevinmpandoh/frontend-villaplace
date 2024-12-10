@@ -86,7 +86,7 @@ const DetailPayment: React.FC<DetailPembayaranProps> = ({ paymentId }) => {
               <p className="font-semibold">
                 {data?.data.metode_pembayaran === "bank_transfer"
                   ? "Bank Transfer"
-                  : "-"}
+                  : data?.data.metode_pembayaran}
               </p>
             </div>
             <div className="flex flex-col md:flex-row mb-2">

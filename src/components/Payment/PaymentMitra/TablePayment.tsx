@@ -137,7 +137,7 @@ const TablePayment = ({
                     <h5 className="font-semibold capitalize text-gray-800 dark:text-white">
                       {paymentItem.metode_pembayaran === "bank_transfer"
                         ? "Bank Transfer"
-                        : "Lainnya"}{" "}
+                        : paymentItem.metode_pembayaran}{" "}
                       | <span className="uppercase">{paymentItem.bank}</span>
                     </h5>
                     <p className="text-sm text-slate-700">
