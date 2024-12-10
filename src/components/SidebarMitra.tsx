@@ -205,8 +205,8 @@ const menuItems: MenuItem[] = [
             <Image
               src="/assets/images/logo.png"
               alt="Villa Place Logo"
-              width={40}
-              height={40}
+              width={50}
+              height={50}
               className="rounded-full"
             />
             <span className="text-xl font-bold">Villa Place</span>

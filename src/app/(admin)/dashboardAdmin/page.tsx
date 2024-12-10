@@ -1,7 +1,6 @@
 // page.tsx
 import React from "react";
 import { Users, Building2, Wallet, Image as ImageIcon } from "lucide-react";
-import Footer from "@/components/Footer";
 
 interface StatCardProps {
   icon: React.ReactNode;
