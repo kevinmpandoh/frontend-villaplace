@@ -4,10 +4,12 @@ import Swal from "sweetalert2";
 
 interface ProfilePictureUploaderProps {
   userId: string;
+  role: string;
 }
 
 const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
   userId,
+  role,
 }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -62,7 +64,7 @@ const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
       if (fileInput.files) {
         formData.append("foto_profile", fileInput.files[0]);
         await axios.post(
-          `http://localhost:8000/api/user/${userId}/upload`,
+          `http://localhost:8000/api/${role}/${userId}/upload`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },

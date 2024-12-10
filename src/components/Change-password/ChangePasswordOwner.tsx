@@ -1,12 +1,40 @@
 "use client";
 import React from "react";
 import { useFormik } from "formik";
-import { useFetchUser } from "../../hooks/useFetchUser";
-import validationSchemaChangePassword from "@/validations/changePassword";
 
-const ChangePassword = () => {
-  // const { handleChangePassword, loading, error } = useChangePassword();
-  const { handleChangePassword, loading, error } = useFetchUser();
+import * as Yup from "yup";
+import { useFetchAdmin } from "@/hooks/useFetchAdmin";
+import { useFetchMitra } from "@/hooks/useFetchMitra";
+import Swal from "sweetalert2";
+
+interface ChangePasswordProps {
+  setMenuOpen: any;
+}
+
+const ChangePassword = ({ setMenuOpen }: ChangePasswordProps) => {
+  const { handleChangePassword, loading } = useFetchMitra();
+
+  const handleUpdatePassword = async (values: any, formikHelpers: any) => {
+    try {
+      await handleChangePassword({
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      });
+      formikHelpers.resetForm();
+      setMenuOpen("profile");
+      Swal.fire({
+        title: "Berhasil!",
+        text: "Password berhasil diubah.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    } catch (err: any) {
+      formikHelpers.setFieldError(
+        "currentPassword",
+        err.errors.currentPassword
+      );
+    }
+  };
 
   // Formik setup
   const formik = useFormik({
@@ -15,23 +43,22 @@ const ChangePassword = () => {
       newPassword: "",
       confirmPassword: "",
     },
-    validationSchema: validationSchemaChangePassword,
-    onSubmit: (values, formikHelpers) => {
-      try {
-        if (error) {
-          console.log("error", error);
-          formikHelpers.setFieldError("currentPassword", error);
-        } else {
-          const { currentPassword, newPassword } = values;
-          handleChangePassword({ currentPassword, newPassword });
-          formikHelpers.resetForm();
-        }
-      } catch (err: any) {
-        console.error(err);
-      }
+    validationSchema: Yup.object({
+      currentPassword: Yup.string().required("Password lama wajib diisi"),
+      newPassword: Yup.string()
+        .min(8, "Password baru minimal 8 karakter")
+        .required("Password baru wajib diisi"),
+      confirmPassword: Yup.string()
+        .oneOf(
+          [Yup.ref("newPassword"), undefined],
+          "Konfirmasi password tidak cocok"
+        )
+        .required("Konfirmasi password wajib diisi"),
+    }),
+    onSubmit: async (values, formikHelpers) => {
+      await handleUpdatePassword(values, formikHelpers);
     },
   });
-
   return (
     <form onSubmit={formik.handleSubmit} className="max-w-2xl mt-8 mx-auto">
       <div className="flex justify-between mb-10 flex-col md:flex-row">
