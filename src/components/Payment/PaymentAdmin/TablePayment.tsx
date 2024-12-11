@@ -75,26 +75,26 @@ const TablePayment = ({
         ) : (
           <table className="w-full table-auto">
             <thead>
-              <tr className="bg-gray-200 text-left dark:bg-meta-4">
-                <th className="min-w-[20px] py-4 px-4 font-medium text-black dark:text-white">
+              <tr className="bg-primary text-left dark:bg-meta-4">
+                <th className="min-w-[20px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   #
                 </th>
-                <th className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Nama Pembayar
                 </th>
-                <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[220px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Villa
                 </th>
-                <th className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Metode Pembayaran
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Total Pembayaran
                 </th>
-                <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Status
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">
+                <th className="py-4 px-4 font-semibold text-gray-50 dark:text-white">
                   Aksi
                 </th>
               </tr>
@@ -103,17 +103,17 @@ const TablePayment = ({
               {filteredData.map((paymentItem, key) => (
                 <tr key={key}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{key + 1}</p>
+                    <p className="text-gray-800 dark:text-white">{key + 1}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <h5 className="font-medium text-black dark:text-white">
+                    <h5 className="font-medium text-gray-800 dark:text-white">
                       {paymentItem.nama_pembayar}
                     </h5>
                     <p className="text-sm">{paymentItem.email_pembayar}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                      <div className="rounded-md bg-yellow-500">
+                      <div className="rounded-md">
                         <Image
                           src={
                             paymentItem.pesanan.villa.foto_villa[0]?.url ||
@@ -125,10 +125,10 @@ const TablePayment = ({
                         />
                       </div>
                       <div className="flex flex-col">
-                        <p className="text-sm text-black dark:text-white">
+                        <p className="text-sm text-gray-800 dark:text-white">
                           {paymentItem.pesanan.villa.nama}
                         </p>
-                        <p className="text-sm font-semibold text-black dark:text-white">
+                        <p className="text-sm font-semibold text-gray-800 dark:text-white">
                           Rp{" "}
                           {paymentItem.pesanan.villa.harga.toLocaleString(
                             "id-ID"
@@ -138,7 +138,7 @@ const TablePayment = ({
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <h5 className="font-semibold capitalize text-black dark:text-white">
+                    <h5 className="font-semibold capitalize text-gray-800 dark:text-white">
                       {paymentItem.metode_pembayaran === "bank_transfer"
                         ? "Bank Transfer"
                         : "Lainnya"}{" "}
@@ -152,7 +152,7 @@ const TablePayment = ({
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="dark:text-white text-primary font-bold">
+                    <p className="dark:text-white text-gray-800 font-bold">
                       Rp.{" "}
                       {paymentItem.jumlah_pembayaran.toLocaleString("id-ID")}
                     </p>
@@ -163,7 +163,7 @@ const TablePayment = ({
                         paymentItem.status_pembayaran
                       )}`}
                     >
-                      {getStatusPaymentLabel(paymentItem.status_pembayaran)}
+                      {paymentItem.status_pembayaran}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

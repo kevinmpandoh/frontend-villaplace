@@ -31,7 +31,7 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
                   width={120}
                   height={120}
                   alt="villa"
-                  className="rounded-lg mr-2 object-cover border"
+                  className="rounded-lg mr-2 h-25 object-cover border"
                 />
                 <div className="flex flex-col gap-2">
                   <p className="font-bold">{favorite.villa.nama}</p>
@@ -59,9 +59,23 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
                     </span>
                     {favorite.villa.lokasi}
                   </p>
-                  <p className="text-sm text-form-strokedark">
-                    Fasilitas: {favorite.villa.fasilitas}
-                  </p>
+                  <div className="flex flex-wrap">
+                    <p>Fasilitas</p>
+                    <div>
+                      {favorite.villa.fasilitas.map(
+                        (fasilitas: any, index: number) => (
+                          <span
+                            key={index}
+                            className={`inline-block capitalize py-1 px-3 text-xs font-semibold rounded-full bg-[#B7906C]/10 text-[#B7906C]`}
+                          >
+                            {index === favorite.villa.fasilitas.length - 1
+                              ? ` ${fasilitas}`
+                              : ` ${fasilitas},`}
+                          </span>
+                        )
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="relative ">

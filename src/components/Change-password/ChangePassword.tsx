@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 import { useFormik } from "formik";
-
-import * as Yup from "yup";
 import { useFetchUser } from "../../hooks/useFetchUser";
+import validationSchemaChangePassword from "@/validations/changePassword";
 
 const ChangePassword = () => {
   // const { handleChangePassword, loading, error } = useChangePassword();
@@ -16,18 +15,7 @@ const ChangePassword = () => {
       newPassword: "",
       confirmPassword: "",
     },
-    validationSchema: Yup.object({
-      currentPassword: Yup.string().required("Password lama wajib diisi"),
-      newPassword: Yup.string()
-        .min(8, "Password baru minimal 8 karakter")
-        .required("Password baru wajib diisi"),
-      confirmPassword: Yup.string()
-        .oneOf(
-          [Yup.ref("newPassword"), undefined],
-          "Konfirmasi password tidak cocok"
-        )
-        .required("Konfirmasi password wajib diisi"),
-    }),
+    validationSchema: validationSchemaChangePassword,
     onSubmit: (values, formikHelpers) => {
       try {
         if (error) {

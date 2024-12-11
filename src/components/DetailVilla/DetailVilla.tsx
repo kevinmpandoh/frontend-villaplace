@@ -1,11 +1,14 @@
 "use client";
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import useFetchData from "@/hooks/useFetchData";
 import Link from "next/link";
 import SkeletonDetailVilla from "./SkeletonDetailVilla";
 import ImageModal from "./ImageModal";
 import axios from "axios";
+import RatingStar from "./RatingStar";
+import distributePercentages from "@/utils/distributedPercentage";
+import ContactButtons from "./ContactButtons";
 
 interface DetailVillaProps {
   villaId: string;
@@ -20,6 +23,8 @@ interface Villa {
   foto_villa: { url: string }[];
   pemilik_villa: {
     nama: string;
+    email: string;
+    no_telepon: string;
     foto_profile: string;
   };
   averageRating: number;
@@ -39,9 +44,19 @@ interface Villa {
 const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
   const [detailVilla, setDetailVilla] = useState<Villa | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
+  const [isModalReviewOpen, setIsModalReviewOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isFavorited, setIsFavorited] = useState(false);
+
+  const rawStarCounts = [
+    detailVilla?.starPercentage[4] ?? 1, // 5-star
+    detailVilla?.starPercentage[3] ?? 1, // 4-star
+    detailVilla?.starPercentage[2] ?? 1, // 3-star
+    detailVilla?.starPercentage[1] ?? 1, // 2-star
+    detailVilla?.starPercentage[0] ?? 1, // 1-star
+  ];
+
+  const adjustedPercentages = distributePercentages(rawStarCounts);
 
   useEffect(() => {
     const fetchFavoriteStatus = async () => {
@@ -154,7 +169,11 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
                     }
                     alt="Hero Image"
                     className="w-full h-auto object-contain rounded-lg"
-                    onClick={() => openModal(0)}
+                    onClick={() => {
+                      if (detailVilla.foto_villa.length > 0) {
+                        openModal(0);
+                      }
+                    }}
                     onError={(e) =>
                       (e.currentTarget.src = "/assets/images/default-villa.jpg")
                     }
@@ -232,87 +251,11 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
                   </div>
                 </div>
                 <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-500">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-                      />
-                    </svg>
-
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-                      />
-                    </svg>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-                      />
-                    </svg>
-
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-                      />
-                    </svg>
-
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-                      />
-                    </svg>
-
-                    <i className="fas fa-star-half-alt" />
-                  </div>
-                  <span className="text-sm text-gray-500 ml-2">
-                    ({detailVilla.averageRating}) {detailVilla.commentCount}{" "}
-                    Ulasan
+                  <RatingStar rating={detailVilla.averageRating} />
+                  <span className="text-sm text-gray-500 mr-2">
+                    ({detailVilla.averageRating.toFixed(1)} / 5)
                   </span>
+                  <span>{detailVilla.commentCount} Ulasan</span>
                 </div>
 
                 <div className="text-3xl font-bold mb-4 text-primary">
@@ -325,12 +268,12 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
 
                 <div className="mb-10">
                   <h2 className="text-lg font-semibold mb-2">Fasilitas</h2>
-                  <div className="flex space-x-2">
+                  <div className="flex space-x-2 flex-wrap gap-2">
                     {/* Fasilitas */}
                     {detailVilla.fasilitas.map((fasilitas: any, index: any) => (
                       <span
                         key={index}
-                        className={`inline-block capitalize py-1 px-3 text-sm font-semibold rounded-full bg-[#B7906C]/10 text-[#B7906C]`}
+                        className={`inline-block capitalize py-1 px-3 text-xs md:text-sm font-semibold rounded-full bg-[#B7906C]/10 text-[#B7906C]`}
                       >
                         {fasilitas}
                       </span>
@@ -383,15 +326,22 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
                     </span>
                   </button>
                 </div>
+
+                <ContactButtons
+                  ownerEmail={detailVilla.pemilik_villa.email}
+                  ownerPhone={detailVilla.pemilik_villa.no_telepon}
+                />
               </div>
             </div>
             <div className="flex flex-col-reverse justify-center items-start md:flex-row mt-20">
               <div className="w-full ">
-                <h3 className="text-xl font-semibold">
+                <h3 className="text-xl flex items-center font-semibold">
                   Ulasan Pengguna ({detailVilla.commentCount}){" "}
-                  <span className="text-yellow-500 pl-2">★★★★☆</span>
+                  <span className="text-yellow-500 pl-2">
+                    <RatingStar rating={detailVilla.averageRating} />
+                  </span>
                 </h3>
-                {detailVilla.ulasan.map((data: any, index: any) => (
+                {detailVilla.ulasan.slice(0, 3).map((data: any, index: any) => (
                   <div className="mt-4 flex gap-4 items-start" key={index}>
                     <Image
                       src={`http://localhost:8000/images/user-profile/${data.user.foto_profile}`}
@@ -401,14 +351,22 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
                       className="rounded-full"
                     />
                     <div>
-                      <div className="font-semibold flex gap-2 items-center">
+                      <div className="font-semibold flex gap-2 items-center justify-center">
                         <h3>{data.user.nama}</h3>
                         <span className="text-xs text-gray-400">
-                          1 Desember 2024
+                          {new Date(data.createdAt).toLocaleDateString(
+                            "id-ID",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
+                          {/* {data.createdAt} */}
                         </span>
                       </div>
                       <div>
-                        <span className="text-yellow-500">★★★★☆</span>
+                        <RatingStar rating={data.rating} />
                       </div>
 
                       <p>{data.komentar}</p>
@@ -416,105 +374,44 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
                   </div>
                 ))}
                 {detailVilla.ulasan.length > 2 && (
-                  <Link
-                    href={`/villa/${villaId}/reviews`}
-                    className="text-blue-500"
+                  <button
+                    className="text-green-500 mt-6 underline"
+                    onClick={() => setIsModalReviewOpen(true)}
                   >
                     Lihat semua ulasan
-                  </Link>
+                  </button>
                 )}
               </div>
-              <div className="flex md:w-2/3 w-full mb-8 justify-center items-center bg-gray-100 shadow">
-                <div className="bg-white p-6 rounded-lg shadow-md w-full ">
+              <div className="flex md:w-2/3 w-full mb-8 justify-center items-center">
+                <div className="border-2 p-6 rounded-lg  w-full ">
                   <h2 className="text-xl font-semibold mb-4 text-center">
                     Rating & Ulasan
                   </h2>
-                  <div className="flex justify-center items-center mb-4">
-                    <div className="flex items-center">
-                      <i className="fas fa-star text-yellow-500"></i>
-                      <i className="fas fa-star text-yellow-500"></i>
-                      <i className="fas fa-star text-yellow-500"></i>
-                      <i className="fas fa-star text-yellow-500"></i>
-                      <i className="fas fa-star text-yellow-500"></i>
-                    </div>
-                    <span className="ml-2 text-gray-700 text-lg">
-                      {detailVilla.averageRating} dari 5
+                  <div className="flex justify-center flex-col items-center mb-4">
+                    <span className=" text-gray-700 text-lg">
+                      {detailVilla.averageRating.toFixed(1)} dari 5
                     </span>
                   </div>
                   <p className="text-center text-gray-500 mb-6">
                     {detailVilla.commentCount} ulasan dari pengguna
                   </p>
                   <div className="space-y-2">
-                    <div className="flex items-center">
-                      <span className="w-1/4 text-gray-700">5 star</span>
-                      <div className="w-3/4 bg-gray-200 rounded-full h-2.5 mr-2">
-                        <div
-                          className="bg-[#B7906C] h-2.5 rounded-full"
-                          style={{
-                            width: `${detailVilla.starPercentage[4]}%`,
-                          }}
-                        ></div>
+                    {adjustedPercentages.map((percentage, index) => (
+                      <div className="flex items-center" key={5 - index}>
+                        <span className="w-1/4 text-gray-700">
+                          {5 - index} star
+                        </span>
+                        <div className="w-3/4 bg-gray-200 rounded-full h-2.5 mr-2">
+                          <div
+                            className="bg-[#B7906C] h-2.5 rounded-full"
+                            style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
+                        <span className="w-1/12 text-gray-700">
+                          {percentage}%
+                        </span>
                       </div>
-                      <span className="w-1/12 text-gray-700">
-                        {detailVilla.starPercentage[4]}%
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="w-1/4 text-gray-700">4 star</span>
-                      <div className="w-3/4 bg-gray-200 rounded-full h-2.5 mr-2">
-                        <div
-                          className="bg-[#B7906C] h-2.5 rounded-full"
-                          style={{
-                            width: `${detailVilla.starPercentage[3]}%`,
-                          }}
-                        ></div>
-                      </div>
-                      <span className="w-1/12 text-gray-700">
-                        {detailVilla.starPercentage[3]}%
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="w-1/4 text-gray-700">3 star</span>
-                      <div className="w-3/4 bg-gray-200 rounded-full h-2.5 mr-2">
-                        <div
-                          className="bg-[#B7906C] h-2.5 rounded-full"
-                          style={{
-                            width: `${detailVilla.starPercentage[2]}%`,
-                          }}
-                        ></div>
-                      </div>
-                      <span className="w-1/12 text-gray-700">
-                        {detailVilla.starPercentage[2]}%
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="w-1/4 text-gray-700">2 star</span>
-                      <div className="w-3/4 bg-gray-200 rounded-full h-2.5 mr-2">
-                        <div
-                          className="bg-[#B7906C] h-2.5 rounded-full"
-                          style={{
-                            width: `${detailVilla.starPercentage[1]}%`,
-                          }}
-                        ></div>
-                      </div>
-                      <span className="w-1/12 text-gray-700">
-                        {detailVilla.starPercentage[1]}%
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="w-1/4 text-gray-700">1 star</span>
-                      <div className="w-3/4 bg-gray-200 rounded-full h-2.5 mr-2">
-                        <div
-                          className="bg-[#B7906C] h-2.5 rounded-full"
-                          style={{
-                            width: `${detailVilla.starPercentage[0]}%`,
-                          }}
-                        ></div>
-                      </div>
-                      <span className="w-1/12 text-gray-700">
-                        {detailVilla.starPercentage[0]}%
-                      </span>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -532,6 +429,54 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
           onNext={nextImage}
           onPrev={prevImage}
         />
+      )}
+
+      {/* Modal Review */}
+      {isModalReviewOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white w-3/4 md:w-1/2 rounded-lg p-8">
+            <h2 className="text-xl font-semibold mb-4">Ulasan Pengguna</h2>
+            <div className="space-y-4">
+              {detailVilla?.ulasan.map((ulasan: any, index: any) => (
+                <div key={index} className="flex gap-4 items-start">
+                  <Image
+                    src={`http://localhost:8000/images/user-profile/${ulasan.user.foto_profile}`}
+                    alt="User"
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                  <div>
+                    <div className="font-semibold flex gap-2 items-center justify-center">
+                      <h3>{ulasan.user.nama}</h3>
+                      <span className="text-xs text-gray-400">
+                        {new Date(ulasan.createdAt).toLocaleDateString(
+                          "id-ID",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )}
+                      </span>
+                    </div>
+                    <div>
+                      <RatingStar rating={ulasan.rating} />
+                    </div>
+
+                    <p>{ulasan.komentar}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button
+              className="text-green-500 mt-6"
+              onClick={() => setIsModalReviewOpen(false)}
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
       )}
     </>
   );

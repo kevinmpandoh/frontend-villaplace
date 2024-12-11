@@ -48,16 +48,18 @@ const PaymentCard: React.FC<PaymentCardProps> = ({
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div className="flex flex-col sm:flex-row gap-4">
-          <Image
-            src={
-              item.pesanan.villa.foto_villa[0]?.url ||
-              "/assets/images/default-villa.jpg"
-            }
-            width={150}
-            height={150}
-            alt="product"
-            className="rounded-lg mr-4 w-full h-45 sm:w-45 object-cover"
-          />
+          <Link href={`/category/${item.pesanan.villa._id}`}>
+            <Image
+              src={
+                item.pesanan.villa.foto_villa[0]?.url ||
+                "/assets/images/default-villa.jpg"
+              }
+              width={120}
+              height={120}
+              alt="product"
+              className="rounded-lg mr-4 w-full h-40 sm:w-45 object-cover"
+            />
+          </Link>
           <div>
             <p className="font-bold">{item.pesanan.villa.nama}</p>
             <div className="text-sm flex gap-2 text-form-strokedark mb-2">
@@ -120,8 +122,8 @@ const PaymentCard: React.FC<PaymentCardProps> = ({
         </button>
 
         {/* Cek jika ada pdf_url, kalo ada baru di munculin */}
-        {item.pdf_url && (
-          <Link href={item.pdf_url}>
+        {item.pdf_url && item.status_pembayaran === "pending" && (
+          <Link href={item.pdf_url} target="_blank">
             <button
               type="button"
               className="flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 me-2 dark:bg-green-600 dark:hover:bg-green-700"

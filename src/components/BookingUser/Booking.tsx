@@ -23,6 +23,8 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
     checkOutDate: "",
     notes: "",
   });
+
+  console.log("formData", formData);
   const [rentalDays, setRentalDays] = useState(0);
 
   const { handleCreatePayment } = useFetchPayment();
@@ -45,27 +47,15 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
     }
   };
 
-  const handleSubmit = async () => {
-    // Validasi data sebelum mengirim
-    if (
-      !formData.fullName ||
-      !formData.email ||
-      !formData.checkInDate ||
-      !formData.checkOutDate
-    ) {
-      Swal.fire({
-        icon: "error",
-        title: "Gagal",
-        text: "Data tidak boleh kosong",
-      });
-      return;
-    }
+  const handleSubmit = async (values: any) => {
+    setRentalDays(calculateRentalDays(values.checkInDate, values.checkOutDate));
+    setFormData(values);
 
     const dataPayment = {
-      nama_pembayar: formData.fullName,
+      nama_pembayar: values.fullName,
       kode_pembayaran: generateBookingId(),
-      email_pembayar: formData.email,
-      jumlah_pembayaran: 123123123,
+      email_pembayar: values.email,
+      jumlah_pembayaran: villa.harga * rentalDays,
     };
 
     const response = await axios.post(
@@ -103,8 +93,6 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
       window.snap.pay(tokenMidtrans, {
         onSuccess: async (result: any) => {
           const dataBooking = {
-            nama_pembayar: formData.fullName,
-            email_pembayar: formData.email,
             jumlah_orang: formData.guests,
             tanggal_mulai: formData.checkInDate,
             tanggal_selesai: formData.checkOutDate,
@@ -152,8 +140,6 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
           );
 
           const dataBooking = {
-            nama_pembayar: formData.fullName,
-            email_pembayar: formData.email,
             jumlah_orang: formData.guests,
             tanggal_mulai: formData.checkInDate,
             tanggal_selesai: formData.checkOutDate,
@@ -222,14 +208,14 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
         <div className="p-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 justify-center ">
             <BookingForm
-              formData={formData}
               handleChange={handleChange}
+              handleSubmit={handleSubmit}
               bookingDate={bookedDates}
               villa={villa}
             />
             <BookingSummary
               villa={villa}
-              handleSubmit={handleSubmit}
+              // handleSubmit={handleSubmit}
               rentalDays={rentalDays}
             />
           </div>

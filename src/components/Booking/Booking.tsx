@@ -19,6 +19,7 @@ import { useFetchUlasan } from "@/hooks/useFetchUlasan";
 import { formatDate } from "@/utils/formatDate";
 import { getStatusColor, getStatusLabel } from "@/utils/getStatusLabelAndColor";
 import { calculateDays } from "@/utils/calculateDays";
+import Link from "next/link";
 
 type Review = {
   rating: number;
@@ -35,6 +36,8 @@ const Booking = () => {
   const [BookingData, setBookingData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [reviewData, setReviewData] = useState<Review[]>([]);
+
+  console.log("Review Data", reviewData);
 
   const { handleFetchUlasan } = useFetchUlasan();
 
@@ -57,10 +60,11 @@ const Booking = () => {
       rating: values.rating,
       komentar: values.komentar,
       villa: currentModalReviewId,
+      pesanan: currentModalPesananId,
     };
     handleFetchUlasan(data);
     setReviewData([...reviewData, data]);
-    toggleModalReview(null);
+    toggleModalReview(null, "");
   };
 
   useEffect(() => {
@@ -92,8 +96,10 @@ const Booking = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleModalReview = (id: any) => {
+  const toggleModalReview = (id: any, pesananId: string) => {
     setCurrentModalReviewId(id);
+    setCurrentModalPesananId(pesananId);
+
     setIsModalReviewOpen(!isModalReviewOpen);
   };
   return (
@@ -178,16 +184,18 @@ const Booking = () => {
               <div className="flex flex-col md:flex-row w-full  ">
                 <div className="md:item-content w-full ">
                   <div className="flex flex-col sm:flex-row">
-                    <Image
-                      src={
-                        item.villa.foto_villa[0]?.url ||
-                        "/assets/images/default-villa.jpg"
-                      }
-                      width={150}
-                      height={150}
-                      alt="villa"
-                      className="rounded-lg mr-4 w-full h-45 sm:w-45 object-cover"
-                    />
+                    <Link href={`/category/${item.villa._id}`}>
+                      <Image
+                        src={
+                          item.villa.foto_villa[0]?.url ||
+                          "/assets/images/default-villa.jpg"
+                        }
+                        width={150}
+                        height={150}
+                        alt="villa"
+                        className="rounded-lg mr-4 w-full h-45 sm:w-45 object-cover"
+                      />
+                    </Link>
                     <div className="">
                       <p className="font-bold text-xl mb-2">
                         {item.villa.nama}
@@ -242,17 +250,19 @@ const Booking = () => {
 
                     {item.status === "completed" && (
                       <button
-                        onClick={() => toggleModalReview(item.villa._id)}
+                        onClick={() =>
+                          toggleModalReview(item.villa._id, item._id)
+                        }
                         // className="flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 dark:bg-green-600 dark:hover:bg-green-700"
                         className={`flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 dark:bg-green-600 dark:hover:bg-green-700 ${
                           reviewData.some(
-                            (review: any) => review.villa === item.villa._id
+                            (review: any) => review.pesanan === item._id
                           )
                             ? "opacity-50 cursor-not-allowed"
                             : ""
                         }`}
                         disabled={reviewData.some(
-                          (review: any) => review.villa === item.villa._id
+                          (review: any) => review.pesanan === item._id
                         )}
                       >
                         Review Villa
@@ -278,7 +288,7 @@ const Booking = () => {
       )}
       {isModalReviewOpen && (
         <Modal
-          onClose={() => toggleModalReview(null)}
+          onClose={() => toggleModalReview(null, "")}
           title="Beri Ulasan Villa"
           className="max-w-md"
         >

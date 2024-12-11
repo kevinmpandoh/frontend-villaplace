@@ -18,27 +18,27 @@ export const updateMitra = async (
 };
 
 export const uploadProfilePicture = async (
-    id: string,
-    file: File
-  ): Promise<any> => {
-    const formData = new FormData();
-    formData.append("profile_picture", file);
-  
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/owner/${id}/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      return response.data;
-    } catch (error: any) {
-      throw error.response ? error.response.data : error;
-    }
-  };
+  id: string,
+  file: File
+): Promise<any> => {
+  const formData = new FormData();
+  formData.append("profile_picture", file);
+
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/owner/${id}/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response ? error.response.data : error;
+  }
+};
 
 export const changePassword = async (data: {
   currentPassword: string;
@@ -58,13 +58,15 @@ export const changePassword = async (data: {
   }
 };
 
-export const deleteMitra = async (id: string): Promise<{ status: string; message: string }> => {
-    try {
-      const response = await axios.delete(`${API_BASE_URL}/owner/${id}`, {
-        withCredentials: true,
-      });
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || error.message || "Failed to delete mitra";
-    }
-  };
+export const deleteMitra = async (
+  id: string
+): Promise<{ status: string; message: string }> => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/owner/${id}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || error.message || "Failed to delete mitra";
+  }
+};

@@ -34,6 +34,14 @@ export const createPesanan = async (data: any) => {
   return response.data;
 };
 
+export const createPesananOwner = async (data: any) => {
+  const response = await axios.post(`${API_URL}/createPesananOwner`, data, {
+    withCredentials: true,
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
+};
+
 export const updatePesanan = async (id: string, data: any) => {
   const response = await axios.put(`${API_URL}/${id}`, data, {
     withCredentials: true,

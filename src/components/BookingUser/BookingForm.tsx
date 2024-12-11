@@ -1,27 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import validationSchemaBooking from "@/validations/bookingUser";
+
 interface BookingFormProps {
-  formData: {
-    fullName: string;
-    email: string;
-    guests: number;
-    checkInDate: string;
-    checkOutDate: string;
-    notes: string;
-  };
   handleChange: (event: { target: { name: string; value: string } }) => void;
+  handleSubmit: (values: any) => void;
   bookingDate: { tanggal_mulai: string; tanggal_selesai: string }[];
   villa: any;
 }
 
 const BookingForm: React.FC<BookingFormProps> = ({
-  formData,
   handleChange,
+  handleSubmit,
   bookingDate,
 }) => {
-  const today = new Date().toISOString().split("T")[0]; // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
   const [checkInDate, setCheckInDate] = useState<Date | null>(null);
   const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
 
@@ -43,122 +38,172 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
   const disabledDates = getDisabledDates();
 
-  const isDateDisabled = (date: string) => disabledDates.has(date);
-
   return (
     <div>
       <h2 className="text-lg font-semibold mb-4">Informasi Pemesanan</h2>
       <div className="bg-white p-6 rounded-lg shadow-md border md:h-[90%]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Nama Lengkap
-            </label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="text"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            />
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="flex w-full items-center gap-5">
-            <label className="block text-sm font-medium text-gray-700">
-              Jumlah Orang
-            </label>
-            <input
-              type="number"
-              name="guests"
-              value={formData.guests}
-              onChange={handleChange}
-              className="mt-1 w-1/3 block border border-gray-300 rounded-md shadow-sm p-2"
-            />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Tanggal Masuk
-          </label>
+        <Formik
+          initialValues={{
+            fullName: "",
+            email: "",
+            guests: 1,
+            checkInDate: "",
+            checkOutDate: "",
+            notes: "",
+          }}
+          validationSchema={validationSchemaBooking}
+          onSubmit={(values) => {
+            handleSubmit(values);
+          }}
+        >
+          {({ setFieldValue }) => (
+            <Form>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Nama Lengkap
+                  </label>
+                  <Field
+                    type="text"
+                    name="fullName"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                  />
+                  <ErrorMessage
+                    name="fullName"
+                    component="div"
+                    className="text-red-500 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <Field
+                    type="email"
+                    name="email"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                  />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="text-red-500 text-sm"
+                  />
+                </div>
+              </div>
 
-          <DatePicker
-            selected={checkInDate}
-            onChange={(date) => {
-              if (date) {
-                setCheckInDate(date);
-                setCheckOutDate(null);
+              <div className="flex items-center gap-5">
+                <label className="block text-sm font-medium text-gray-700">
+                  Jumlah Orang
+                </label>
 
-                handleChange({
-                  target: {
-                    name: "checkInDate",
-                    value: date.toISOString(),
-                  },
-                });
-              }
-            }}
-            minDate={new Date()}
-            excludeDates={[...disabledDates].map((date) => new Date(date))}
-            className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
-            placeholderText="Pilih tanggal masuk"
-            calendarClassName="bg-white border rounded-lg shadow-lg p-4"
-            dayClassName={(date) =>
-              disabledDates.has(date.toISOString().split("T")[0])
-                ? "text-gray-500 cursor-not-allowed"
-                : "text-gray-900 hover:bg-green-200 rounded-full"
-            }
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Tanggal Keluar
-          </label>
-          <DatePicker
-            selected={checkOutDate}
-            onChange={(date) => {
-              setCheckOutDate(date);
-              handleChange({
-                target: {
-                  name: "checkOutDate",
-                  value: date?.toISOString(),
-                } as any,
-              });
-            }}
-            minDate={
-              checkInDate
-                ? new Date(checkInDate.getTime() + 24 * 60 * 60 * 1000)
-                : new Date()
-            }
-            excludeDates={[...disabledDates].map((date) => new Date(date))}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            placeholderText="Pilih tanggal keluar"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Catatan Tambahan (Optional)
-          </label>
-          <input
-            type="text"
-            name="notes"
-            value={formData.notes}
-            onChange={handleChange}
-            placeholder="Tulis catatan tambahan disini..."
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-          />
-        </div>
+                <Field
+                  type="number"
+                  name="guests"
+                  className="mt-1 block w-24 border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                />
+                <ErrorMessage
+                  name="guests"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Tanggal Masuk
+                </label>
+                <DatePicker
+                  selected={checkInDate}
+                  onChange={(date) => {
+                    if (date) {
+                      setCheckInDate(date);
+                      setCheckOutDate(null);
+                      setFieldValue("checkOutDate", "");
+                      setFieldValue("checkInDate", date?.toISOString());
+                      handleChange({
+                        target: {
+                          name: "checkInDate",
+                          value: date.toISOString(),
+                        },
+                      });
+                    }
+                  }}
+                  minDate={new Date()}
+                  excludeDates={[...disabledDates].map(
+                    (date) => new Date(date)
+                  )}
+                  className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                  placeholderText="Pilih tanggal masuk"
+                />
+                <ErrorMessage
+                  name="checkInDate"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Tanggal Keluar
+                </label>
+
+                <DatePicker
+                  selected={checkOutDate}
+                  onChange={(date) => {
+                    setCheckOutDate(date);
+                    setFieldValue("checkOutDate", date?.toISOString());
+                    if (date) {
+                      handleChange({
+                        target: {
+                          name: "checkOutDate",
+                          value: date.toISOString(),
+                        },
+                      });
+                    }
+                  }}
+                  minDate={
+                    checkInDate
+                      ? new Date(checkInDate.getTime() + 24 * 60 * 60 * 1000)
+                      : new Date()
+                  }
+                  excludeDates={[...disabledDates].map(
+                    (date) => new Date(date)
+                  )}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                  placeholderText="Pilih tanggal keluar"
+                  disabled={!checkInDate}
+                />
+                <ErrorMessage
+                  name="checkOutDate"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Catatan Tambahan (Optional)
+                </label>
+                <Field
+                  type="text"
+                  name="notes"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                />
+                <ErrorMessage
+                  name="notes"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+              </div>
+              <div className="flex justify-end my-4 w-full">
+                <button
+                  type="submit"
+                  className="px-4 py-2 w-full bg-primary text-white rounded-md hover:bg-green-700"
+                >
+                  Konfirmasi Pesanan
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );
