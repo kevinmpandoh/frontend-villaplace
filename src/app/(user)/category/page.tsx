@@ -203,11 +203,11 @@ const Category = () => {
 
         {/* Results Count */}
         <h2 className="text-lg font-semibold mb-6 text-green-600">
-          {filteredVillas.length} villa ditemukan
+          {filteredVillas.length} Villa Ditemukan
         </h2>
 
         {/* Villa Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-y-8 sm:gap-x-8 md:gap-x-10 md:gap-y-10 md:px-3 ">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-y-8 sm:gap-x-8 md:gap-x-10 md:gap-y-10">
           {paginatedVillas.length > 0 ? (
             paginatedVillas.map((villa: VillaProps) => (
               <VillaCard

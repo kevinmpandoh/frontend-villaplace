@@ -5,6 +5,12 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description: "Contact Us"
+};
 
 const Contact = () => {
   return (

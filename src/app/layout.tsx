@@ -2,6 +2,28 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "../styles/globals.css";
 
+export const metadata: Metadata = {
+  title: {
+    default: "VillaPlace",
+    template: "%s | Villaplace",
+  },
+  description: "Find your perfect villa",
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/assets/images/favicon-dark.png",
+        href: "/assets/images/favicon-dark.png",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/assets/images/logo.png",
+        href: "/assets/images/logo.png",
+      },
+    ]
+  }
+};
+
 const geistSans = localFont({
   src: "../../public/assets/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -13,10 +35,6 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "VillaPlace",
-  description: "Find your perfect villa",
-};
 
 export default function RootLayout({
   children,

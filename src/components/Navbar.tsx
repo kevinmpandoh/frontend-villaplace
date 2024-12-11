@@ -98,7 +98,7 @@ const Navbar: React.FC = () => {
     <>
       <hr className="w-full h-[1px] bg-gray-200 my-4 md:hidden" />
       <div className="flex flex-col md:flex-row w-full md:w-auto items-start md:items-center gap-4">
-        <Link href="/auth/registUser" className="w-full md:w-auto">
+        <Link href="/auth/register/user" className="w-full md:w-auto">
           <button className="border border-[#B7906C] text-[#C59E6C] hover:text-gray-900 px-4 py-1 rounded-md w-full">
             Daftar
           </button>

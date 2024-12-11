@@ -7,8 +7,8 @@ import { VillaProps } from "@/types/Villa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBath,
-  faWifi,
-  faLocationDot
+  faLocationDot,
+  faHouse
 } from "@fortawesome/free-solid-svg-icons";
 
 const VillaCard = ({
@@ -51,16 +51,16 @@ const VillaCard = ({
               <span className="ml-2 text-gray-600">{lokasi}</span>
             </div>
   
-            <div className="flex flex-col mt-2">
+            <div className="flex flex-col md:flex-row mt-2">
               <div className="flex items-center mr-4">
                 <FontAwesomeIcon 
-                  className="mr-2" icon={faBath} 
+                  className="mr-2" icon={faHouse} 
                 />
                 <span>{fasilitas[0]}</span>
               </div>
-              <div className="flex items-center mt-2">
+              <div className="flex items-center mt-2 md:mt-0">
                 <FontAwesomeIcon
-                  className="mr-2" icon={faWifi}
+                  className="mr-2" icon={faBath}
                 />
                 <span>{fasilitas[1]}</span>
               </div>

@@ -44,10 +44,12 @@ const HomePage: React.FC = () => {
           objectFit="cover"
           className="w-full h-full object-cover brightness-50"
         />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+        <div className="absolute inset-0 flex flex-col items-center text-center justify-center text-white">
           <h1 className="text-5xl font-bold mb-8">VILLAPLACE</h1>
-          <p className="text-2xl mb-2">Lorem ipsum lagi</p>
-          <p className="text-2xl mb-8">Ntah ini isi aja bang</p>
+          <p className="flex flex-col text-lg sm:text-2xl mb-5 sm:mb-8">
+            Temukan Pengalaman Menginap Sempurna, 
+            <span className="mt-1"> Ciptakan Kenangan Tak Terlupakan</span>
+          </p>
           <div className="w-full max-w-2xl px-4">
             <div className="flex">
               <input
@@ -88,7 +90,7 @@ const HomePage: React.FC = () => {
         </div>
         <div className="text-end mt-10">
           <Link href="/category">
-            <button className="text-green-600 hover:text-green-700 font-bold">
+            <button className="text-green-600 hover:text-green-700 font-bold text-lg">
               Klik untuk lainnya..
             </button>
           </Link>
