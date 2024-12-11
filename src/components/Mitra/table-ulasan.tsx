@@ -96,31 +96,31 @@ const TableUlasan = () => {
         </div>
       
         <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
-          <thead className="bg-brown-500 text-white">
+          <thead className="bg-primary text-white dark:bg-meta-4">
             <tr>
-              <th className="p-3 text-center border border-gray-300">No</th>
-              <th className="p-3 text-center border border-gray-300">User</th>
-              <th className="p-3 text-center border border-gray-300">Villa</th>
-              <th className="p-3 text-center border border-gray-300">Komentar</th>
-              <th className="p-3 text-center border border-gray-300">Rating</th>
-              <th className="p-3 text-center border border-gray-300">Action</th>
+              <th className="p-3 text-center">No</th>
+              <th className="p-3 text-center">User</th>
+              <th className="p-3 text-center">Villa</th>
+              <th className="p-3 text-center">Komentar</th>
+              <th className="p-3 text-center">Rating</th>
+              <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentData.length > 0 ? (
               currentData.map((ulasan, idx) => (
-                <tr key={idx} className="border border-gray-300">
-                  <td className="p-3 border text-center border-gray-300">
+                <tr key={idx} className="hover:bg-gray-50">
+                  <td className="p-3 text-center">
                     {indexOfFirstItem + idx + 1}
                   </td>
-                  <td className="p-3 border border-gray-300">{ulasan.userName}</td>
-                  <td className="p-3 border border-gray-300">
+                  <td className="p-3">{ulasan.userName}</td>
+                  <td className="p-3">
                     <a href={`/villa/${ulasan.villaId}`} className="text-blue-500">
                       {ulasan.villaName}
                     </a>
                   </td>
-                  <td className="p-3 border border-gray-300">{ulasan.komentar}</td>
-                  <td className="p-3 border border-gray-300">
+                  <td className="p-3">{ulasan.komentar}</td>
+                  <td className="p-3">
                     <div className="flex">
                       {Array.from({ length: 5 }, (_, i) => {
                         const fullStars = Math.floor(ulasan.rating);
@@ -173,6 +173,7 @@ const TableUlasan = () => {
           </tbody>
         </table>
       
+        {/* Pagination */}
         <div className="flex flex-col md:flex-row justify-between mt-4 items-center">
           <div className="flex space-x-2 w-full md:w-auto">
             <button

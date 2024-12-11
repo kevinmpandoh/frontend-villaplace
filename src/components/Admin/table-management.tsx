@@ -11,6 +11,7 @@ import { useFetchAdmin } from "../../hooks/useFetchAdmin";
 import { useFetchUser } from "../../hooks/useFetchUser";
 import { useFetchMitra } from "../../hooks/useFetchMitra";
 import Swal from "sweetalert2";
+import ButtonDelete from "../BookingAdmin/ButtonDelete";
 
 interface TableProps {
   table: "admin" | "mitra" | "user"; // type the table prop to accept specific values
@@ -130,36 +131,31 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
     return (
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
-          <thead className="bg-brown-500 text-white">
+          <thead className="bg-primary text-white dark:bg-meta-4">
             <tr>
-              <th className="p-3 text-center border border-gray-300">No</th>
-              <th className="p-3 text-center border border-gray-300">Nama</th>
-              <th className="p-3 text-center border border-gray-300">Email</th>
-              <th className="p-3 text-center border border-gray-300">No Telepon</th>
-              <th className="p-3 text-center border border-gray-300">Action</th>
+              <th className="p-3 text-center">No</th>
+              <th className="p-3 text-center">Nama</th>
+              <th className="p-3 text-center">Email</th>
+              <th className="p-3 text-center">No Telepon</th>
+              <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentData.length > 0 ? (
               currentData.map((user, idx) => (
-                <tr key={idx} className="border border-gray-300">
-                  <td className="p-3 border text-center border-gray-300">
+                <tr key={idx} className="border border-gray-300 hover:bg-gray-50">
+                  <td className="p-3 text-center ">
                     {indexOfFirstItem + idx + 1}
                   </td>
-                  <td className="p-3 border border-gray-300">{user.nama}</td>
-                  <td className="p-3 border border-gray-300">{user.email}</td>
-                  <td className="p-3 border border-gray-300">
+                  <td className="p-3">{user.nama}</td>
+                  <td className="p-3">{user.email}</td>
+                  <td className="p-3">
                     {user.no_telepon ? user.no_telepon : "-"}
                   </td>
-                  <td className="p-3 border text-center border-gray-300">
-                    <button
-                      type="button"
-                      className="text-red-500 hover:text-red-700"
+                  <td className="p-3 text-center">
+                    <ButtonDelete
                       onClick={() => handleDelete(user._id, table, user.nama)}
-                      disabled={loading}
-                    >
-                      {loading ? "Deleting..." : <FontAwesomeIcon icon={faTrash} className="w-5" />}
-                    </button>
+                    />
                   </td>
                 </tr>
               ))
@@ -174,12 +170,12 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
         </table>
   
         {/* Pagination Controls */}
-        <div className="flex justify-between mt-4 items-center">
+        <div className="flex justify-center mt-8 items-center">
           <div className="flex space-x-2">
             <button
-              className="p-2 bg-gray-200 rounded"
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
+              className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
             >
               Previous
             </button>
@@ -188,16 +184,16 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
-                  className={`p-2 rounded ${currentPage === i + 1 ? "bg-brown-500 text-white" : "bg-gray-200"}`}
+                  className={`py-2 px-4 rounded ${currentPage === i + 1 ? "bg-green-500 text-white" : "bg-white text-brown-500 border border-brown-500"}`}
                 >
                   {i + 1}
                 </button>
               ))}
             </div>
             <button
-              className="p-2 bg-gray-200 rounded"
               onClick={() => setCurrentPage((prev) => prev + 1)}
               disabled={currentPage * itemsPerPage >= filteredData.length}
+              className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
             >
               Next
             </button>

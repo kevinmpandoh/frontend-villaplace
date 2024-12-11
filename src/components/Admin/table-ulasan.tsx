@@ -5,6 +5,7 @@ import { Ulasan } from "@/types/Ulasan";
 import useFetchData from "../../hooks/useFetchData";
 import Swal from "sweetalert2";
 import { useFetchUlasan } from "@/hooks/useFetchUlasan";
+import ButtonDelete from "../BookingAdmin/ButtonDelete";
 
 const TableUlasan = () => {
   const [loading, setLoading] = useState(false);
@@ -132,31 +133,31 @@ const TableUlasan = () => {
         </div>
       
         <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
-          <thead className="bg-brown-500 text-white">
+          <thead className="bg-primary text-white dark:bg-meta-4">
             <tr>
-              <th className="p-3 text-center border border-gray-300">No</th>
-              <th className="p-3 text-center border border-gray-300">User</th>
-              <th className="p-3 text-center border border-gray-300">Villa</th>
-              <th className="p-3 text-center border border-gray-300">Komentar</th>
-              <th className="p-3 text-center border border-gray-300">Rating</th>
-              <th className="p-3 text-center border border-gray-300">Action</th>
+              <th className="p-3 text-center">No</th>
+              <th className="p-3 text-center">User</th>
+              <th className="p-3 text-center">Villa</th>
+              <th className="p-3 text-center">Komentar</th>
+              <th className="p-3 text-center">Rating</th>
+              <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentData.length > 0 ? (
               currentData.map((ulasan, idx) => (
-                <tr key={idx} className="border border-gray-300">
-                  <td className="p-3 border text-center border-gray-300">
+                <tr key={idx} className="hover:bg-gray-50">
+                  <td className="p-3 text-center">
                     {indexOfFirstItem + idx + 1}
                   </td>
-                  <td className="p-3 border border-gray-300">{ulasan.userName}</td>
-                  <td className="p-3 border border-gray-300">
+                  <td className="p-3">{ulasan.userName}</td>
+                  <td className="p-3">
                     <a href={`/villa/${ulasan.villaId}`} className="text-blue-500">
                       {ulasan.villaName}
                     </a>
                   </td>
-                  <td className="p-3 border border-gray-300">{ulasan.komentar}</td>
-                  <td className="p-3 border border-gray-300">
+                  <td className="p-3">{ulasan.komentar}</td>
+                  <td className="p-3">
                     <div className="flex">
                       {Array.from({ length: 5 }, (_, i) => {
                         const fullStars = Math.floor(ulasan.rating);
@@ -190,24 +191,17 @@ const TableUlasan = () => {
                     </div>
                   </td>
                   <td className="p-3 border text-center border-gray-300">
-                    <button
-                      type="button"
-                      className="text-red-500 hover:text-red-700"
+                    <ButtonDelete
                       onClick={() => handleDelete(ulasan._id, ulasan.userName)}
-                      disabled={loading}
-                    >
+                    />
                       {loading ? (
                         "Deleting..."
                       ) : (
                         <FontAwesomeIcon icon={faTrash} className="w-5" />
                       )}
-                    </button>
-                    <button
-                      className="ml-2 text-blue-500 hover:text-blue-700"
+                    <ButtonDelete
                       onClick={() => openModal(ulasan)}
-                    >
-                      <FontAwesomeIcon icon={faInfoCircle} className="w-5" />
-                    </button>
+                    />
                   </td>
                 </tr>
               ))
@@ -221,12 +215,12 @@ const TableUlasan = () => {
           </tbody>
         </table>
       
-        <div className="flex flex-col md:flex-row justify-between mt-4 items-center">
+        <div className="flex justify-center mt-10 items-center">
           <div className="flex space-x-2 w-full md:w-auto">
             <button
-              className="p-2 bg-gray-200 rounded"
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
+              className="px-4 py-2 bg-brown-500 text-white disabled:bg-gray-300 rounded"
             >
               Previous
             </button>
@@ -237,10 +231,10 @@ const TableUlasan = () => {
                   <button
                     key={i}
                     onClick={() => setCurrentPage(i + 1)}
-                    className={`p-2 rounded ${
+                    className={`px-4 py-2 rounded ${
                       currentPage === i + 1
-                        ? "bg-brown-500 text-white"
-                        : "bg-gray-200"
+                        ? "bg-green-500 text-white"
+                        : "bg-white text-brown-500 border border-brown-500"
                     }`}
                   >
                     {i + 1}
@@ -249,9 +243,9 @@ const TableUlasan = () => {
               )}
             </div>
             <button
-              className="p-2 bg-gray-200 rounded"
               onClick={() => setCurrentPage((prev) => prev + 1)}
               disabled={currentPage * itemsPerPage >= filteredData.length}
+              className="px-4 py-2 rounded bg-brown-500 text-white disabled:bg-gray-300"
             >
               Next
             </button>

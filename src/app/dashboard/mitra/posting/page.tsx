@@ -6,6 +6,8 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import Link from "next/link";
+import ButtonEdit from "@/components/BookingAdmin/ButtonEdit";
+import ButtonDelete from "@/components/BookingAdmin/ButtonDelete";
 
 interface Villa {
   _id: string;
@@ -114,8 +116,8 @@ const PostingMitra = () => {
     <>
       <div className="p-8">
         {/* MANAJEMENT POSTING */}
-        <div className="border-2 rounded-md md:flex md:justify-between mb-5">
-          <div className="bg-white p-3">
+        <div className="border-2 rounded-md flex justify-between mb-5 bg-white p-6 mt-20 lg:mt-0">
+          <div>
             <h2 className="text-2xl font-semibold mb-3">Manajemen Posting</h2>
             <p className="text-lg font-normal text-gray-500">Description</p>
           </div>
@@ -123,7 +125,7 @@ const PostingMitra = () => {
             <Link href="/dashboard/mitra/posting/tambahVilla">
               <button
                 type="button"
-                className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mt-7 mr-10"
+                className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 flex mt-4"
               >
                 <p>+ Tambah Postingan</p>
               </button>
@@ -203,23 +205,21 @@ const PostingMitra = () => {
         </form>
 
         {/* Tabel */}
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <table className="min-w-full border-collapse border border-black">
-            <thead className="bg-brown-500 text-white">
+        <div className="bg-white overflow-hidden shadow-lg overflow-x-auto">
+          <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
+            <thead className="bg-primary text-white dark:bg-meta-4">
               <tr>
-                <th className="p-3 text-left border border-black">No</th>
-                <th className="p-3 text-left border border-black">
+                <th className="px-4 text-center whitespace-nowrap">No</th>
+                <th className="px-10 text-center whitespace-nowrap">
                   Nama Villa
                 </th>
-                <th className="p-3 text-left border border-black">Fasilitas</th>
-                <th className="p-3 text-left border border-black">Harga</th>
-                <th className="p-3 text-left border border-black">Lokasi</th>
-                <th className="p-3 text-left border border-black">Kategori</th>
-                <th className="p-3 text-left border border-black">Status</th>
-                <th className="p-3 text-left border border-black">
-                  Foto Villa
-                </th>
-                <th className="p-3 text-left border border-black">Action</th>
+                <th className="px-20 text-center whitespace-nowrap">Fasilitas</th>
+                <th className="px-10 text-center whitespace-nowrap">Harga</th>
+                <th className="px-20 text-center whitespace-nowrap">Lokasi</th>
+                <th className="p-3 text-center whitespace-nowrap">Kategori</th>
+                <th className="px-15 text-center whitespace-nowrap">Status</th>
+                <th className="px-10 text-center whitespace-nowrap">Foto Villa</th>
+                <th className="px-15 text-center whitespace-nowrap">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -231,59 +231,55 @@ const PostingMitra = () => {
                 </tr>
               ) : (
                 filteredVilla.map((data, index) => (
-                  <tr key={data._id} className="border-t border-black">
-                    <td className="p-3 border border-black">{index + 1}</td>
-                    <td className="p-3 border border-black">{data.nama}</td>
-                    <td className="p-3 border border-black">
+                  <tr key={data._id} className="border-t border-gray-300 hover:bg-gray-50">
+                    <td className="p-3 text-center border-gray-300">{index + 1}</td>
+                    <td className="p-3">{data.nama}</td>
+                    <td className="p-5">
                       {data.fasilitas.join(", ")}
                     </td>
-                    <td className="p-3 border border-black">{data.harga}</td>
-                    <td className="p-3 border border-black">{data.lokasi}</td>
-                    <td className="p-3 border border-black">{data.kategori}</td>
-                    <td className="p-3 border border-black">
+                    <td className="p-3 text-center">{data.harga}</td>
+                    <td className="p-3">{data.lokasi}</td>
+                    <td className="p-3">{data.kategori}</td>
+                    <td className="p-3 text-center">
                       <span
                         className={`px-3 py-1 rounded-full text-white text-sm ${
                           data.status === "pending"
-                            ? "bg-yellow-500"
+                            ? "bg-yellow-100 text-yellow-800 font-semibold"
                             : data.status === "success"
-                            ? "bg-green-500"
-                            : "bg-red-500"
+                            ? "bg-green-100 text-green-800 font-semibold"
+                            : "bg-red-100 text-red-800 font-semibold"
                         }`}
                       >
                         {data.status}
                       </span>
                     </td>
-                    <td className="p-3 border border-black">
+                    <td className="items-center justify-center">
                       <Image
-                        src={data.foto_villa?.[0]?.url || "/default-image.png"}
-                        alt="Villa"
-                        width={40}
-                        height={40}
+                        src={
+                          data.foto_villa?.[0]?.url || 
+                          "/default-image.png"
+                        }
+                        alt="Gambar Villa"
+                        width={100}
+                        height={100}
+                        objectFit="cover"
+                        layout="responsive"
+                        className="mx-auto"
                       />
                     </td>
-                    <td className="p-3 flex justify-end gap-5">
+                    <td className="p-3 flex justify-center gap-3 border-r">
                       {/* <Link href={`/editVilla/${data._id}`}> */}
-                      <Link
-                        href={`/dashboard/mitra/posting/editVilla/${data._id}`}
-                      >
-                        <button
-                          // href={`/edit/${index}`}
-                          className="text-blue-500 hover:text-blue-700"
-                        >
-                          <FontAwesomeIcon icon={faEdit} className="w-5" />
-                        </button>
-                      </Link>
-                      <button
-                        type="button"
-                        className="text-red-500 hover:text-red-700"
+                      <ButtonEdit
+                        onClick={() => window.location.href = `/dashboard/mitra/posting/editVilla/${data._id}`}
+                      />
+                      <ButtonDelete
                         onClick={() => {
                           return confirm("Anda yakin ingin menghapus data?")
                             ? handleDelete(data._id)
                             : "";
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faTrash} className="w-5" />
-                      </button>
+                        }
+                      }
+                      />
                     </td>
                   </tr>
                 ))

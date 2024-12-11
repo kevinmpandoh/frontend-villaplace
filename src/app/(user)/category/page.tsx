@@ -232,7 +232,7 @@ const Category = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="mt-10 flex justify-center space-x-2">
+          <div className="mt-10 flex justify-center items-center space-x-2">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}

@@ -6,6 +6,9 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import Link from "next/link";
+import ButtonEdit from "@/components/Payment/ButtonEdit";
+import ButtonDelete from "@/components/BookingAdmin/ButtonDelete";
+
 
 interface Villa {
   _id: string;
@@ -183,35 +186,8 @@ const PostingMitra = () => {
             <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
             <div className="mt-2">
               <div className="bg-white rounded-xl p-6  border-gray-200">
-                {/* Tombol Filter */}
-                <div className="ml-2 mb-5">
-                  <button
-                    onClick={() => setStatus("")}
-                    className="mr-2 px-4 py-2 bg-slate-800 hover:bg-slate-500 rounded text-white"
-                  >
-                    All
-                  </button>
-                  <button
-                    onClick={() => setStatus("Pending")}
-                    className="mr-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 rounded text-white"
-                  >
-                    Pending
-                  </button>
-                  <button
-                    onClick={() => setStatus("Success")}
-                    className="mr-2 px-4 py-2 bg-green-700 hover:bg-green-500 rounded text-white"
-                  >
-                    Success
-                  </button>
-                  <button
-                    onClick={() => setStatus("Rejected")}
-                    className="px-4 py-2 bg-red-600 hover:bg-red-400 rounded text-white"
-                  >
-                    Rejected
-                  </button>
-                </div>
+                
                 {/* Input Pencarian */}
-
                 <form className="max-w-md ml-2 mb-5">
                   <label
                     htmlFor="default-search"
@@ -255,39 +231,68 @@ const PostingMitra = () => {
                   </div>
                 </form>
 
+                {/* Tombol Filter */}
+                <div className="ml-2 mb-5">
+                  <button
+                    onClick={() => setStatus("")}
+                    className="mr-2 px-4 py-2 bg-slate-800 hover:bg-slate-500 rounded text-white"
+                  >
+                    All
+                  </button>
+                  <button
+                    onClick={() => setStatus("Pending")}
+                    className="mr-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 rounded text-white"
+                  >
+                    Pending
+                  </button>
+                  <button
+                    onClick={() => setStatus("Success")}
+                    className="mr-2 px-4 py-2 bg-green-700 hover:bg-green-500 rounded text-white"
+                  >
+                    Success
+                  </button>
+                  <button
+                    onClick={() => setStatus("Rejected")}
+                    className="px-4 py-2 bg-red-600 hover:bg-red-400 rounded text-white"
+                  >
+                    Rejected
+                  </button>
+                </div>
+
+                {/* Tabel Posting */}
                 <div className="bg-white overflow-hidden">
                   <div className="overflow-x-auto">
-                    <table className="min-w-full table-auto border-collapse">
+                    <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
                       <thead>
-                        <tr className="bg-emerald-600 text-white">
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                        <tr className="bg-emerald-600 text-white dark:bg-meta-4">
+                          <th className="px-4 text-center whitespace-nowrap">
                             No
                           </th>
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                          <th className="p-3 text-center whitespace-nowrap">
                             Nama Villa
                           </th>
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                          <th className="px-20 text-center whitespace-nowrap">
                             Fasilitas
                           </th>
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                          <th className="p-3 text-center whitespace-nowrap">
                             Harga
                           </th>
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                          <th className="px-20 text-center whitespace-nowrap">
                             Lokasi
                           </th>
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                          <th className="p-3 text-center whitespace-nowrap">
                             Kategori
                           </th>
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                          <th className="px-15 text-center whitespace-nowrap">
                             Status
                           </th>
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                          <th className="px-10 text-center whitespace-nowrap">
                             Foto Villa
                           </th>
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                          <th className="px-15 text-center whitespace-nowrap">
                             Action
                           </th>
-                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
+                          <th className="px-10 text-center whitespace-nowrap">
                             Status
                           </th>
                         </tr>
@@ -305,7 +310,7 @@ const PostingMitra = () => {
                               key={data._id}
                               className="border-t border-gray-300 hover:bg-gray-50"
                             >
-                              <td className="p-3 border-l text-center border-gray-300">
+                              <td className="p-3 text-center border-gray-300">
                                 {index + 1}
                               </td>
                               <td className="p-3">{data.nama}</td>
@@ -315,7 +320,7 @@ const PostingMitra = () => {
                               <td className="p-3 text-center">
                                 {data.harga}
                               </td>
-                              <td className="p-3 text-center">
+                              <td className="p-3">
                                 {data.lokasi}
                               </td>
                               <td className="p-3">
@@ -323,45 +328,36 @@ const PostingMitra = () => {
                               </td>
                               <td className="p-3 text-center">
                                 <span
-                                  className={`px-3 py-1 rounded-full text-center text-white text-sm ${
+                                  className={`px-3 py-1 rounded-full text-white text-sm ${
                                     data.status === "pending"
-                                      ? "bg-yellow-500"
+                                      ? "bg-yellow-100 text-yellow-800 font-semibold"
                                       : data.status === "success"
-                                      ? "bg-green-500"
-                                      : "bg-red-500"
+                                      ? "bg-green-100 text-green-800 font-semibold"
+                                      : "bg-red-100 text-red-800 font-semibold"
                                   }`}
                                 >
                                   {data.status}
                                 </span>
                               </td>
-                              <td className="p-10 items-center text-center justify-center">
+                              <td className="items-center justify-center">
                                 <Image
-                                  className="mx-auto"
                                   src={
                                     data.foto_villa?.[0]?.url ||
                                     "/default-image.png"
                                   }
-                                  alt="Villa"
-                                  width={50}
-                                  height={50}
+                                  alt="Gambar Villa"
+                                  width={100}
+                                  height={100}
                                   objectFit="cover"
+                                  layout="responsive"
+                                  className="mx-auto"
                                 />
                               </td>
                               <td className="p-3 text-center justify-center gap-5">
-                                <Link href={`/dashboard/admin/posting/editVilla/${data._id}`}>
-                                  <button
-                                    // href={`/edit/${index}`}
-                                    className="text-blue-500 hover:text-blue-700"
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faEdit}
-                                      className="w-5"
-                                    />
-                                  </button>
-                                </Link>
-                                <button
-                                  type="button"
-                                  className="text-red-500 hover:text-red-700"
+                                  <ButtonEdit
+                                    onClick={() => window.location.href = `/dashboard/admin/posting/editVilla/${data._id}`}
+                                  />
+                                <ButtonDelete
                                   onClick={() => {
                                     return confirm(
                                       "Anda yakin ingin menghapus data?"
@@ -369,14 +365,9 @@ const PostingMitra = () => {
                                       ? handleDelete(data._id)
                                       : "";
                                   }}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faTrash}
-                                    className="w-5"
-                                  />
-                                </button>
+                                />
                               </td>
-                              <td className="p-10 text-center justify-center gap-5 border-r ">
+                              <td className="p-3 text-center justify-center gap-5 border-r ">
                                 {/* Tombol untuk mengubah status */}
                                 <div className="mt-2 flex flex-col gap-4">
                                   <button
