@@ -257,37 +257,37 @@ const PostingMitra = () => {
 
                 <div className="bg-white overflow-hidden">
                   <div className="overflow-x-auto">
-                    <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg  shadow-lg">
-                      <thead className="bg-brown-500 text-white">
-                        <tr>
-                          <th className="p-3 text-center border border-gray-300">
+                    <table className="min-w-full table-auto border-collapse">
+                      <thead>
+                        <tr className="bg-emerald-600 text-white">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             No
                           </th>
-                          <th className="p-3 text-center border border-gray-300">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             Nama Villa
                           </th>
-                          <th className="p-3 text-center border border-gray-300">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             Fasilitas
                           </th>
-                          <th className="p-3 text-center border border-gray-300">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             Harga
                           </th>
-                          <th className="p-3 text-center border border-gray-300">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             Lokasi
                           </th>
-                          <th className="p-3 text-center border border-gray-300">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             Kategori
                           </th>
-                          <th className="p-3 text-center border border-gray-300">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             Status
                           </th>
-                          <th className="p-3 text-center border border-gray-300">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             Foto Villa
                           </th>
-                          <th className="p-3 text-center border border-gray-300">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             Action
                           </th>
-                          <th className="p-3 text-center border border-gray-300">
+                          <th className="p-3 text-sm font-semibold text-center whitespace-nowrap">
                             Status
                           </th>
                         </tr>
@@ -303,27 +303,25 @@ const PostingMitra = () => {
                           filteredVilla.map((data, index) => (
                             <tr
                               key={data._id}
-                              className="border-t border-gray-300"
+                              className="border-t border-gray-300 hover:bg-gray-50"
                             >
-                              <td className="p-3 border text-center border-gray-300">
+                              <td className="p-3 border-l text-center border-gray-300">
                                 {index + 1}
                               </td>
-                              <td className="p-3 border border-gray-300">
-                                {data.nama}
-                              </td>
-                              <td className="p-3 border border-gray-300">
+                              <td className="p-3">{data.nama}</td>
+                              <td className="p-5">
                                 {data.fasilitas.join(", ")}
                               </td>
-                              <td className="p-3 border border-gray-300">
+                              <td className="p-3 text-center">
                                 {data.harga}
                               </td>
-                              <td className="p-3 border border-gray-300">
+                              <td className="p-3 text-center">
                                 {data.lokasi}
                               </td>
-                              <td className="p-3 border border-gray-300">
+                              <td className="p-3">
                                 {data.kategori}
                               </td>
-                              <td className="p-3 border text-center border-gray-300">
+                              <td className="p-3 text-center">
                                 <span
                                   className={`px-3 py-1 rounded-full text-center text-white text-sm ${
                                     data.status === "pending"
@@ -336,7 +334,7 @@ const PostingMitra = () => {
                                   {data.status}
                                 </span>
                               </td>
-                              <td className="p-3 border text-center border-gray-300  justify-center items-center">
+                              <td className="p-10 items-center text-center justify-center">
                                 <Image
                                   className="mx-auto"
                                   src={
@@ -346,10 +344,11 @@ const PostingMitra = () => {
                                   alt="Villa"
                                   width={50}
                                   height={50}
+                                  objectFit="cover"
                                 />
                               </td>
                               <td className="p-3 text-center justify-center gap-5">
-                                <Link href="/editVilla">
+                                <Link href={`/dashboard/admin/posting/editVilla/${data._id}`}>
                                   <button
                                     // href={`/edit/${index}`}
                                     className="text-blue-500 hover:text-blue-700"
@@ -377,7 +376,7 @@ const PostingMitra = () => {
                                   />
                                 </button>
                               </td>
-                              <td className="p-3 text-center justify-center gap-5 border-2 border-r-8 ">
+                              <td className="p-10 text-center justify-center gap-5 border-r ">
                                 {/* Tombol untuk mengubah status */}
                                 <div className="mt-2 flex flex-col gap-4">
                                   <button

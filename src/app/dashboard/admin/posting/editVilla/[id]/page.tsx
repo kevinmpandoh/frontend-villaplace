@@ -110,7 +110,7 @@ const VillaForm = () => {
           title: "Villa Updated!",
           text: "Your villa has been successfully updated.",
         }).then(() => {
-          window.location.href = "/dashboard/mitra/posting";
+          window.location.href = "/dashboard/admin/posting";
         });
       } catch (error) {
         Swal.fire({
