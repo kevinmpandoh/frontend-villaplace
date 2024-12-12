@@ -18,5 +18,6 @@ export interface FotoVilla {
     foto_villa: FotoVilla[];
     status: string;
     kategori: string[];
+    averageRating: number;
   }
   

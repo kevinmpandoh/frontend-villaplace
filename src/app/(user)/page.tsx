@@ -82,6 +82,7 @@ const HomePage: React.FC = () => {
                 foto_villa={villa.foto_villa}
                 status={villa.status}
                 kategori={villa.kategori}
+                averageRating={villa.averageRating}
               />
             ))
           ) : (

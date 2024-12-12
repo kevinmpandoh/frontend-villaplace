@@ -13,6 +13,7 @@ interface FilterState {
   };
   kategori: string[];
   kamar: number | null;
+  averageRating: number | null;
 }
 
 const Category = () => {
@@ -28,6 +29,8 @@ const Category = () => {
     priceRange: { min: 0, max: 999999999 },
     kategori: [],
     kamar: null,
+    averageRating: null,
+
   });
   const itemsPerPage = 6;
 
@@ -64,8 +67,13 @@ const Category = () => {
 
       const matchesKamar =
         !filters.kamar || villa.fasilitas[0]?.includes(filters.kamar.toString());
+        const matchesRating =
+        filters.averageRating === null ||
+        (villa.averageRating >= filters.averageRating &&
+          villa.averageRating < filters.averageRating + 1); // Ensure the range
+  
 
-      return matchesSearch && matchesPrice && matchesKategori && matchesKamar;
+      return matchesSearch && matchesPrice && matchesKategori && matchesKamar &&matchesRating;
     });
   }, [villas, searchQuery, filters]);
 
@@ -103,7 +111,13 @@ const Category = () => {
     }));
     setCurrentPage(1);
   }, []);
-
+  const handleRatingChange = useCallback((rating: number | null) => {
+    setFilters((prev) => ({
+      ...prev,
+      averageRating: rating,
+    }));
+    setCurrentPage(1);
+  }, []);
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -124,81 +138,97 @@ const Category = () => {
           </div>
 
           {/* Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-4 rounded-lg shadow">
-            {/* Range Harga Filter */}
-            <div className="space-y-2">
-              <label className="block text-md font-semibold">
-                Range Harga
-              </label>
-              <div className="flex space-x-2">
-                <input
-                  type="number"
-                  placeholder="Min"
-                  className="w-1/2 px-3 py-2 border rounded"
-                  value={filters.priceRange.min}
-                  onChange={(e) =>
-                    handlePriceRangeChange(
-                      Number(e.target.value),
-                      filters.priceRange.max
-                    )
-                  }
-                />
-                <input
-                  type="number"
-                  placeholder="Max"
-                  className="w-1/2 px-3 py-2 border rounded"
-                  value={filters.priceRange.max}
-                  onChange={(e) =>
-                    handlePriceRangeChange(
-                      filters.priceRange.min,
-                      Number(e.target.value)
-                    )
-                  }
-                />
-              </div>
-            </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 bg-white p-4 rounded-lg shadow">
+  {/* Range Harga Filter */}
+  <div className="space-y-2">
+    <label className="block text-md font-semibold">Range Harga</label>
+    <div className="flex space-x-2">
+      <input
+        type="number"
+        placeholder="Min"
+        className="w-1/2 px-3 py-2 border rounded"
+        value={filters.priceRange.min}
+        onChange={(e) =>
+          handlePriceRangeChange(
+            Number(e.target.value),
+            filters.priceRange.max
+          )
+        }
+      />
+      <input
+        type="number"
+        placeholder="Max"
+        className="w-1/2 px-3 py-2 border rounded"
+        value={filters.priceRange.max}
+        onChange={(e) =>
+          handlePriceRangeChange(
+            filters.priceRange.min,
+            Number(e.target.value)
+          )
+        }
+      />
+    </div>
+  </div>
+  <div className="space-y-2">
+    <label className="block text-md font-semibold">Jumlah Kamar</label>
+    <select
+      className="w-full px-3 py-2 border rounded"
+      value={filters.kamar || ""}
+      onChange={(e) =>
+        handleKamarChange(e.target.value ? Number(e.target.value) : null)
+      }
+    >
+      <option value="">Semua</option>
+      {[1, 2, 3, 4, 5].map((num) => (
+        <option key={num} value={num}>
+          {num} Kamar
+        </option>
+      ))}
+    </select>
+  </div>
+  <div className="space-y-2">
+  <label className="block text-md font-semibold">Rating Minimum</label>
+  <select
+    className="w-full px-3 py-2 border rounded"
+    value={filters.averageRating || ""}
+    onChange={(e) =>
+      handleRatingChange(e.target.value ? Number(e.target.value) : null)
+    }
+  >
+    <option value="">Semua</option>
+    <option value={0}>0 Star & Above</option>
+    <option value={1}>1 Star & Above</option>
+    <option value={2}>2 Star & Above</option>
+    <option value={3}>3 Star & Above</option>
+    <option value={4}>4 Star & Above</option>
+    <option value={5}>5 Star</option>
+  </select>
+</div>
+  {/* Category Filter */}
+  <div className="space-y-2 md:col-span-3">
+    <label className="block text-md font-semibold">Kategori</label>
+    <div className="flex flex-wrap gap-2">
+      {availableCategories.map((kategori) => (
+        <label
+          key={kategori}
+          className="flex items-center space-x-2 w-1/2 sm:w-1/4"
+        >
+          <input
+            type="checkbox"
+            checked={filters.kategori.includes(kategori)}
+            onChange={() => handleKategoriChange(kategori)}
+            className="rounded text-brown-500"
+          />
+          <span className="text-sm">{kategori}</span>
+        </label>
+      ))}
+    </div>
+  </div>
 
-            {/* Category Filter */}
-            <div className="ml-4 space-y-2">
-              <label className="block text-md font-semibold">
-                Kategori
-              </label>
-              <div className="space-y-2">
-                {availableCategories.map((kategori) => (
-                  <label key={kategori} className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={filters.kategori.includes(kategori)}
-                      onChange={() => handleKategoriChange(kategori)}
-                      className="rounded text-brown-500"
-                    />
-                    <span className="text-sm">{kategori}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+  {/* Room Filter */}
+ 
+</div>
 
-            {/* Room Filter */}
-            <div className="space-y-2">
-              <label className="block text-md font-semibold">
-                Jumlah Kamar
-              </label>
-              <select
-                className="w-full px-3 py-2 border rounded"
-                value={filters.kamar || ""}
-                onChange={(e) =>
-                  handleKamarChange(e.target.value ? Number(e.target.value) : null)
-                }
-              >
-                <option value="">Semua</option>
-                {[1, 2, 3, 4, 5].map((num) => (
-                  <option key={num} value={num}>
-                    {num} Kamar
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
         </div>
 
         {/* Results Count */}
@@ -221,6 +251,7 @@ const Category = () => {
                 foto_villa={villa.foto_villa}
                 status={villa.status}
                 kategori={villa.kategori}
+                averageRating = {villa.averageRating}
               />
             ))
           ) : (

@@ -18,6 +18,7 @@ const VillaCard = ({
     fasilitas,
     harga,
     foto_villa,
+    averageRating
   }: VillaProps) => {
     const imageUrl = foto_villa?.[0]?.url || "/default-image.png";
   
@@ -63,6 +64,12 @@ const VillaCard = ({
                   className="mr-2" icon={faBath}
                 />
                 <span>{fasilitas[1]}</span>
+              </div>
+              <div className="flex items-center mt-2 md:mt-0">
+                <FontAwesomeIcon
+                  className="mr-2" icon={faBath}
+                />
+                <span>{averageRating}</span>
               </div>
             </div>
           </div>
