@@ -1,6 +1,5 @@
 "use client";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import axios from "axios";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
@@ -24,6 +23,10 @@ const PostingMitra = () => {
   const [villa, setVilla] = useState<Villa[]>([]);
   const [status, setStatus] = useState<string>("");
   const [searchInput, setSearchInput] = useState<string>(""); // State baru untuk input pencarian
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(15); // 10 item per halaman
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,6 +66,11 @@ const PostingMitra = () => {
       status.includes(searchKeyword)
     );
   });
+
+  // Pagination calculations
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredVilla.slice(indexOfFirstItem, indexOfLastItem);
 
   // Fungsi untuk menghapus data villa
   const deleteData = async (id: string) => {
@@ -205,87 +213,141 @@ const PostingMitra = () => {
         </form>
 
         {/* Tabel */}
-        <div className="bg-white overflow-hidden shadow-lg overflow-x-auto">
-          <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
-            <thead className="bg-primary text-white dark:bg-meta-4">
-              <tr>
-                <th className="px-4 text-center whitespace-nowrap">No</th>
-                <th className="px-10 text-center whitespace-nowrap">
-                  Nama Villa
-                </th>
-                <th className="px-20 text-center whitespace-nowrap">Fasilitas</th>
-                <th className="px-10 text-center whitespace-nowrap">Harga</th>
-                <th className="px-20 text-center whitespace-nowrap">Lokasi</th>
-                <th className="p-3 text-center whitespace-nowrap">Kategori</th>
-                <th className="px-15 text-center whitespace-nowrap">Status</th>
-                <th className="px-10 text-center whitespace-nowrap">Foto Villa</th>
-                <th className="px-15 text-center whitespace-nowrap">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredVilla.length === 0 ? (
+        <div className="bg-white rounded-lg shadow-lg">
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto border-collapse border border-gray-300">
+              <thead className="bg-primary text-white dark:bg-meta-4">
                 <tr>
-                  <td colSpan={10} className="p-3 text-center">
-                    Data tidak tersedia
-                  </td>
+                  <th className="px-4 text-center whitespace-nowrap">No</th>
+                  <th className="px-10 text-center whitespace-nowrap">
+                    Nama Villa
+                  </th>
+                  <th className="px-20 text-center whitespace-nowrap">
+                    Fasilitas
+                  </th>
+                  <th className="px-10 text-center whitespace-nowrap">Harga</th>
+                  <th className="px-20 text-center whitespace-nowrap">Lokasi</th>
+                  <th className="p-3 text-center whitespace-nowrap">Kategori</th>
+                  <th className="px-15 text-center whitespace-nowrap">Status</th>
+                  <th className="px-10 text-center whitespace-nowrap">
+                    Foto Villa
+                  </th>
+                  <th className="px-15 text-center whitespace-nowrap">Action</th>
                 </tr>
-              ) : (
-                filteredVilla.map((data, index) => (
-                  <tr key={data._id} className="border-t border-gray-300 hover:bg-gray-50">
-                    <td className="p-3 text-center border-gray-300">{index + 1}</td>
-                    <td className="p-3">{data.nama}</td>
-                    <td className="p-5">
-                      {data.fasilitas.join(", ")}
-                    </td>
-                    <td className="p-3 text-center">{data.harga}</td>
-                    <td className="p-3">{data.lokasi}</td>
-                    <td className="p-3">{data.kategori}</td>
-                    <td className="p-3 text-center">
-                      <span
-                        className={`px-3 py-1 rounded-full text-white text-sm ${
-                          data.status === "pending"
-                            ? "bg-yellow-100 text-yellow-800 font-semibold"
-                            : data.status === "success"
-                            ? "bg-green-100 text-green-800 font-semibold"
-                            : "bg-red-100 text-red-800 font-semibold"
-                        }`}
-                      >
-                        {data.status}
-                      </span>
-                    </td>
-                    <td className="items-center justify-center">
-                      <Image
-                        src={
-                          data.foto_villa?.[0]?.url || 
-                          "/default-image.png"
-                        }
-                        alt="Gambar Villa"
-                        width={100}
-                        height={100}
-                        objectFit="cover"
-                        layout="responsive"
-                        className="mx-auto"
-                      />
-                    </td>
-                    <td className="p-3 flex justify-center gap-3 border-r">
-                      {/* <Link href={`/editVilla/${data._id}`}> */}
-                      <ButtonEdit
-                        onClick={() => window.location.href = `/dashboard/mitra/posting/editVilla/${data._id}`}
-                      />
-                      <ButtonDelete
-                        onClick={() => {
-                          return confirm("Anda yakin ingin menghapus data?")
-                            ? handleDelete(data._id)
-                            : "";
-                        }
-                      }
-                      />
+              </thead>
+              <tbody>
+                {currentItems.length === 0 ? (
+                  <tr>
+                    <td colSpan={10} className="p-3 text-center">
+                      Data tidak tersedia
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  currentItems.map((data, index) => (
+                    <tr
+                      key={data._id}
+                      className="border-t border-gray-300 hover:bg-gray-50"
+                    >
+                      <td className="p-3 text-center border-gray-300">
+                        {indexOfFirstItem + index + 1}
+                      </td>
+                      <td className="p-3">{data.nama}</td>
+                      <td className="p-5">{data.fasilitas.join(", ")}</td>
+                      <td className="p-3 text-center">{data.harga}</td>
+                      <td className="p-3">{data.lokasi}</td>
+                      <td className="p-3">{data.kategori}</td>
+                      <td className="p-3 text-center">
+                        <span
+                          className={`px-4 py-1.5 rounded-full text-center items-center text-white ${
+                            data.status === "pending"
+                              ? "bg-yellow-400 font-semibold"
+                              : data.status === "success"
+                              ? "bg-green-400 font-semibold"
+                              : "bg-red-400 font-semibold"
+                          }`}
+                        >
+                          {data.status}
+                        </span>
+                      </td>
+                      <td className="items-center justify-center">
+                        <Image
+                          src={data.foto_villa?.[0]?.url || "/default-image.png"}
+                          alt="Gambar Villa"
+                          width={100}
+                          height={100}
+                          objectFit="cover"
+                          layout="responsive"
+                          className="mx-auto"
+                        />
+                      </td>
+                      <td className="p-3 flex justify-center gap-3 border-r">
+                        {/* <Link href={`/editVilla/${data._id}`}> */}
+                        <ButtonEdit
+                          onClick={() =>
+                            (window.location.href = `/dashboard/mitra/posting/editVilla/${data._id}`)
+                          }
+                        />
+                        <ButtonDelete
+                          onClick={() => {
+                            return confirm("Anda yakin ingin menghapus data?")
+                              ? handleDelete(data._id)
+                              : "";
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="w-full border-t border-gray-200">
+            <div className="flex justify-center py-6">
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                >
+                  Previous
+                </button>
+                <div className="flex space-x-1">
+                  {Array.from(
+                    { length: Math.ceil(filteredVilla.length / itemsPerPage) },
+                    (_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCurrentPage(i + 1)}
+                        className={`py-2 px-4 rounded ${
+                          currentPage === i + 1
+                            ? "bg-green-500 text-white"
+                            : "bg-white text-brown-500 border border-brown-500"
+                        }`}
+                      >
+                        {i + 1}
+                      </button>
+                    )
+                  )}
+                </div>
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) =>
+                      Math.min(
+                        prev + 1,
+                        Math.ceil(filteredVilla.length / itemsPerPage)
+                      )
+                    )
+                  }
+                  disabled={currentPage * itemsPerPage >= filteredVilla.length}
+                  className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

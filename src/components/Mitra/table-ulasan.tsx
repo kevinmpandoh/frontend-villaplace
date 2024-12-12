@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faStarHalfAlt, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faStar,
+  faStarHalfAlt,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { Ulasan } from "@/types/Ulasan";
 import useFetchData from "../../hooks/useFetchData";
 
@@ -24,12 +28,9 @@ const TableUlasan = () => {
     setCurrentPage(1);
   }, [searchTermUser, searchTermVilla, searchTermKomentar, searchTermRating]);
 
-
   useEffect(() => {
     if (ulasanData) setUlasanList(ulasanData.data);
   }, [ulasanData]);
-
- 
 
   const renderTable = () => {
     if (ulasanLoading) {
@@ -38,10 +39,20 @@ const TableUlasan = () => {
 
     const filteredData = ulasanList.filter((ulasan) => {
       return (
-        (searchTermUser === "" || ulasan.user?.nama.toLowerCase().includes(searchTermUser.toLowerCase())) &&
-        (searchTermVilla === "" || ulasan.villa?.nama.toLowerCase().includes(searchTermVilla.toLowerCase())) &&
-        (searchTermKomentar === "" || ulasan.komentar.toLowerCase().includes(searchTermKomentar.toLowerCase())) &&
-        (searchTermRating === "" || ulasan.rating.toString().includes(searchTermRating))
+        (searchTermUser === "" ||
+          ulasan.user?.nama
+            .toLowerCase()
+            .includes(searchTermUser.toLowerCase())) &&
+        (searchTermVilla === "" ||
+          ulasan.villa?.nama
+            .toLowerCase()
+            .includes(searchTermVilla.toLowerCase())) &&
+        (searchTermKomentar === "" ||
+          ulasan.komentar
+            .toLowerCase()
+            .includes(searchTermKomentar.toLowerCase())) &&
+        (searchTermRating === "" ||
+          ulasan.rating.toString().includes(searchTermRating))
       );
     });
 
@@ -61,8 +72,8 @@ const TableUlasan = () => {
     const currentData = mappedData.slice(indexOfFirstItem, indexOfLastItem);
 
     return (
-        <div className="overflow-x-auto">
-        <div className="flex flex-col md:flex-row justify-between m-4 items-center">
+      <div className="overflow-x-auto">
+        <div className="flex flex-col md:flex-row justify-between m-4 md:m-0 md:mb-4 items-center md:items-start">
           <div className="flex flex-col md:flex-row space-x-0 md:space-x-2 w-full md:w-auto">
             <input
               type="text"
@@ -94,7 +105,7 @@ const TableUlasan = () => {
             />
           </div>
         </div>
-      
+
         <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
           <thead className="bg-primary text-white dark:bg-meta-4">
             <tr>
@@ -115,7 +126,10 @@ const TableUlasan = () => {
                   </td>
                   <td className="p-3">{ulasan.userName}</td>
                   <td className="p-3">
-                    <a href={`/villa/${ulasan.villaId}`} className="text-blue-500">
+                    <a
+                      href={`/villa/${ulasan.villaId}`}
+                      className="text-blue-500"
+                    >
                       {ulasan.villaName}
                     </a>
                   </td>
@@ -172,14 +186,14 @@ const TableUlasan = () => {
             )}
           </tbody>
         </table>
-      
+
         {/* Pagination */}
-        <div className="flex flex-col md:flex-row justify-between mt-4 items-center">
-          <div className="flex space-x-2 w-full md:w-auto">
+        <div className="flex justify-center mt-10 items-center">
+          <div className="flex space-x-2 w-full md:w-auto justify-center mb-4 md:mb-0">
             <button
-              className="p-2 bg-gray-200 rounded"
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
+              className="px-4 py-2 bg-brown-500 text-white disabled:bg-gray-300 rounded"
             >
               Previous
             </button>
@@ -190,10 +204,10 @@ const TableUlasan = () => {
                   <button
                     key={i}
                     onClick={() => setCurrentPage(i + 1)}
-                    className={`p-2 rounded ${
+                    className={`px-4 py-2 rounded ${
                       currentPage === i + 1
-                        ? "bg-brown-500 text-white"
-                        : "bg-gray-200"
+                        ? "bg-green-500 text-white"
+                        : "bg-white text-brown-500 border border-brown-500"
                     }`}
                   >
                     {i + 1}
@@ -202,16 +216,15 @@ const TableUlasan = () => {
               )}
             </div>
             <button
-              className="p-2 bg-gray-200 rounded"
               onClick={() => setCurrentPage((prev) => prev + 1)}
               disabled={currentPage * itemsPerPage >= filteredData.length}
+              className="px-4 py-2 rounded bg-brown-500 text-white disabled:bg-gray-300"
             >
               Next
             </button>
           </div>
         </div>
       </div>
-      
     );
   };
 
@@ -229,87 +242,89 @@ const TableUlasan = () => {
     if (!modalVisible || !selectedUlasan) return null;
 
     return (
+      <div
+        className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-start md:justify-center"
+        onClick={closeModal} // Close modal on clicking outside
+      >
         <div
-    className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-start md:justify-center"
-    onClick={closeModal} // Close modal on clicking outside
-  >
-    <div
-      className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full md:w-2/3 lg:w-1/2 xl:w-2/5"
-      onClick={(e) => e.stopPropagation()} // Prevent click event from propagating to outer div
-    >
-      <div className="text-left flex flex-col items-start">
-        <h2 className="text-xl font-semibold mb-4">Review Details</h2>
-        
-        {/* Stars Section */}
-        <div className="flex justify-center mb-4">
-          <div className="flex">
-            {Array.from({ length: 5 }, (_, i) => {
-              const fullStars = Math.floor(selectedUlasan.rating);
-              const halfStar = selectedUlasan.rating - fullStars >= 0.5;
-              if (i < fullStars) {
-                return (
-                  <FontAwesomeIcon
-                    key={i}
-                    icon={faStar}
-                    className="text-yellow-500"
-                  />
-                );
-              } else if (i < fullStars + 1 && halfStar) {
-                return (
-                  <FontAwesomeIcon
-                    key={i}
-                    icon={faStarHalfAlt}
-                    className="text-yellow-500"
-                  />
-                );
-              } else {
-                return (
-                  <FontAwesomeIcon
-                    key={i}
-                    icon={faStar}
-                    className="text-gray-300"
-                  />
-                );
-              }
-            })}
+          className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full md:w-2/3 lg:w-1/2 xl:w-2/5"
+          onClick={(e) => e.stopPropagation()} // Prevent click event from propagating to outer div
+        >
+          <div className="text-left flex flex-col items-start">
+            <h2 className="text-xl font-semibold mb-4">Review Details</h2>
+
+            {/* Stars Section */}
+            <div className="flex justify-center mb-4">
+              <div className="flex">
+                {Array.from({ length: 5 }, (_, i) => {
+                  const fullStars = Math.floor(selectedUlasan.rating);
+                  const halfStar = selectedUlasan.rating - fullStars >= 0.5;
+                  if (i < fullStars) {
+                    return (
+                      <FontAwesomeIcon
+                        key={i}
+                        icon={faStar}
+                        className="text-yellow-500"
+                      />
+                    );
+                  } else if (i < fullStars + 1 && halfStar) {
+                    return (
+                      <FontAwesomeIcon
+                        key={i}
+                        icon={faStarHalfAlt}
+                        className="text-yellow-500"
+                      />
+                    );
+                  } else {
+                    return (
+                      <FontAwesomeIcon
+                        key={i}
+                        icon={faStar}
+                        className="text-gray-300"
+                      />
+                    );
+                  }
+                })}
+              </div>
+            </div>
+
+            {/* Text Info Section */}
+            <p>
+              <strong>User:</strong> {selectedUlasan.user.nama}
+            </p>
+
+            {/* Added space after Villa name */}
+            <p className="mb-4">
+              <strong>Villa:</strong>
+              <a
+                href={`/category/${selectedUlasan.villa._id}`}
+                className="text-blue-500 hover:text-blue-700 ml-2"
+              >
+                {selectedUlasan.villa.nama}
+              </a>
+            </p>
+
+            <p>
+              <strong>Comment:</strong> {selectedUlasan.komentar}
+            </p>
+          </div>
+
+          {/* Footer Section with Buttons */}
+          <div className="mt-4 flex justify-end space-x-4">
+            <button
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition-all"
+              onClick={closeModal}
+            >
+              Close
+            </button>
           </div>
         </div>
-
-        {/* Text Info Section */}
-        <p><strong>User:</strong> {selectedUlasan.user.nama}</p>
-        
-        {/* Added space after Villa name */}
-        <p className="mb-4">
-          <strong>Villa:</strong>
-          <a 
-            href={`/category/${selectedUlasan.villa._id}`} 
-            className="text-blue-500 hover:text-blue-700 ml-2"
-          >
-            {selectedUlasan.villa.nama}
-          </a>
-        </p>
-
-        <p><strong>Comment:</strong> {selectedUlasan.komentar}</p>
       </div>
-
-      {/* Footer Section with Buttons */}
-      <div className="mt-4 flex justify-end space-x-4">
-        
-        <button
-          className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition-all"
-          onClick={closeModal}
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
     );
   };
 
   return (
     <div>
-        
       {renderTable()}
       {renderModal()}
     </div>

@@ -240,14 +240,6 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
           })}
         </ul>
       </div>
-
-      {/* Footer Sidebar */}
-      <div className="pb-10 mt-auto">
-        <div className="lg:hidden">
-          <Separator className="my-7 bg-white" />
-          <ProfileSection onClose={onClose} isMobile={true} />
-        </div>
-      </div>
     </div>
   );
 };

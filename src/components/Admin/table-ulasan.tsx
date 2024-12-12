@@ -99,7 +99,7 @@ const TableUlasan = () => {
 
     return (
         <div className="overflow-x-auto">
-        <div className="flex flex-col md:flex-row justify-between m-4 items-center">
+        <div className="flex flex-col md:flex-row justify-between m-4 md:m-0 md:mb-4 items-center md:items-start">
           <div className="flex flex-col md:flex-row space-x-0 md:space-x-2 w-full md:w-auto">
             <input
               type="text"
@@ -216,7 +216,7 @@ const TableUlasan = () => {
         </table>
       
         <div className="flex justify-center mt-10 items-center">
-          <div className="flex space-x-2 w-full md:w-auto">
+          <div className="flex space-x-2 w-full md:w-auto justify-center mb-4 md:mb-0">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}

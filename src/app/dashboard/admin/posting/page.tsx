@@ -1,6 +1,4 @@
 "use client";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
@@ -8,7 +6,6 @@ import Swal from "sweetalert2";
 import Link from "next/link";
 import ButtonEdit from "@/components/Payment/ButtonEdit";
 import ButtonDelete from "@/components/BookingAdmin/ButtonDelete";
-
 
 interface Villa {
   _id: string;
@@ -21,10 +18,14 @@ interface Villa {
   foto_villa?: { url: string }[]; // Opsional jika properti ini bisa null/undefined
 }
 
-const PostingMitra = () => {
+const PostingAdmin = () => {
   const [villa, setVilla] = useState<Villa[]>([]);
   const [status, setStatus] = useState<string>("");
   const [searchInput, setSearchInput] = useState<string>(""); // State baru untuk input pencarian
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(15); // 20 item per halaman
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +65,12 @@ const PostingMitra = () => {
       status.includes(searchKeyword)
     );
   });
+
+  // Pagination calculations
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredVilla.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredVilla.length / itemsPerPage);
 
   // Fungsi untuk menghapus data villa
   const deleteData = async (id: string) => {
@@ -186,7 +193,6 @@ const PostingMitra = () => {
             <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
             <div className="mt-2">
               <div className="bg-white rounded-xl p-6  border-gray-200">
-                
                 {/* Input Pencarian */}
                 <form className="max-w-md ml-2 mb-5">
                   <label
@@ -260,9 +266,9 @@ const PostingMitra = () => {
                 </div>
 
                 {/* Tabel Posting */}
-                <div className="bg-white overflow-hidden">
+                <div className="bg-white rounded-lg shadow-lg">
                   <div className="overflow-x-auto">
-                    <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
+                    <table className="min-w-full table-auto border-collapse border border-gray-300">
                       <thead>
                         <tr className="bg-emerald-600 text-white dark:bg-meta-4">
                           <th className="px-4 text-center whitespace-nowrap">
@@ -298,42 +304,36 @@ const PostingMitra = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredVilla.length === 0 ? (
+                        {currentItems.length === 0 ? (
                           <tr>
                             <td colSpan={10} className="p-3 text-center">
                               Data tidak tersedia
                             </td>
                           </tr>
                         ) : (
-                          filteredVilla.map((data, index) => (
+                          currentItems.map((data, index) => (
                             <tr
                               key={data._id}
                               className="border-t border-gray-300 hover:bg-gray-50"
                             >
                               <td className="p-3 text-center border-gray-300">
-                                {index + 1}
+                                {indexOfFirstItem + index + 1}
                               </td>
                               <td className="p-3">{data.nama}</td>
                               <td className="p-5">
                                 {data.fasilitas.join(", ")}
                               </td>
-                              <td className="p-3 text-center">
-                                {data.harga}
-                              </td>
-                              <td className="p-3">
-                                {data.lokasi}
-                              </td>
-                              <td className="p-3">
-                                {data.kategori}
-                              </td>
+                              <td className="p-3 text-center">{data.harga}</td>
+                              <td className="p-3">{data.lokasi}</td>
+                              <td className="p-3">{data.kategori}</td>
                               <td className="p-3 text-center">
                                 <span
-                                  className={`px-3 py-1 rounded-full text-white text-sm ${
+                                  className={`px-4 py-1.5 rounded-full text-center items-center text-white ${
                                     data.status === "pending"
-                                      ? "bg-yellow-100 text-yellow-800 font-semibold"
+                                      ? "bg-yellow-400 font-semibold"
                                       : data.status === "success"
-                                      ? "bg-green-100 text-green-800 font-semibold"
-                                      : "bg-red-100 text-red-800 font-semibold"
+                                      ? "bg-green-400 font-semibold"
+                                      : "bg-red-400font-semibold"
                                   }`}
                                 >
                                   {data.status}
@@ -354,9 +354,11 @@ const PostingMitra = () => {
                                 />
                               </td>
                               <td className="p-3 text-center justify-center gap-5">
-                                  <ButtonEdit
-                                    onClick={() => window.location.href = `/dashboard/admin/posting/editVilla/${data._id}`}
-                                  />
+                                <ButtonEdit
+                                  onClick={() =>
+                                    (window.location.href = `/dashboard/admin/posting/editVilla/${data._id}`)
+                                  }
+                                />
                                 <ButtonDelete
                                   onClick={() => {
                                     return confirm(
@@ -402,6 +404,51 @@ const PostingMitra = () => {
                       </tbody>
                     </table>
                   </div>
+
+                  {/* Pagination Controls */}
+                  <div className="w-full border-t border-gray-200">
+                    <div className="flex justify-center py-6">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() =>
+                            setCurrentPage((prev) => Math.max(prev - 1, 1))
+                          }
+                          disabled={currentPage === 1}
+                          className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                        >
+                          Previous
+                        </button>
+                        <div className="flex space-x-1">
+                          {Array.from({ length: totalPages }, (_, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setCurrentPage(i + 1)}
+                              className={`py-2 px-4 rounded ${
+                                currentPage === i + 1
+                                  ? "bg-green-500 text-white"
+                                  : "bg-white text-brown-500 border border-brown-500"
+                              }`}
+                            >
+                              {i + 1}
+                            </button>
+                          ))}
+                        </div>
+                        <button
+                          onClick={() =>
+                            setCurrentPage((prev) =>
+                              Math.min(prev + 1, totalPages)
+                            )
+                          }
+                          disabled={
+                            currentPage * itemsPerPage >= filteredVilla.length
+                          }
+                          className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                        >
+                          Next
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -413,5 +460,5 @@ const PostingMitra = () => {
   );
 };
 
-export default PostingMitra;
+export default PostingAdmin;
 // !
