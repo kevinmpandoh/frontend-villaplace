@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faStar, faStarHalfAlt, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
 import { Ulasan } from "@/types/Ulasan";
 import useFetchData from "../../hooks/useFetchData";
 import Swal from "sweetalert2";
 import { useFetchUlasan } from "@/hooks/useFetchUlasan";
 import ButtonDelete from "../BookingAdmin/ButtonDelete";
+import ButtonDetail from "../BookingAdmin/ButtonDetail";
 
 const TableUlasan = () => {
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [searchTermUser, setSearchTermUser] = useState("");
@@ -45,7 +45,6 @@ const TableUlasan = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        setLoading(true);
           return handleDeleteUlasan(ulasanId)
           .then(() => {
             setUlasanList((prevList) =>
@@ -60,9 +59,6 @@ const TableUlasan = () => {
           .catch((error) => {
             Swal.fire("Error!", error.message || "An error occurred.", "error");
           })
-          .finally(() => {
-            setLoading(false);
-          });
       }
       return Promise.reject();
     });
@@ -194,12 +190,7 @@ const TableUlasan = () => {
                     <ButtonDelete
                       onClick={() => handleDelete(ulasan._id, ulasan.userName)}
                     />
-                      {loading ? (
-                        "Deleting..."
-                      ) : (
-                        <FontAwesomeIcon icon={faTrash} className="w-5" />
-                      )}
-                    <ButtonDelete
+                    <ButtonDetail
                       onClick={() => openModal(ulasan)}
                     />
                   </td>
@@ -360,7 +351,6 @@ const TableUlasan = () => {
 
   return (
     <div>
-        
       {renderTable()}
       {renderModal()}
     </div>

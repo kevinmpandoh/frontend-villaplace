@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Ulasan } from "@/types/Ulasan";
 import useFetchData from "../../hooks/useFetchData";
+import ButtonDetail from "../BookingAdmin/ButtonDetail";
 
 const TableUlasan = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -168,12 +169,9 @@ const TableUlasan = () => {
                     </div>
                   </td>
                   <td className="p-3 border text-center border-gray-300">
-                    <button
-                      className="ml-2 text-blue-500 hover:text-blue-700"
+                    <ButtonDetail
                       onClick={() => openModal(ulasan)}
-                    >
-                      <FontAwesomeIcon icon={faInfoCircle} className="w-5" />
-                    </button>
+                    />
                   </td>
                 </tr>
               ))

@@ -187,82 +187,86 @@ const PostingAdmin = () => {
           </div>
         </div>
 
+        {/* MANAJEMEN POSTING ADMIN */}
         <div className="p-8">
           <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-200">
             <h2 className="text-xl font-bold mb-6">Posting</h2>
             <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
             <div className="mt-2">
               <div className="bg-white rounded-xl p-6  border-gray-200">
+
                 {/* Input Pencarian */}
-                <form className="max-w-md ml-2 mb-5">
-                  <label
-                    htmlFor="default-search"
-                    className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-                  >
-                    Search
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                      <svg
-                        className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                        />
-                      </svg>
-                    </div>
-                    <input
-                      type="search"
-                      id="default-search"
-                      className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Search here..."
-                      required
-                      value={searchInput}
-                      onChange={(e) => setSearchInput(e.target.value)}
-                    />
-                    <button
-                      type="submit"
-                      className="text-white absolute end-2.5 bottom-2.5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                <div className="flex flex-col md:flex-row justify-between">
+                  <form className="md:w-72 lg:w-100 mb-5">
+                    <label
+                      htmlFor="default-search"
+                      className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                     >
                       Search
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg
+                          className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                          />
+                        </svg>
+                      </div>
+                      <input
+                        type="search"
+                        id="default-search"
+                        className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Search here..."
+                        required
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                      />
+                      <button
+                        type="submit"
+                        className="text-white absolute end-2.5 bottom-2.5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                      >
+                        Search
+                      </button>
+                    </div>
+                  </form>
+
+                  {/* Tombol Filter */}
+                  <div className="mb-5">
+                    <button
+                      onClick={() => setStatus("")}
+                      className="mr-2 px-4 py-2 bg-slate-800 hover:bg-slate-500 rounded text-white"
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={() => setStatus("Pending")}
+                      className="mr-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 rounded text-white"
+                    >
+                      Pending
+                    </button>
+                    <button
+                      onClick={() => setStatus("Success")}
+                      className="mr-2 px-4 py-2 bg-green-700 hover:bg-green-500 rounded text-white"
+                    >
+                      Success
+                    </button>
+                    <button
+                      onClick={() => setStatus("Rejected")}
+                      className="px-4 py-2 bg-red-600 hover:bg-red-400 rounded text-white"
+                    >
+                      Rejected
                     </button>
                   </div>
-                </form>
-
-                {/* Tombol Filter */}
-                <div className="ml-2 mb-5">
-                  <button
-                    onClick={() => setStatus("")}
-                    className="mr-2 px-4 py-2 bg-slate-800 hover:bg-slate-500 rounded text-white"
-                  >
-                    All
-                  </button>
-                  <button
-                    onClick={() => setStatus("Pending")}
-                    className="mr-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 rounded text-white"
-                  >
-                    Pending
-                  </button>
-                  <button
-                    onClick={() => setStatus("Success")}
-                    className="mr-2 px-4 py-2 bg-green-700 hover:bg-green-500 rounded text-white"
-                  >
-                    Success
-                  </button>
-                  <button
-                    onClick={() => setStatus("Rejected")}
-                    className="px-4 py-2 bg-red-600 hover:bg-red-400 rounded text-white"
-                  >
-                    Rejected
-                  </button>
                 </div>
 
                 {/* Tabel Posting */}
@@ -330,10 +334,10 @@ const PostingAdmin = () => {
                                 <span
                                   className={`px-4 py-1.5 rounded-full text-center items-center text-white ${
                                     data.status === "pending"
-                                      ? "bg-yellow-400 font-semibold"
+                                      ? "bg-yellow-500 font-semibold"
                                       : data.status === "success"
-                                      ? "bg-green-400 font-semibold"
-                                      : "bg-red-400font-semibold"
+                                      ? "bg-green-500 font-semibold"
+                                      : "bg-red-500 font-semibold"
                                   }`}
                                 >
                                   {data.status}
