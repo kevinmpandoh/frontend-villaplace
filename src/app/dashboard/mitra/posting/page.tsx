@@ -143,7 +143,7 @@ const PostingMitra = () => {
 
       {/* MANAJEMENT POSTING MITRA */}
       <div className="p-8">
-        <div className="border-2 rounded-xl flex justify-between mb-5 bg-white p-6">
+        <div className="bg-white border-2 rounded-xl flex justify-between mb-5 p-6">
           <div>
             <h2 className="text-2xl font-bold mb-3">Manajemen Posting</h2>
             <p className="text-lg font-normal text-gray-500">Description</p>
@@ -160,214 +160,237 @@ const PostingMitra = () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between">
-          <form className="md:w-72 lg:w-100 mb-5">
-            <label
-              htmlFor="default-search"
-              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-            >
-              Search
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
+        <div className="mt-2">
+          {/* Input Pencarian */}
+          <div className="bg-white border-2 rounded-xl border-gray-200 p-6">
+            <h2 className="text-xl font-bold mb-4">Posting</h2>
+            <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
+            <div className="flex flex-col lg:flex-row justify-between pt-4">
+              <form className="lg:w-100 mb-5">
+                <label
+                  htmlFor="default-search"
+                  className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                 >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="search"
-                id="default-search"
-                className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search here..."
-                required
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
-              <button
-                type="submit"
-                className="text-white absolute end-2.5 bottom-2.5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              >
-                Search
-              </button>
-            </div>
-          </form>
-
-          {/* Tombol Filter */}
-          <div className="mb-5">
-            <button
-              onClick={() => setStatus("")}
-              className="mr-2 px-4 py-2 bg-slate-800 hover:bg-slate-500 rounded text-white"
-            >
-              All
-            </button>
-            <button
-              onClick={() => setStatus("Pending")}
-              className="mr-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 rounded text-white"
-            >
-              Pending
-            </button>
-            <button
-              onClick={() => setStatus("Success")}
-              className="mr-2 px-4 py-2 bg-green-700 hover:bg-green-500 rounded text-white"
-            >
-              Success
-            </button>
-            <button
-              onClick={() => setStatus("Rejected")}
-              className="px-4 py-2 bg-red-600 hover:bg-red-400 rounded text-white"
-            >
-              Rejected
-            </button>
-          </div>
-        </div>
-        {/* Input Pencarian */}
-
-
-        {/* Tabel */}
-        <div className="bg-white rounded-lg shadow-lg">
-          <div className="overflow-x-auto">
-            <table className="min-w-full table-auto border-collapse border border-gray-300">
-              <thead className="bg-primary text-white dark:bg-meta-4">
-                <tr>
-                  <th className="px-4 text-center whitespace-nowrap">No</th>
-                  <th className="px-10 text-center whitespace-nowrap">
-                    Nama Villa
-                  </th>
-                  <th className="px-20 text-center whitespace-nowrap">
-                    Fasilitas
-                  </th>
-                  <th className="px-10 text-center whitespace-nowrap">Harga</th>
-                  <th className="px-20 text-center whitespace-nowrap">Lokasi</th>
-                  <th className="p-3 text-center whitespace-nowrap">Kategori</th>
-                  <th className="px-15 text-center whitespace-nowrap">Status</th>
-                  <th className="px-10 text-center whitespace-nowrap">
-                    Foto Villa
-                  </th>
-                  <th className="px-15 text-center whitespace-nowrap">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.length === 0 ? (
-                  <tr>
-                    <td colSpan={10} className="p-3 text-center">
-                      Data tidak tersedia
-                    </td>
-                  </tr>
-                ) : (
-                  currentItems.map((data, index) => (
-                    <tr
-                      key={data._id}
-                      className="border-t border-gray-300 hover:bg-gray-50"
+                  Search
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg
+                      className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 20"
                     >
-                      <td className="p-3 text-center border-gray-300">
-                        {indexOfFirstItem + index + 1}
-                      </td>
-                      <td className="p-3">{data.nama}</td>
-                      <td className="p-5">{data.fasilitas.join(", ")}</td>
-                      <td className="p-3 text-center">{data.harga}</td>
-                      <td className="p-3">{data.lokasi}</td>
-                      <td className="p-3">{data.kategori}</td>
-                      <td className="p-3 text-center">
-                        <span
-                          className={`px-4 py-1.5 rounded-full text-center items-center text-white ${
-                            data.status === "pending"
-                              ? "bg-yellow-500 font-semibold"
-                              : data.status === "success"
-                              ? "bg-green-500 font-semibold"
-                              : "bg-red-500 font-semibold"
-                          }`}
-                        >
-                          {data.status}
-                        </span>
-                      </td>
-                      <td className="items-center justify-center">
-                        <Image
-                          src={data.foto_villa?.[0]?.url || "/default-image.png"}
-                          alt="Gambar Villa"
-                          width={100}
-                          height={100}
-                          objectFit="cover"
-                          layout="responsive"
-                          className="mx-auto"
-                        />
-                      </td>
-                      <td className="p-3 text-center gap-3 border-r">
-                        {/* <Link href={`/editVilla/${data._id}`}> */}
-                        <ButtonEdit
-                          onClick={() =>
-                            (window.location.href = `/dashboard/mitra/posting/editVilla/${data._id}`)
-                          }
-                        />
-                        <ButtonDelete
-                          onClick={() => {
-                            return confirm("Anda yakin ingin menghapus data?")
-                              ? handleDelete(data._id)
-                              : "";
-                          }}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination Controls */}
-          <div className="w-full border-t border-gray-200">
-            <div className="flex justify-center py-6">
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
-                >
-                  Previous
-                </button>
-                <div className="flex space-x-1">
-                  {Array.from(
-                    { length: Math.ceil(filteredVilla.length / itemsPerPage) },
-                    (_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setCurrentPage(i + 1)}
-                        className={`py-2 px-4 rounded ${
-                          currentPage === i + 1
-                            ? "bg-green-500 text-white"
-                            : "bg-white text-brown-500 border border-brown-500"
-                        }`}
-                      >
-                        {i + 1}
-                      </button>
-                    )
-                  )}
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="search"
+                    id="default-search"
+                    className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search here..."
+                    required
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    className="text-white absolute end-2.5 bottom-2.5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                  >
+                    Search
+                  </button>
                 </div>
+              </form>
+
+              {/* Tombol Filter */}
+              <div className="mb-5">
                 <button
-                  onClick={() =>
-                    setCurrentPage((prev) =>
-                      Math.min(
-                        prev + 1,
-                        Math.ceil(filteredVilla.length / itemsPerPage)
-                      )
-                    )
-                  }
-                  disabled={currentPage * itemsPerPage >= filteredVilla.length}
-                  className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                  onClick={() => setStatus("")}
+                  className="mr-2 px-4 py-2 bg-slate-800 hover:bg-slate-500 rounded text-white"
                 >
-                  Next
+                  All
                 </button>
+                <button
+                  onClick={() => setStatus("Pending")}
+                  className="mr-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 rounded text-white"
+                >
+                  Pending
+                </button>
+                <button
+                  onClick={() => setStatus("Success")}
+                  className="mr-2 px-4 py-2 bg-green-700 hover:bg-green-500 rounded text-white"
+                >
+                  Success
+                </button>
+                <button
+                  onClick={() => setStatus("Rejected")}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-400 rounded text-white"
+                >
+                  Rejected
+                </button>
+              </div>
+            </div>
+
+            {/* Tabel */}
+            <div className="bg-white rounded-lg shadow-lg">
+              <div className="overflow-x-auto">
+                <table className="min-w-full table-auto border-collapse border border-gray-300">
+                  <thead className="bg-primary text-white dark:bg-meta-4">
+                  <tr className="bg-emerald-600 text-white dark:bg-meta-4 text-left">
+                          <th className="min-w-[20px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                            No
+                          </th>
+                          <th className="min-w-[220px] py-4 px-10 font-semibold text-gray-50 dark:text-white">
+                            Villa
+                          </th>
+                          <th className="min-w-[120px] py-4 px-2 font-semibold text-gray-50 dark:text-white">
+                            Fasilitas
+                          </th>
+                          <th className="min-w-[120px] py-4 px-3 font-semibold text-gray-50 dark:text-white">
+                            Lokasi
+                          </th>
+                          <th className="min-w-[20px] py-4 px-3 font-semibold text-gray-50 dark:text-white">
+                            Kategori
+                          </th>
+                          <th className="min-w-[20px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                            Status
+                          </th>
+                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                            Action
+                          </th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                    {currentItems.length === 0 ? (
+                      <tr>
+                        <td colSpan={10} className="p-3 text-center">
+                          Data tidak tersedia
+                        </td>
+                      </tr>
+                    ) : (
+                      currentItems.map((data, index) => (
+                        <tr
+                          key={data._id}
+                          className="border-t border-gray-300 hover:bg-gray-50"
+                        >
+                          <td className="p-3 text-center border-gray-300">
+                            {indexOfFirstItem + index + 1}
+                          </td>
+                          <td className="py-6 p-6 flex flex-col gap-2 sm:flex-row sm:items-center">
+                            <div>
+                              <Image
+                                src={
+                                  data.foto_villa?.[0]?.url || "/default-image.png"
+                                }
+                                alt="Gambar Villa"
+                                width={50}
+                                height={50}
+                                objectFit="cover"
+                                layout="responsive"
+                                className="mx-auto"
+                              />
+                            </div>
+                            <div className="flex flex-col justify-center">
+                              <div className="flex text-md text-gray-800 dark:text-white">
+                                {data.nama}
+                              </div>
+                              <div className="flex text-lg font-semibold text-gray-800 dark:text-white">
+                                {data.harga}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="text-md">
+                            {data.fasilitas.join(", ")}
+                          </td>
+                          <td className="p-3 text-md">{data.lokasi}</td>
+                          <td className="p-3 text-md">{data.kategori}</td>
+                          <td className="p-3 text-center">
+                            <span
+                              className={`px-4 py-1.5 rounded-full text-center items-center text-white ${
+                                data.status === "pending"
+                                  ? "bg-yellow-500 font-semibold"
+                                  : data.status === "success"
+                                  ? "bg-green-500 font-semibold"
+                                  : "bg-red-500 font-semibold"
+                              }`}
+                            >
+                              {data.status}
+                            </span>
+                          </td>
+                          <td className="p-3 text-center gap-3 border-r">
+                            {/* <Link href={`/editVilla/${data._id}`}> */}
+                            <ButtonEdit
+                              onClick={() =>
+                                (window.location.href = `/dashboard/mitra/posting/editVilla/${data._id}`)
+                              }
+                            />
+                            <ButtonDelete
+                              onClick={() => {
+                                return confirm("Anda yakin ingin menghapus data?")
+                                  ? handleDelete(data._id)
+                                  : "";
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination Controls */}
+              <div className="w-full border-t border-gray-200">
+                <div className="flex justify-center py-6">
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                    >
+                      Previous
+                    </button>
+                    <div className="flex space-x-1">
+                      {Array.from(
+                        { length: Math.ceil(filteredVilla.length / itemsPerPage) },
+                        (_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setCurrentPage(i + 1)}
+                            className={`py-2 px-4 rounded ${
+                              currentPage === i + 1
+                                ? "bg-green-500 text-white"
+                                : "bg-white text-brown-500 border border-brown-500"
+                            }`}
+                          >
+                            {i + 1}
+                          </button>
+                        )
+                      )}
+                    </div>
+                    <button
+                      onClick={() =>
+                        setCurrentPage((prev) =>
+                          Math.min(
+                            prev + 1,
+                            Math.ceil(filteredVilla.length / itemsPerPage)
+                          )
+                        )
+                      }
+                      disabled={currentPage * itemsPerPage >= filteredVilla.length}
+                      className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

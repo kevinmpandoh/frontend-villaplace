@@ -189,15 +189,15 @@ const PostingAdmin = () => {
 
         {/* MANAJEMEN POSTING ADMIN */}
         <div className="p-8">
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-200">
+          <div className="bg-white border-2 rounded-xl shadow-lg p-6 border-gray-200">
             <h2 className="text-xl font-bold mb-6">Posting</h2>
             <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
+            
             <div className="mt-2">
-              <div className="bg-white rounded-xl p-6  border-gray-200">
-
-                {/* Input Pencarian */}
-                <div className="flex flex-col md:flex-row justify-between">
-                  <form className="md:w-72 lg:w-100 mb-5">
+              <div className="bg-white rounded-xl border-gray-200">
+              {/* Input Pencarian */}
+                <div className="flex flex-col lg:flex-row justify-between pt-4">
+                  <form className="lg:w-100 mb-5">
                     <label
                       htmlFor="default-search"
                       className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -274,35 +274,29 @@ const PostingAdmin = () => {
                   <div className="overflow-x-auto">
                     <table className="min-w-full table-auto border-collapse border border-gray-300">
                       <thead>
-                        <tr className="bg-emerald-600 text-white dark:bg-meta-4">
-                          <th className="px-4 text-center whitespace-nowrap">
+                        <tr className="bg-emerald-600 text-white dark:bg-meta-4 text-left">
+                          <th className="min-w-[20px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                             No
                           </th>
-                          <th className="p-3 text-center whitespace-nowrap">
-                            Nama Villa
+                          <th className="min-w-[220px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                            Villa
                           </th>
-                          <th className="px-20 text-center whitespace-nowrap">
+                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                             Fasilitas
                           </th>
-                          <th className="p-3 text-center whitespace-nowrap">
-                            Harga
-                          </th>
-                          <th className="px-20 text-center whitespace-nowrap">
+                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                             Lokasi
                           </th>
-                          <th className="p-3 text-center whitespace-nowrap">
+                          <th className="min-w-[20px] py-4  font-semibold text-gray-50 dark:text-white">
                             Kategori
                           </th>
-                          <th className="px-15 text-center whitespace-nowrap">
+                          <th className="min-w-[20px] py-4 px-2 font-semibold text-gray-50 dark:text-white">
                             Status
                           </th>
-                          <th className="px-10 text-center whitespace-nowrap">
-                            Foto Villa
-                          </th>
-                          <th className="px-15 text-center whitespace-nowrap">
+                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                             Action
                           </th>
-                          <th className="px-10 text-center whitespace-nowrap">
+                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                             Status
                           </th>
                         </tr>
@@ -323,14 +317,35 @@ const PostingAdmin = () => {
                               <td className="p-3 text-center border-gray-300">
                                 {indexOfFirstItem + index + 1}
                               </td>
-                              <td className="p-3">{data.nama}</td>
-                              <td className="p-5">
+                              <td className="py-10 px-3 flex flex-col gap-2 sm:flex-row sm:items-center">
+                                <div>
+                                  <Image
+                                    src={
+                                      data.foto_villa?.[0]?.url || "/default-image.png"
+                                    }
+                                    alt="Gambar Villa"
+                                    width={70}
+                                    height={60}
+                                    objectFit="cover"
+                                    layout="responsive"
+                                    className="mx-auto"
+                                  />
+                                </div>
+                                <div className="flex flex-col justify-center">
+                                  <div className="flex text-sm text-gray-800 dark:text-white">
+                                    {data.nama}
+                                  </div>
+                                  <div className="flex text-sm font-semibold text-gray-800 dark:text-white">
+                                    {data.harga}
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="p-3 text-sm">
                                 {data.fasilitas.join(", ")}
                               </td>
-                              <td className="p-3 text-center">{data.harga}</td>
-                              <td className="p-3">{data.lokasi}</td>
-                              <td className="p-3">{data.kategori}</td>
-                              <td className="p-3 text-center">
+                              <td className="p-3 text-sm">{data.lokasi}</td>
+                              <td className="text-sm">{data.kategori}</td>
+                              <td className="text-center">
                                 <span
                                   className={`px-4 py-1.5 rounded-full text-center items-center text-white ${
                                     data.status === "pending"
@@ -342,20 +357,6 @@ const PostingAdmin = () => {
                                 >
                                   {data.status}
                                 </span>
-                              </td>
-                              <td className="items-center justify-center">
-                                <Image
-                                  src={
-                                    data.foto_villa?.[0]?.url ||
-                                    "/default-image.png"
-                                  }
-                                  alt="Gambar Villa"
-                                  width={100}
-                                  height={100}
-                                  objectFit="cover"
-                                  layout="responsive"
-                                  className="mx-auto"
-                                />
                               </td>
                               <td className="p-3 text-center justify-center gap-5">
                                 <ButtonEdit
