@@ -10,6 +10,7 @@ import {
   faLocationDot,
   faHouse
 } from "@fortawesome/free-solid-svg-icons";
+import RatingStar from "./DetailVilla/RatingStar";
 
 const VillaCard = ({
     _id,
@@ -18,7 +19,8 @@ const VillaCard = ({
     fasilitas,
     harga,
     foto_villa,
-    averageRating
+    averageRating,
+    commentCount
   }: VillaProps) => {
     const imageUrl = foto_villa?.[0]?.url || "/default-image.png";
   
@@ -52,24 +54,31 @@ const VillaCard = ({
               <span className="ml-2 text-gray-600">{lokasi}</span>
             </div>
   
-            <div className="flex flex-col md:flex-row mt-2">
-              <div className="flex items-center mr-4">
-                <FontAwesomeIcon 
-                  className="mr-2" icon={faHouse} 
-                />
-                <span>{fasilitas[0]}</span>
+            <div className="flex items-center justify-between mt-2">
+              {/* Bagian kiri - Fasilitas */}
+              <div className="flex items-center gap-4">
+                <div className="flex items-center">
+                  <FontAwesomeIcon 
+                    className="mr-2" 
+                    icon={faHouse} 
+                  />
+                  <span className="text-sm">{fasilitas[0]}</span>
+                </div>
+                <div className="flex items-center">
+                  <FontAwesomeIcon
+                    className="mr-2" 
+                    icon={faBath}
+                  />
+                  <span className="text-sm">{fasilitas[1]}</span>
+                </div>
               </div>
-              <div className="flex items-center mt-2 md:mt-0">
-                <FontAwesomeIcon
-                  className="mr-2" icon={faBath}
-                />
-                <span>{fasilitas[1]}</span>
-              </div>
-              <div className="flex items-center mt-2 md:mt-0">
-                <FontAwesomeIcon
-                  className="mr-2" icon={faBath}
-                />
-                <span>{averageRating}</span>
+
+              {/* Bagian kanan - Rating */}
+              <div className="flex items-center">
+                <RatingStar rating={averageRating || 0} />
+                <span className="ml-2">
+                  {averageRating ? `${averageRating.toFixed(1)} | ${commentCount} ulasan` : "0.0 | 0 ulasan"}
+                </span>
               </div>
             </div>
           </div>
