@@ -28,14 +28,14 @@ const PesananMitra = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isModalAddOpen, setIsModalAddOpen] = React.useState(false);
   const [currentModalId, setCurrentModalId] = useState("");
-  const [dataBooking, setDataBooking] = useState<Booking[]>([]);
-  const [pagination, setPagination] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [filteredData, setFilteredData] = useState<Booking[]>([]);
   const [search, setSearch] = useState("");
   const [detailBooking, setDetailBooking] = useState<any>();
   const [villa, setVilla] = useState<Villa[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const {
     handleGetBookingById,
@@ -59,32 +59,45 @@ const PesananMitra = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `limit=5&page=${currentPage}`;
+      let query = `status=${selectedStatus}`;
+      let itemsPerPage = 5;
 
       const data = await handleGetBookingByOwner(query);
       if (data && data.data) {
-        let filteredData = data.data.filter((item: Booking) => {
-          const matchesSearch =
-            // item.user.nama.toLowerCase().includes(search.toLowerCase()) ||
-            item.catatan?.toLowerCase().includes(search.toLowerCase()) ||
-            item.villa.nama.toLowerCase().includes(search.toLowerCase());
+        let filteredData = data.data.filter((data: Booking) => {
+          const searchKeyword = search.toLowerCase();
 
-          const matchesStatus =
-            selectedStatus === "All" || item.status === selectedStatus;
+          const nama_villa = data.villa.nama?.toLowerCase() || "";
+          const nama_user = data.user?.nama?.toLowerCase() || "";
+          const email_user = data.user?.email?.toLowerCase() || "";
 
-          return matchesSearch && matchesStatus; // Gabungkan filter search dan status
+          return (
+            nama_villa.includes(searchKeyword) ||
+            nama_user.includes(searchKeyword) ||
+            email_user.includes(searchKeyword)
+          );
         });
 
-        setDataBooking(filteredData);
-        setPagination(data.pagination);
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = filteredData.slice(
+          indexOfFirstItem,
+          indexOfLastItem
+        );
+
+        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+        setFilteredData(currentItems);
+        setTotalItems(filteredData.length);
+        setTotalPages(totalPages);
       } else {
-        setDataBooking([]);
-        setPagination(null);
+        setTotalItems(0);
+        setTotalPages(0);
       }
     };
 
     fetchData();
-  }, [currentPage, search, selectedStatus]);
+  }, [selectedStatus, search, currentPage]);
 
   useEffect(() => {
     if (currentModalId) {
@@ -98,16 +111,6 @@ const PesananMitra = () => {
       fetchData();
     }
   }, [currentModalId]);
-
-  useEffect(() => {
-    if (selectedStatus === "All") {
-      setFilteredData(dataBooking);
-    } else {
-      setFilteredData(
-        dataBooking.filter((item) => item.status === selectedStatus)
-      );
-    }
-  }, [selectedStatus, dataBooking]);
 
   const toggleModal = (id: any) => {
     setCurrentModalId(id);
@@ -222,7 +225,9 @@ const PesananMitra = () => {
               filteredData={filteredData}
               search={search}
               selectedStatus={selectedStatus}
-              pagination={pagination}
+              totalPages={totalPages}
+              currentPage={currentPage}
+              totalItems={totalItems}
               handleCurrentPage={handleCurrentPage}
               handleSearch={handleSearch}
               toggleModal={toggleModal}

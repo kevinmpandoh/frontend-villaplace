@@ -4,7 +4,9 @@ export interface TableBookingAdminProps {
   search: string;
   filteredData: Booking[];
   selectedStatus: string;
-  pagination: any;
+  totalPages: number;
+  currentPage: number;
+  totalItems: number;
   handleCurrentPage: (currentPage: number) => void;
   handleSearch: (keyword: string) => void;
   handleSelectStatus: (selectedStatus: string) => void;
@@ -17,7 +19,9 @@ export interface TableBookingOwnerProps {
   search: string;
   filteredData: Booking[];
   selectedStatus: string;
-  pagination: any;
+  totalPages: number;
+  currentPage: number;
+  totalItems: number;
   handleCurrentPage: (currentPage: number) => void;
   handleSearch: (keyword: string) => void;
   handleSelectStatus: (selectedStatus: string) => void;

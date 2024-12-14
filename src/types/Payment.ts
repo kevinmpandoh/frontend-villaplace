@@ -14,6 +14,7 @@ export default interface Payment {
       nama: string;
       foto_villa: { url: string }[];
       harga: number;
+      lokasi: string;
     };
   };
 }
