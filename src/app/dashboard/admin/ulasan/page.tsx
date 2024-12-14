@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import TableUlasan from "@/components/Admin/table-ulasan";
 import Link from "next/link";
 const UlasanAdmin = () => {
@@ -28,7 +28,7 @@ const UlasanAdmin = () => {
       <div className="flex justify-between border-2 shadow-lg rounded-xl items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Ulasan</h1>
-          <p>Description</p>
+          <p>Halaman untuk memanajemen ulasan dari user</p>
         </div>
       </div>
 

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import ModalAdmin from "@/components/Admin/modalAdd";
 import TableManajemen from "@/components/Admin/table-management";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 
 const ManajemenPengguna = () => {

@@ -43,7 +43,7 @@ const ManajemenPengguna = () => {
       <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Pengguna - User</h1>
-          <p>Halaman untuk me manajemen role user</p>
+          <p>Halaman untuk memanajemen role user</p>
         </div>
       </div>
 

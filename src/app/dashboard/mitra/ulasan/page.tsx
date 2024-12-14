@@ -28,7 +28,7 @@ const UlasanAdmin = () => {
       <div className="flex justify-between border-2 shadow-lg rounded-xl items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Ulasan</h1>
-          <p>Description</p>
+          <p>Halaman untuk meminjau ulasan dari User</p>
         </div>
       </div>
 

@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { User } from "@/types/User";
 import { Mitra } from "@/types/Mitra";
 import { Admin } from "@/types/Admin";
@@ -14,11 +12,10 @@ import Swal from "sweetalert2";
 import ButtonDelete from "../BookingAdmin/ButtonDelete";
 
 interface TableProps {
-  table: "admin" | "mitra" | "user"; // type the table prop to accept specific values
+  table: "admin" | "mitra" | "user";
 }
 
 const TableManagement: React.FC<TableProps> = ({ table }) => {
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,9 +57,8 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        setLoading(true);
         let deletePromise;
-  
+
         if (type === "user") {
           deletePromise = handleDeleteUser(userId);
         } else if (type === "mitra") {
@@ -70,11 +66,10 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
         } else if (type === "admin") {
           deletePromise = handleDeleteAdmin(userId);
         }
-  
+
         if (deletePromise) {
           deletePromise
             .then(() => {
-              // If deletion was successful, remove from list and show success message
               if (type === "user") {
                 setUserList((prevList) => prevList.filter((user) => user._id !== userId));
               } else if (type === "mitra") {
@@ -82,16 +77,12 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
               } else if (type === "admin") {
                 setAdminList((prevList) => prevList.filter((admin) => admin._id !== userId));
               }
-  
+
               Swal.fire("Deleted!", `${userName} has been deleted.`, "success");
             })
             .catch((error) => {
-              // Handle any errors, and show the failure message
               Swal.fire("Error", `Failed to delete ${userName}: ${error.message}`, "error");
             })
-            .finally(() => {
-              setLoading(false);
-            });
         }
       }
     });
@@ -107,36 +98,36 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
     } else if (table === "admin") {
       data = adminList;
     }
-  
+
     if (userLoading || mitraLoading || adminLoading) {
       return <div className="text-center">Loading...</div>;
     }
-  
+
     const filterData = (data: User[] | Mitra[] | Admin[]) => {
       return data.filter((item) => {
         const matchesName = item.nama?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesEmail = item.email?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesNoTelepon = item.no_telepon?.toLowerCase().includes(searchTerm.toLowerCase()) || table !== "admin";
-  
+
         return matchesName || matchesEmail || matchesNoTelepon;
       });
     };
-  
+
     const filteredData = filterData(data);
-  
+
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  
+
     return (
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
           <thead className="bg-primary text-white dark:bg-meta-4">
             <tr>
               <th className="p-3 text-center">No</th>
-              <th className="p-3 text-center">Nama</th>
-              <th className="p-3 text-center">Email</th>
-              <th className="p-3 text-center">No Telepon</th>
+              <th className="p-3 text-left">Nama</th>
+              <th className="p-3 text-left">Email</th>
+              <th className={`p-3 text-left ${table === "admin" ? "hidden" : ""}`}>No Telepon</th>
               <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
@@ -144,14 +135,12 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
             {currentData.length > 0 ? (
               currentData.map((user, idx) => (
                 <tr key={idx} className="border border-gray-300 hover:bg-gray-50">
-                  <td className="p-3 text-center ">
+                  <td className="p-3 text-center">
                     {indexOfFirstItem + idx + 1}
                   </td>
                   <td className="p-3">{user.nama}</td>
                   <td className="p-3">{user.email}</td>
-                  <td className="p-3">
-                    {user.no_telepon ? user.no_telepon : "-"}
-                  </td>
+                  <td className={`p-3 ${table === "admin" ? "hidden" : ""}`}>{user.no_telepon ? user.no_telepon : "-"}</td>
                   <td className="p-3 text-center">
                     <ButtonDelete
                       onClick={() => handleDelete(user._id, table, user.nama)}
@@ -168,7 +157,7 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
             )}
           </tbody>
         </table>
-  
+
         {/* Pagination Controls */}
         <div className="flex justify-center mt-8 items-center">
           <div className="flex space-x-2">
@@ -202,16 +191,17 @@ const TableManagement: React.FC<TableProps> = ({ table }) => {
       </div>
     );
   };
+
   return (
     <div className="bg-white rounded-xl p-6 border-gray-200">
       <div className="mb-5 flex items-center space-x-6">
-         <input
-         type="text"
-              className="p-2 border rounded-lg w-64 focus:ring-2 focus:ring-brown-500 focus:outline-none focus:outline-2 focus:outline-brown-400 transition duration-200 ease-in-out"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        <input
+          type="text"
+          className="p-2 border rounded-lg w-64 focus:ring-2 focus:ring-brown-500 focus:outline-none focus:outline-2 focus:outline-brown-400 transition duration-200 ease-in-out"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
 
       {renderTable()}

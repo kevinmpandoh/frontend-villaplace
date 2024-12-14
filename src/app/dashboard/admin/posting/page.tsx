@@ -174,7 +174,7 @@ const PostingAdmin = () => {
               </li>
               <li>
                 <span className="text-gray-500"></span>
-                Manajemen Posting Admin
+                Manajemen Posting
               </li>
             </ol>
           </nav>
@@ -182,8 +182,8 @@ const PostingAdmin = () => {
 
         <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
           <div>
-            <h1 className="text-2xl font-bold mb-2">Manajemen Posting Admin</h1>
-            <p>Description</p>
+            <h1 className="text-2xl font-bold mb-2">Manajemen Posting</h1>
+            <p>Halaman untuk memanajemen posting villa</p>
           </div>
         </div>
 

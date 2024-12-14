@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
   faStarHalfAlt,
-  faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Ulasan } from "@/types/Ulasan";
 import useFetchData from "../../hooks/useFetchData";
@@ -81,28 +80,28 @@ const TableUlasan = () => {
               placeholder="Search by User"
               value={searchTermUser}
               onChange={(e) => setSearchTermUser(e.target.value)}
-              className="p-2 mb-2 md:mb-0 border border-gray-300 rounded w-full md:w-48"
+              className="p-2 mb-2 md:mb-0 border border-gray-300 rounded-lg w-full md:w-48 focus:outline-none focus:border-brown-500"
             />
             <input
               type="text"
               placeholder="Search by Villa"
               value={searchTermVilla}
               onChange={(e) => setSearchTermVilla(e.target.value)}
-              className="p-2 mb-2 md:mb-0 border border-gray-300 rounded w-full md:w-48"
+              className="p-2 mb-2 md:mb-0 border border-gray-300 rounded-lg w-full md:w-48 focus:outline-none focus:border-brown-500"
             />
             <input
               type="text"
               placeholder="Search by Comment"
               value={searchTermKomentar}
               onChange={(e) => setSearchTermKomentar(e.target.value)}
-              className="p-2 mb-2 md:mb-0 border border-gray-300 rounded w-full md:w-48"
+              className="p-2 mb-2 md:mb-0 border border-gray-300 rounded-lg w-full md:w-48 focus:outline-none focus:border-brown-500"
             />
             <input
               type="text"
               placeholder="Search by Rating"
               value={searchTermRating}
               onChange={(e) => setSearchTermRating(e.target.value)}
-              className="p-2 mb-2 md:mb-0 border border-gray-300 rounded w-full md:w-48"
+              className="p-2 mb-2 md:mb-0 border border-gray-300 rounded-lg w-full md:w-48 focus:outline-none focus:border-brown-500"
             />
           </div>
         </div>
@@ -111,10 +110,10 @@ const TableUlasan = () => {
           <thead className="bg-primary text-white dark:bg-meta-4">
             <tr>
               <th className="p-3 text-center">No</th>
-              <th className="p-3 text-center">User</th>
-              <th className="p-3 text-center">Villa</th>
-              <th className="p-3 text-center">Komentar</th>
-              <th className="p-3 text-center">Rating</th>
+              <th className="p-3 text-left">User</th>
+              <th className="p-3 text-left">Villa</th>
+              <th className="p-3 text-left">Komentar</th>
+              <th className="p-3 text-left">Rating</th>
               <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
@@ -129,7 +128,7 @@ const TableUlasan = () => {
                   <td className="p-3">
                     <a
                       href={`/villa/${ulasan.villaId}`}
-                      className="text-blue-500"
+                      className="text-brown-500"
                     >
                       {ulasan.villaName}
                     </a>
@@ -168,7 +167,7 @@ const TableUlasan = () => {
                       })}
                     </div>
                   </td>
-                  <td className="p-3 border text-center border-gray-300">
+                  <td className="p-3 text-center">
                     <ButtonDetail
                       onClick={() => openModal(ulasan)}
                     />
@@ -285,18 +284,14 @@ const TableUlasan = () => {
                 })}
               </div>
             </div>
-
-            {/* Text Info Section */}
             <p>
               <strong>User:</strong> {selectedUlasan.user.nama}
             </p>
-
-            {/* Added space after Villa name */}
             <p className="mb-4">
               <strong>Villa:</strong>
               <a
                 href={`/category/${selectedUlasan.villa._id}`}
-                className="text-blue-500 hover:text-blue-700 ml-2"
+                className="text-brown-500 hover:text-brown-600 ml-2"
               >
                 {selectedUlasan.villa.nama}
               </a>

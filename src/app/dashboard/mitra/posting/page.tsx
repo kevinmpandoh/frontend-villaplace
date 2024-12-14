@@ -146,7 +146,7 @@ const PostingMitra = () => {
         <div className="bg-white border-2 rounded-xl flex justify-between mb-5 p-6">
           <div>
             <h2 className="text-2xl font-bold mb-3">Manajemen Posting</h2>
-            <p className="text-lg font-normal text-gray-500">Description</p>
+            <p className="text-lg font-normal text-gray-500">Halaman untuk memanajemen posting</p>
           </div>
           <div>
             <Link href="/dashboard/mitra/posting/tambahVilla">
