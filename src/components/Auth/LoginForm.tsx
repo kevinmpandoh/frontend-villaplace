@@ -4,25 +4,35 @@ import React, { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { error } from "console";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import * as Yup from "yup";
+
+interface FormValues {
+  email: string;
+  password: string;
+}
 
 const LoginForm = () => {
   const [isUser, setIsUser] = useState(true);
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // Validasi Yup
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Email tidak valid")
+      .required("Email wajib diisi"),
+    password: Yup.string().required("Password wajib diisi"),
+  });
 
+  const handleSubmit = async (
+    values: { email: string; password: string },
+    { setSubmitting, setFieldError }: FormikHelpers<FormValues>
+  ) => {
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/auth/${isUser ? "/user" : "/owner"}/login`,
-        {
-          email,
-          password,
-        },
+        `http://localhost:8000/api/auth/${isUser ? "user" : "owner"}/login`,
+        values,
         {
           withCredentials: true,
         }
@@ -36,7 +46,23 @@ const LoginForm = () => {
         }
       }
     } catch (error: any) {
-      setError(error.response.data.message);
+      if (error.response && error.response.data && error.response.data.errors) {
+        const errors = error.response.data.errors;
+
+        console.log(errors.email);
+
+        // Set error pada field yang relevan
+
+        if (errors.email) {
+          setFieldError("email", "Email tidak ditemukan");
+        }
+
+        if (errors.password) {
+          setFieldError("password", "Password salah");
+        }
+      } else {
+        setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
+      }
     }
   };
 
@@ -65,63 +91,78 @@ const LoginForm = () => {
       </div>
 
       {/* Error Message */}
-      {error && <p className="text-red-500">{error}</p>}
+      {serverError && <p className="text-red-500">{serverError}</p>}
 
       {/* Form */}
-      <form className="space-y-10" onSubmit={handleSubmit}>
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-bold text-gray-700"
-          >
-            Email
-          </label>
-          <input
-            type="text"
-            id="email"
-            className="block w-full border-b-2 border-green-500 focus:outline-none focus:border-green-600"
-            placeholder="Enter Email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+          <Form className="space-y-10">
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-bold text-gray-700"
+              >
+                Email
+              </label>
+              <Field
+                type="text"
+                name="email"
+                id="email"
+                className="block w-full border-b-2 border-green-500 focus:outline-none focus:border-green-600"
+                placeholder="Enter Email"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
+            </div>
 
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-bold text-gray-700"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="block w-full border-b-2 border-green-500 focus:outline-none focus:border-green-600"
-            placeholder="Enter Password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-bold text-gray-700"
+              >
+                Password
+              </label>
+              <Field
+                type="password"
+                name="password"
+                id="password"
+                className="block w-full border-b-2 border-green-500 focus:outline-none focus:border-green-600"
+                placeholder="Enter Password"
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
+            </div>
 
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-3 mt-11 mb-3 rounded-3xl hover:bg-green-700 transition"
-        >
-          Masuk
-        </button>
+            <button
+              type="submit"
+              className="w-full bg-green-600 text-white py-3 mt-11 mb-3 rounded-3xl hover:bg-green-700 transition"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Memuat..." : "Masuk"}
+            </button>
 
-        <p className="text-center text-gray-600">
-          Tidak punya akun?{" "}
-          <Link
-            href={isUser ? "/auth/register/user" : "/auth/register/mitra"}
-            className="text-black font-bold"
-          >
-            Daftar sekarang
-          </Link>
-        </p>
-      </form>
+            <p className="text-center text-gray-600">
+              Tidak punya akun?{" "}
+              <Link
+                href={isUser ? "/auth/register/user" : "/auth/register/mitra"}
+                className="text-black font-bold"
+              >
+                Daftar sekarang
+              </Link>
+            </p>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
