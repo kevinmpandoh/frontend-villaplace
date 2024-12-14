@@ -8,6 +8,7 @@ import useFetchBooking from "@/hooks/useFetchBooking";
 import { calculateRentalDays } from "@/utils/calculateDays";
 import Swal from "sweetalert2";
 import generateBookingId from "@/utils/generateBookingId";
+import { useRouter } from "next/navigation";
 
 interface BookingProps {
   villa: any;
@@ -23,17 +24,19 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
     checkOutDate: "",
     notes: "",
   });
-
-  console.log("formData", formData);
   const [rentalDays, setRentalDays] = useState(0);
+
+  const router = useRouter();
 
   const { handleCreatePayment } = useFetchPayment();
   const { handleCreateBooking } = useFetchBooking();
 
+  console.log("formData", formData);
+
   const [tokenMidtrans, setTokenMidtrans] = useState(null);
   const [modal, setModal] = useState(false);
 
-  const handleChange = (e: { target: { name: string; value: string } }) => {
+  const handleChange = (e: { target: { name: string; value: any } }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
@@ -48,27 +51,66 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
   };
 
   const handleSubmit = async (values: any) => {
-    setRentalDays(calculateRentalDays(values.checkInDate, values.checkOutDate));
-    setFormData(values);
+    // Swal.fire({
+    //    title: "Pesan Villa",
+    //    text: "Apakah anda yakin ingin memesan villa ini?",
+    //    icon: "question",
+    //    showCancelButton: true,
+    //    confirmButtonText: "Ya",
+    //    cancelButtonText: "Batal",
+    //    reverseButtons: true,
+    //  }).then((result) => {
+    //    if (result.isConfirmed) {
+    //      router.push(`/category/${detailVilla._id}/booking`);
+    //    }
+    //  });
 
-    const dataPayment = {
-      nama_pembayar: values.fullName,
-      kode_pembayaran: generateBookingId(),
-      email_pembayar: values.email,
-      jumlah_pembayaran: villa.harga * rentalDays,
-    };
+    const { isConfirmed } = await Swal.fire({
+      title: "Pesan Villa",
+      text: "Apakah anda yakin ingin memesan villa ini?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+      reverseButtons: true,
+    });
 
-    const response = await axios.post(
-      "http://localhost:8000/api/pembayaran/transaksi",
-      dataPayment,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
-    setTokenMidtrans(response.data.data.token);
+    if (isConfirmed) {
+      setRentalDays(
+        calculateRentalDays(formData.checkInDate, formData.checkOutDate)
+      );
+
+      setFormData(values);
+      // setFormData({
+      //   fullName: values.fullname,
+      //   email: values.email,
+      //   guests: values.guest,
+      //   checkInDate: addHours(values.checkInDate, 8)),
+      //   checkOutDate: values.checkOutDate,
+      //   notes: values.notes,
+      // });
+
+      const dataPayment = {
+        nama_pembayar: values.fullName,
+        kode_pembayaran: generateBookingId(),
+        email_pembayar: values.email,
+        jumlah_pembayaran: villa.harga * rentalDays,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8000/api/pembayaran/transaksi",
+        dataPayment,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      setTokenMidtrans(response.data.data.token);
+    } else {
+      return;
+    }
   };
 
   useEffect(() => {
@@ -138,6 +180,8 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
               withCredentials: true,
             }
           );
+
+          console.log("Form Data SUBMIT", formData);
 
           const dataBooking = {
             jumlah_orang: formData.guests,
