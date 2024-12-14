@@ -4,7 +4,6 @@ import React, { useState, useMemo, useCallback } from "react";
 import useFetchData from "@/hooks/useFetchData";
 import VillaCard from "@/components/VillaCardCategory";
 import { VillaProps } from "@/types/Villa";
-import RatingFilter from "@/components/ui/RatingFilter";
 import { useSearchParams } from "next/navigation";
 
 // Filter types
@@ -15,7 +14,6 @@ interface FilterState {
   };
   kategori: string[];
   kamar: number | null;
-  averageRating: number | null;
 }
 
 const Category = () => {
@@ -23,19 +21,19 @@ const Category = () => {
     method: "GET",
     withCredentials: true,
   });
-  const searchParams = useSearchParams();
-  const search = searchParams.get("search");
 
   // State management
-  const [searchQuery, setSearchQuery] = useState(search || "");
+  const [searchQuery, setSearchQuery] = useState("Villa");
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<FilterState>({
     priceRange: { min: 0, max: 999999999 },
     kategori: [],
     kamar: null,
-    averageRating: null,
   });
   const itemsPerPage = 6;
+  const [searchParams] = useSearchParams();
+
+  console.log("searchParams", searchParams);
 
   // Memoisasi data
   const villas = useMemo(() => data?.data || [], [data]);
@@ -71,18 +69,8 @@ const Category = () => {
       const matchesKamar =
         !filters.kamar ||
         villa.fasilitas[0]?.includes(filters.kamar.toString());
-      const matchesRating =
-        filters.averageRating === null ||
-        (villa.averageRating >= filters.averageRating &&
-          villa.averageRating < filters.averageRating + 1); // Ensure the range
 
-      return (
-        matchesSearch &&
-        matchesPrice &&
-        matchesKategori &&
-        matchesKamar &&
-        matchesRating
-      );
+      return matchesSearch && matchesPrice && matchesKategori && matchesKamar;
     });
   }, [villas, searchQuery, filters]);
 
@@ -103,6 +91,16 @@ const Category = () => {
     setCurrentPage(1); // Reset page on filter change
   }, []);
 
+  const handleKategoriChange = useCallback((kategori: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      kategori: prev.kategori.includes(kategori)
+        ? prev.kategori.filter((k) => k !== kategori)
+        : [...prev.kategori, kategori],
+    }));
+    setCurrentPage(1);
+  }, []);
+
   const handleKamarChange = useCallback((kamar: number | null) => {
     setFilters((prev) => ({
       ...prev,
@@ -110,27 +108,35 @@ const Category = () => {
     }));
     setCurrentPage(1);
   }, []);
-  const handleRatingChange = useCallback((rating: number | null) => {
-    setFilters((prev) => ({
-      ...prev,
-      averageRating: rating,
-    }));
-    setCurrentPage(1);
-  }, []);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Search and Filter Section */}
         <div className="space-y-6 mb-8">
-          <div className="flex items-center">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-4 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-              placeholder="Cari villa..."
-            />
-          </div>
+          {/* Search Bar */}
+          <form onSubmit={handleSubmit}>
+            <div className="flex items-center">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-6 py-4 rounded-l-lg text-gray-900 border border-gray-300"
+                placeholder="Cari villa..."
+              />
+              <button
+                name="keyword"
+                className="bg-brown-500 text-white px-6 py-4 rounded-r-lg hover:bg-brown-600"
+                type="submit"
+              >
+                Cari
+              </button>
+            </div>
+          </form>
 
           {/* Filters */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3 bg-white p-4 rounded-lg shadow">
@@ -185,14 +191,27 @@ const Category = () => {
                 ))}
               </select>
             </div>
-            <div className="space-y-2">
-              <RatingFilter
-                value={filters.averageRating}
-                onChange={handleRatingChange}
-              />
+            {/* Category Filter */}
+            <div className="space-y-2 md:col-span-3">
+              <label className="block text-md font-semibold">Kategori</label>
+              <div className="flex flex-wrap gap-2">
+                {availableCategories.map((kategori) => (
+                  <label
+                    key={kategori}
+                    className="flex items-center space-x-2 w-1/2 sm:w-1/4"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={filters.kategori.includes(kategori)}
+                      onChange={() => handleKategoriChange(kategori)}
+                      className="rounded text-brown-500"
+                    />
+                    <span className="text-sm">{kategori}</span>
+                  </label>
+                ))}
+              </div>
             </div>
-
-            {/* Room Filter */}
+            {/* Room Filter */} 
           </div>
         </div>
 
@@ -216,8 +235,6 @@ const Category = () => {
                 foto_villa={villa.foto_villa}
                 status={villa.status}
                 kategori={villa.kategori}
-                averageRating={villa.averageRating}
-                commentCount={villa.commentCount}
               />
             ))
           ) : (
