@@ -158,18 +158,20 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
     <div className="h-full flex flex-col overflow-y-auto">
       {/* Header Sidebar */}
       <div className="px-5 py-8">
-        <div className="flex items-center space-x-3">
-          <div className="relative w-10 h-10 flex-shrink-0">
-            <Image
-              src="/assets/images/logo.png"
-              alt="Villa Place Logo"
-              width={50}
-              height={50}
-              className="rounded-full"
-            />
+        <Link href="/">
+          <div className="flex items-center space-x-3">
+            <div className="relative w-10 h-10 flex-shrink-0">
+              <Image
+                src="/assets/images/logo.png"
+                alt="Villa Place Logo"
+                width={50}
+                height={50}
+                className="rounded-full"
+              />
+            </div>
+            <span className="text-xl font-bold text-white">Villa Place</span>
           </div>
-          <span className="text-xl font-bold text-white">Villa Place</span>
-        </div>
+        </Link>
       </div>
 
       {/* Menu Content Sidebar */}

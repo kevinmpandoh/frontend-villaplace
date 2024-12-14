@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 interface ProfilePictureUploaderProps {
   userId: string;
@@ -12,6 +13,7 @@ const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
   role,
 }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -55,7 +57,6 @@ const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
         icon: "warning",
         confirmButtonText: "OK",
       });
-      return;
     }
 
     try {
@@ -76,12 +77,19 @@ const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
           text: "Foto profile berhasil diupload.",
           icon: "success",
           confirmButtonText: "OK",
+        }).then((result) => {
+          // Cek apakah pengguna menekan tombol OK atau menutup modal
+          if (result.isConfirmed || result.isDismissed) {
+            // Refresh halaman
+            window.location.reload();
+            setImagePreview(null);
+
+            // Reset file input
+            fileInput.value = "";
+          }
         });
 
-        // Reset preview setelah upload berhasil
         setImagePreview(null);
-
-        // Reset file input
         fileInput.value = "";
       }
     } catch (error) {
