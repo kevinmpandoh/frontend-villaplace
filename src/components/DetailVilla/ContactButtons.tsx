@@ -30,7 +30,7 @@ const ContactButtons = ({ ownerPhone, ownerEmail }: ContactButtonsProps) => {
           href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center w-12 h-12 bg-green-500 text-white rounded-full shadow hover:bg-green-600"
+          className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-full shadow hover:bg-green-600"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,7 @@ const ContactButtons = ({ ownerPhone, ownerEmail }: ContactButtonsProps) => {
         <Link
           href={mailtoLink}
           target="_blank"
-          className="flex items-center justify-center w-12 h-12 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600"
+          className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600"
         >
           <FontAwesomeIcon icon={faEnvelope} />
         </Link>

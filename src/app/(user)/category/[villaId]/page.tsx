@@ -3,10 +3,8 @@ import { cookies } from "next/headers";
 
 const DetailVillaPage = async ({ params }: { params: { villaId: string } }) => {
   const { villaId } = await params;
-
-  // Ambil token dari cookies
   const cookieStore = await cookies();
-  const token = cookieStore.get("tokenUser")?.value || null;
+  const token = cookieStore.getAll();
 
   return (
     <>
