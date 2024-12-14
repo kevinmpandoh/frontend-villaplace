@@ -27,7 +27,9 @@ const TablePayment = ({
   search,
   filteredData,
   selectedStatus,
-  pagination,
+  totalPages,
+  currentPage,
+  totalItems,
   handleCurrentPage,
   handleSearch,
   handleSelectStatus,
@@ -117,6 +119,7 @@ const TablePayment = ({
                           }
                           width={70}
                           height={60}
+                          className="rounded-md object-cover h-24 w-28"
                           alt="Product"
                         />
                       </div>
@@ -177,7 +180,9 @@ const TablePayment = ({
       </div>
       {!loading && !error && filteredData.length > 0 && (
         <Pagination
-          pagination={pagination}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          totalItems={totalItems}
           handleCurrentPage={handleCurrentPage}
         />
       )}

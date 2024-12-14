@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
 
 interface ProfilePictureUploaderProps {
   userId: string;
@@ -13,7 +12,6 @@ const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
   role,
 }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const router = useRouter();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

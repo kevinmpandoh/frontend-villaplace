@@ -15,60 +15,40 @@ const PembayaranAdmin = () => {
   const [isModalEditOpen, setIsModalEditOpen] = React.useState(false);
   const [currentModalId, setCurrentModalId] = useState("");
   const [dataPayment, setDataPayment] = useState<Payment[]>([]);
-  const [pagination, setPagination] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [filteredData, setFilteredData] = useState<Payment[]>([]);
   const [search, setSearch] = useState("");
+  const [itemsPerPage] = useState(5); // 20 item per halaman
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const { handleUpdatePayment, handleGetAllPayment, handleDeletePayment } =
     useFetchPayment();
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `limit=5&page=${currentPage}`;
-      if (search) {
-        query += `&searchQuery=${search}`;
-      }
+      const query = `status=${selectedStatus}`;
 
       const data = await handleGetAllPayment(query);
       if (data && data.data) {
-        let filteredData = data.data;
-
-        // Filter by status di frontend jika selectedStatus bukan "All"
-        if (selectedStatus !== "All") {
-          filteredData = filteredData.filter(
-            (item: any) => item.status_pembayaran === selectedStatus
-          );
-        }
+        const filteredData = data.data;
 
         setDataPayment(filteredData);
-        setPagination(data.pagination);
       } else {
         setDataPayment([]);
-        setPagination(null);
       }
     };
 
     fetchData();
-  }, [currentPage, search, selectedStatus]);
+  }, [selectedStatus]);
 
-  useEffect(() => {
-    if (selectedStatus === "All") {
-      setFilteredData(dataPayment);
-    } else {
-      setFilteredData(
-        dataPayment.filter((item) => item.status_pembayaran === selectedStatus)
-      );
-    }
-  }, [selectedStatus, dataPayment]);
-
-  const toggleModal = (id: any) => {
+  const toggleModal = (id: string) => {
     setCurrentModalId(id);
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleModalEdit = (id: any) => {
+  const toggleModalEdit = (id: string) => {
     setCurrentModalId(id);
     setIsModalEditOpen(!isModalEditOpen);
   };
@@ -83,7 +63,7 @@ const PembayaranAdmin = () => {
     setFilteredData((prevData) =>
       prevData.map((item) => (item._id === id ? updatedPayment : item))
     );
-    toggleModalEdit(null);
+    toggleModalEdit("");
   };
 
   const handleDelete = (id: string) => {
@@ -118,6 +98,37 @@ const PembayaranAdmin = () => {
   const handleSelectStatus = (selectedStatus: string) => {
     setSelectedStatus(selectedStatus);
   };
+
+  useEffect(() => {
+    const filteredPayment = dataPayment.filter((data) => {
+      const searchKeyword = search.toLowerCase();
+
+      const nama_villa = data.pesanan.villa.nama?.toLowerCase() || "";
+      const bank = data.bank?.toLowerCase() || "";
+      const nama_pembayar = data.nama_pembayar?.toLowerCase() || "";
+      const lokasi = data.pesanan.villa?.lokasi.toLowerCase() || "";
+
+      return (
+        nama_pembayar.includes(searchKeyword) ||
+        bank.includes(searchKeyword) ||
+        nama_villa.includes(searchKeyword) ||
+        lokasi.includes(searchKeyword)
+      );
+    });
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredPayment.slice(
+      indexOfFirstItem,
+      indexOfLastItem
+    );
+    const totalPages = Math.ceil(filteredPayment.length / itemsPerPage);
+
+    setTotalItems(filteredPayment.length);
+    setTotalPages(totalPages);
+    setFilteredData(currentItems);
+  }, [dataPayment, search, currentPage, itemsPerPage]);
+
   return (
     <div>
       <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-8">
@@ -168,8 +179,10 @@ const PembayaranAdmin = () => {
             <TablePayment
               filteredData={filteredData}
               search={search}
+              currentPage={currentPage}
               selectedStatus={selectedStatus}
-              pagination={pagination}
+              totalPages={totalPages}
+              totalItems={totalItems}
               handleCurrentPage={handleCurrentPage}
               handleDelete={handleDelete}
               handleSearch={handleSearch}
@@ -182,7 +195,7 @@ const PembayaranAdmin = () => {
       </div>
       {isModalOpen && (
         <Modal
-          onClose={() => toggleModal(null)}
+          onClose={() => toggleModal("")}
           title="Detail Pembayaran"
           className="max-h-screen overflow-y-auto h-3/4"
         >
@@ -192,7 +205,7 @@ const PembayaranAdmin = () => {
 
       {isModalEditOpen && (
         <Modal
-          onClose={() => toggleModalEdit(null)}
+          onClose={() => toggleModalEdit("")}
           title="Edit Pembayaran"
           className="max-h-screen max-w-lg overflow-y-auto h-3/2"
         >

@@ -116,7 +116,7 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
                       onClick={handleClick}
                       className={`flex items-center px-4 py-4 rounded-r-xl transition-colors w-full ${
                         isActive
-                          ? "bg-white text-green-500 font-semibold"
+                          ? "bg-white text-primary font-semibold"
                           : "text-white hover:bg-black/10"
                       }`}
                     >
@@ -128,7 +128,7 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
                       onClick={() => toggleSubmenu(item.label)}
                       className={`flex items-center px-4 py-4 rounded-r-xl transition-colors w-full text-left ${
                         isActive
-                          ? "bg-white text-green-500 font-semibold"
+                          ? "bg-white text-primary font-semibold"
                           : "text-white hover:bg-black/10"
                       }`}
                     >
@@ -188,7 +188,7 @@ const SidebarMitra = () => {
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-80 p-0 bg-gradient-to-b from-green-500 to-brown-500 overflow-y-auto"
+              className="w-80 p-0 bg-gradient-to-b from-primary to-brown-500 overflow-y-auto"
             >
               <SidebarContent onClose={() => setOpen(false)} />
             </SheetContent>
@@ -208,7 +208,7 @@ const SidebarMitra = () => {
       </div>
 
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-green-500 to-brown-500 overflow-y-auto">
+      <nav className="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-primary to-brown-500 overflow-y-auto">
         <SidebarContent />
       </nav>
 
