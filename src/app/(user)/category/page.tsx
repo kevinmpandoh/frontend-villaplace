@@ -138,7 +138,7 @@ const Category = () => {
               className="w-full px-6 py-4 rounded-l-lg text-gray-900 border border-gray-300"
               placeholder="Cari villa..."
             />
-            <button className="bg-brown-500 text-white px-6 py-4 rounded-r-lg hover:bg-brown-600">
+            <button className="bg-[#B7906C] text-white border-y-2 border-gray-300 px-6 py-4 rounded-r-lg hover:bg-brown-600">
               Cari
             </button>
           </div>
@@ -203,7 +203,7 @@ const Category = () => {
               />
             </div>
             {/* Category Filter */}
-            <div className="space-y-2 md:col-span-3">
+            {/* <div className="space-y-2 md:col-span-3">
               <label className="block text-md font-semibold">Kategori</label>
               <div className="flex flex-wrap gap-2">
                 {availableCategories.map((kategori) => (
@@ -221,7 +221,7 @@ const Category = () => {
                   </label>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Room Filter */}
           </div>
@@ -258,40 +258,109 @@ const Category = () => {
           )}
         </div>
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="mt-10 flex justify-center items-center space-x-2">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 rounded bg-brown-500 text-white disabled:bg-gray-300"
-            >
-              Previous
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        {/* Pagination Controls */}
+        <div className="w-full border-gray-200 mt-8">
+          <div className="flex justify-center py-2">
+            <div className="flex space-x-2">
+              {/* Previous Button */}
               <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`px-4 py-2 rounded ${
-                  currentPage === page
-                    ? "bg-green-500 text-white"
-                    : "bg-white text-brown-500 border border-brown-500"
-                }`}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
               >
-                {page}
+                Previous
               </button>
-            ))}
-            <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 rounded bg-brown-500 text-white disabled:bg-gray-300"
-            >
-              Next
-            </button>
+
+              <div className="flex space-x-1">
+                {(() => {
+                  const pages: JSX.Element[] = [];
+                  const totalPages = Math.ceil(filteredVillas.length / itemsPerPage);
+                  
+                  // Fungsi untuk menambahkan nomor halaman
+                  const pushPage = (pageNum: number) => {
+                    pages.push(
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`py-2 px-4 rounded ${
+                          currentPage === pageNum
+                            ? "bg-green-500 text-white"
+                            : "bg-white text-brown-500 border border-brown-500"
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  };
+
+                  // Fungsi untuk menambahkan ellipsis
+                  const pushEllipsis = (key: string) => {
+                    pages.push(
+                      <button
+                        key={key}
+                        className="py-2 px-4 rounded bg-white text-brown-500 border border-brown-500"
+                        disabled
+                      >
+                        ...
+                      </button>
+                    );
+                  };
+
+                  // Selalu tampilkan halaman pertama
+                  pushPage(1);
+
+                  if (totalPages <= 7) {
+                    // Jika total halaman 7 atau kurang, tampilkan semua
+                    for (let i = 2; i < totalPages; i++) {
+                      pushPage(i);
+                    }
+                  } else {
+                    // Logika untuk halaman dengan ellipsis
+                    if (currentPage > 3) {
+                      pushEllipsis('start');
+                    }
+                    // Tampilkan halaman di sekitar halaman saat ini
+                    let start = Math.max(2, currentPage - 1);
+                    let end = Math.min(totalPages - 1, currentPage + 1);
+                    
+                    if (currentPage <= 3) {
+                      end = 4;
+                    }
+                    if (currentPage >= totalPages - 2) {
+                      start = totalPages - 3;
+                    }
+                    
+                    for (let i = start; i <= end; i++) {
+                      pushPage(i);
+                    }
+                    
+                    if (currentPage < totalPages - 2) {
+                      pushEllipsis('end');
+                    }
+                  }
+
+                  // Selalu tampilkan halaman terakhir jika lebih dari 1 halaman
+                  if (totalPages > 1) {
+                    pushPage(totalPages);
+                  }
+
+                  return pages;
+                })()}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredVillas.length / itemsPerPage)))
+                }
+                disabled={currentPage === Math.ceil(filteredVillas.length / itemsPerPage)}
+                className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+              >
+                Next
+              </button>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

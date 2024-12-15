@@ -184,41 +184,107 @@ const TableUlasan = () => {
           </tbody>
         </table>
 
-        {/* Pagination */}
-        <div className="flex justify-center mt-10 items-center">
-          <div className="flex space-x-2 w-full md:w-auto justify-center mb-4 md:mb-0">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 bg-brown-500 text-white disabled:bg-gray-300 rounded"
-            >
-              Previous
-            </button>
-            <div className="flex space-x-1">
-              {Array.from(
-                { length: Math.ceil(filteredData.length / itemsPerPage) },
-                (_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPage(i + 1)}
-                    className={`px-4 py-2 rounded ${
-                      currentPage === i + 1
-                        ? "bg-green-500 text-white"
-                        : "bg-white text-brown-500 border border-brown-500"
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                )
-              )}
+        {/* Pagination Controls */}
+        <div className="w-full border-gray-200 mt-8">
+          <div className="flex justify-center py-2">
+            <div className="flex space-x-2">
+              {/* Previous Button */}
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+              >
+                Previous
+              </button>
+
+              <div className="flex space-x-1">
+                {(() => {
+                  const pages: JSX.Element[] = [];
+                  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+                  
+                  // Fungsi untuk menambahkan nomor halaman
+                  const pushPage = (pageNum: number) => {
+                    pages.push(
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`py-2 px-4 rounded ${
+                          currentPage === pageNum
+                            ? "bg-green-500 text-white"
+                            : "bg-white text-brown-500 border border-brown-500"
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  };
+
+                  // Fungsi untuk menambahkan ellipsis
+                  const pushEllipsis = (key: string) => {
+                    pages.push(
+                      <button
+                        key={key}
+                        className="py-2 px-4 rounded bg-white text-brown-500 border border-brown-500"
+                        disabled
+                      >
+                        ...
+                      </button>
+                    );
+                  };
+
+                  // Selalu tampilkan halaman pertama
+                  pushPage(1);
+
+                  if (totalPages <= 7) {
+                    // Jika total halaman 7 atau kurang, tampilkan semua
+                    for (let i = 2; i < totalPages; i++) {
+                      pushPage(i);
+                    }
+                  } else {
+                    // Logika untuk halaman dengan ellipsis
+                    if (currentPage > 3) {
+                      pushEllipsis('start');
+                    }
+                    // Tampilkan halaman di sekitar halaman saat ini
+                    let start = Math.max(2, currentPage - 1);
+                    let end = Math.min(totalPages - 1, currentPage + 1);
+                    
+                    if (currentPage <= 3) {
+                      end = 4;
+                    }
+                    if (currentPage >= totalPages - 2) {
+                      start = totalPages - 3;
+                    }
+                    
+                    for (let i = start; i <= end; i++) {
+                      pushPage(i);
+                    }
+                    
+                    if (currentPage < totalPages - 2) {
+                      pushEllipsis('end');
+                    }
+                  }
+
+                  // Selalu tampilkan halaman terakhir jika lebih dari 1 halaman
+                  if (totalPages > 1) {
+                    pushPage(totalPages);
+                  }
+
+                  return pages;
+                })()}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredData.length / itemsPerPage)))
+                }
+                disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
+                className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+              >
+                Next
+              </button>
             </div>
-            <button
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              disabled={currentPage * itemsPerPage >= filteredData.length}
-              className="px-4 py-2 rounded bg-brown-500 text-white disabled:bg-gray-300"
-            >
-              Next
-            </button>
           </div>
         </div>
       </div>
