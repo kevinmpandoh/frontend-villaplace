@@ -4,6 +4,7 @@ import {
   changePassword,
   createAdmin,
   deleteAdmin,
+  getDashboardData,
 } from "../services/adminService";
 import { Admin } from "../types/Admin";
 import Swal from "sweetalert2";
@@ -12,6 +13,21 @@ export const useFetchAdmin = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
   const [success, setSuccess] = useState<boolean>(false);
+
+  const handleDashboardData = async (query: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+      const result = await getDashboardData(query);
+      return result;
+    } catch (err: any) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCreateAdmin = async (data: Omit<Admin, "_id">) => {
     setLoading(true);
@@ -116,6 +132,7 @@ export const useFetchAdmin = () => {
   };
 
   return {
+    handleDashboardData,
     handleCreateAdmin,
     handleUpdateAdmin,
     handleChangePassword,

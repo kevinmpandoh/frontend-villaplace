@@ -85,6 +85,41 @@ const AddBooking = ({ handleAddBooking, villaList }: AddBookingProps) => {
 
   const disabledDates = getDisabledDates();
 
+  const getExcludedCheckOutDates = (checkInDate: Date): Set<string> => {
+    const excludedDates = new Set<string>();
+
+    bookingDate.forEach(({ tanggal_mulai, tanggal_selesai }) => {
+      const startDate = new Date(tanggal_mulai);
+      const endDate = new Date(tanggal_selesai);
+
+      const checkInDateUTC = new Date(checkInDate);
+      const startDateUTC = new Date(startDate);
+      const endDateUTC = new Date(endDate);
+
+      // Exclude all dates in the booked range
+      let currentDate = startDateUTC;
+      while (currentDate <= endDateUTC) {
+        excludedDates.add(currentDate.toISOString().split("T")[0]);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+      // Exclude all dates after the booked range if check-in is close
+      if (checkInDateUTC <= endDateUTC) {
+        currentDate = new Date(endDateUTC.getTime() + 24 * 60 * 60 * 1000);
+        for (let i = 0; i < 30; i++) {
+          // Assuming a max range of 30 days to restrict
+          excludedDates.add(currentDate.toISOString().split("T")[0]);
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+      }
+    });
+
+    return excludedDates;
+  };
+
+  const excludedCheckOutDates = checkInDate
+    ? getExcludedCheckOutDates(checkInDate)
+    : new Set<string>();
+
   const villaOptions = villaList?.map((villa: any) => ({
     label: villa.nama,
     value: villa._id,
@@ -226,7 +261,10 @@ const AddBooking = ({ handleAddBooking, villaList }: AddBookingProps) => {
                       ? new Date(checkInDate.getTime() + 24 * 60 * 60 * 1000)
                       : new Date()
                   }
-                  excludeDates={[...disabledDates].map(
+                  // excludeDates={[...disabledDates].map(
+                  //   (date) => new Date(date)
+                  // )}
+                  excludeDates={[...excludedCheckOutDates].map(
                     (date) => new Date(date)
                   )}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"

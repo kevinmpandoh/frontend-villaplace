@@ -3,6 +3,7 @@ import {
   updateMitra,
   changePassword,
   deleteMitra,
+  getDashboardData,
 } from "../services/mitraService";
 import { Mitra } from "../types/Mitra";
 import Swal from "sweetalert2";
@@ -11,6 +12,22 @@ export const useFetchMitra = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
   const [success, setSuccess] = useState<boolean>(false);
+
+  const handleDashboardData = async (query: string) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const result = await getDashboardData(query);
+      return result;
+    } catch (err: any) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleUpdateMitra = async (id: string, data: Omit<Mitra, "_id">) => {
     setLoading(true);
@@ -95,6 +112,7 @@ export const useFetchMitra = () => {
   };
 
   return {
+    handleDashboardData,
     handleUpdateMitra,
     handleChangePassword,
     handleDeleteMitra,

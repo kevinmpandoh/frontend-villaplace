@@ -44,7 +44,7 @@ async function getBookingDates({ villaId }: { villaId: string }) {
         const endDate = new Date(item.tanggal_selesai);
 
         // Generate semua tanggal dalam rentang
-        let currentDate = new Date(startDate);
+        const currentDate = new Date(startDate);
         while (currentDate <= endDate) {
           allBookedDates.push(new Date(currentDate));
           currentDate.setDate(currentDate.getDate() + 1); // Tambahkan 1 hari
@@ -54,6 +54,7 @@ async function getBookingDates({ villaId }: { villaId: string }) {
 
     return data.data;
   } catch (error) {
+    console.error(error);
     return [];
   }
 }

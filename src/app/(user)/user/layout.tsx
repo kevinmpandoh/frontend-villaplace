@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import Navbar from "@/components/Navbar";
 import SidebarProfile from "@/components/Sidebar/SidebarProfile";
 import useFetchData from "@/hooks/useFetchData";
 

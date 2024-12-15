@@ -1,7 +1,9 @@
-// page.tsx
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Users, Building2, Wallet, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
+import TransactionAreaChart from "@/components/Chart/TransactionChart";
+import { useFetchMitra } from "@/hooks/useFetchMitra";
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -21,6 +23,18 @@ const StatCard: React.FC<StatCardProps> = ({ icon, title, value, bgColor }) => (
 );
 
 const DashboardMitra = () => {
+  const [data, setData] = useState<any>(null);
+
+  const { handleDashboardData } = useFetchMitra();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await handleDashboardData("range=1-6");
+
+      setData(data.data);
+    };
+    fetchData();
+  }, []);
   return (
     <div>
       <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-8">
@@ -53,43 +67,38 @@ const DashboardMitra = () => {
           icon={
             <Users className="w-14 h-14 text-white border border-white rounded-full bg-green-400 p-2" />
           }
-          title="Total Pengguna"
-          value="20"
+          title="Total Villa"
+          value={data?.villaCount}
           bgColor="bg-green-200/80"
         />
         <StatCard
           icon={
             <Building2 className="w-14 h-14 text-white border border-white rounded-full bg-orange-400 p-2" />
           }
-          title="Total Mitra"
-          value="20"
+          title="Total Pesanan"
+          value={data?.pesananCount}
           bgColor="bg-orange-200/80"
         />
         <StatCard
           icon={
             <Wallet className="w-14 h-14 text-white border border-white rounded-full bg-purple-400 p-2" />
           }
-          title="Total Transaksi"
-          value="20"
+          title="Total Ulasan"
+          value={data?.ulasanCount}
           bgColor="bg-purple-200/80"
         />
         <StatCard
           icon={
             <ImageIcon className="w-14 h-14 text-white border border-white rounded-full bg-blue-400 p-2" />
           }
-          title="Total Postingan"
-          value="20"
+          title="Rata-rata Rating"
+          value={data?.avgRating}
           bgColor="bg-blue-200/80"
         />
       </div>
 
       <div className="p-8">
-        <div className="bg-white rounded-xl p-6 border-2 border-gray-200">
-          <h2 className="text-xl font-bold mb-6">Chart Transaksi</h2>
-          <div className="h-[400px] w-full bg-gray-50 rounded-xl flex items-center justify-center">
-            <p className="text-gray-500">Area untuk grafik transaksi</p>
-          </div>
-        </div>
+        <TransactionAreaChart />
       </div>
     </div>
   );

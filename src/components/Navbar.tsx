@@ -11,27 +11,34 @@ import {
   Sheet,
   SheetContent,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet";
 
-const Navbar: React.FC = () => {
-  const [tokenUser, setTokenUser] = useState<boolean>(false);
+interface NavbarProps {
+  token: { name: string; value: string }[];
+}
+
+const Navbar = ({ token }: NavbarProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const tokenAdmin = token.filter((cookie) => cookie.name === "tokenAdmin");
+  const tokenUser = token.filter((cookie) => cookie.name === "tokenUser");
+  const tokenOwner = token.filter((cookie) => cookie.name === "tokenOwner");
 
   const currentPath = usePathname();
 
   useEffect(() => {
     const checkToken = () => {
-      const token = Cookies.get("tokenUser");
-      if (token) {
-        setTokenUser(true);
+      if (
+        tokenAdmin.length > 0 ||
+        tokenUser.length > 0 ||
+        tokenOwner.length > 0
+      ) {
+        setIsLoading(false);
       } else {
-        setTokenUser(false);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
-
-    checkToken();
 
     const intervalId = setInterval(() => {
       setIsLoading(true);
@@ -105,7 +112,7 @@ const Navbar: React.FC = () => {
         </Link>
         <Link href="/auth/login" className="w-full md:w-auto">
           <button className="bg-[#B7906C] text-white px-4 py-1 rounded-md hover:bg-[#9e7850] w-full">
-            + Masuk
+            Masuk
           </button>
         </Link>
       </div>
@@ -144,8 +151,16 @@ const Navbar: React.FC = () => {
                 </div>
                 <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
               </div>
-            ) : tokenUser ? (
+            ) : tokenUser.length > 0 ? (
               <DropdownUser />
+            ) : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
+              <Link
+                href={`/dashboard/${tokenAdmin.length > 0 ? "admin" : "mitra"}`}
+              >
+                <button className="text-primary hover:bg-green-100 border-2 border-primary font-semibold rounded-lg text-sm px-4 py-2 text-center me-2 mb-2">
+                  Dashboard
+                </button>
+              </Link>
             ) : (
               <AuthButtons />
             )}
@@ -172,8 +187,18 @@ const Navbar: React.FC = () => {
                       </div>
                       <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
                     </div>
-                  ) : tokenUser ? (
+                  ) : tokenUser.length > 0 ? (
                     <DropdownUser />
+                  ) : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
+                    <Link
+                      href={`/dashboard/${
+                        tokenAdmin.length > 0 ? "admin" : "mitra"
+                      }`}
+                    >
+                      <button className="text-primary hover:bg-green-100 border-2 border-primary font-semibold rounded-lg text-sm px-4 py-2 text-center me-2 mb-2">
+                        Dashboard
+                      </button>
+                    </Link>
                   ) : (
                     <AuthButtons />
                   )}

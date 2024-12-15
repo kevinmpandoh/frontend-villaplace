@@ -8,17 +8,18 @@ import Swal from "sweetalert2";
 import TableBookingAdmin from "@/components/BookingAdmin/TableBookingAdmin";
 import Booking from "@/types/Booking";
 import Link from "next/link";
+
 const PesananAdmin = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = React.useState(false);
   const [currentModalId, setCurrentModalId] = useState("");
-  const [dataBooking, setDataBooking] = useState<Booking[]>([]);
-  const [pagination, setPagination] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [filteredData, setFilteredData] = useState<Booking[]>([]);
   const [search, setSearch] = useState("");
   const [detailBooking, setDetailBooking] = useState<any>();
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const {
     handleUpdateBooking,
@@ -29,31 +30,47 @@ const PesananAdmin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `limit=5&page=${currentPage}`;
+      let query = `status=${selectedStatus}`;
+      let itemsPerPage = 5;
 
       const data = await handleGetAllBooking(query);
       if (data && data.data) {
-        let filteredData = data.data.filter((item: Booking) => {
-          const matchesSearch =
-            // item.user?.nama?.toLowerCase().includes(search.toLowerCase()) ||
-            item.villa.nama.toLowerCase().includes(search.toLowerCase());
+        let filteredData = data.data.filter((data: Booking) => {
+          const searchKeyword = search.toLowerCase();
 
-          const matchesStatus =
-            selectedStatus === "All" || item.status === selectedStatus;
+          const nama_villa = data.villa.nama?.toLowerCase() || "";
+          const lokasi = data.villa.lokasi?.toLowerCase() || "";
+          const nama_user = data.user?.nama?.toLowerCase() || "";
+          const email_user = data.user?.email?.toLowerCase() || "";
 
-          return matchesSearch && matchesStatus; // Gabungkan filter search dan status
+          return (
+            nama_villa.includes(searchKeyword) ||
+            nama_user.includes(searchKeyword) ||
+            email_user.includes(searchKeyword) ||
+            lokasi.includes(searchKeyword)
+          );
         });
 
-        setDataBooking(filteredData);
-        setPagination(data.pagination);
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = filteredData.slice(
+          indexOfFirstItem,
+          indexOfLastItem
+        );
+
+        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+        setFilteredData(currentItems);
+        setTotalItems(filteredData.length);
+        setTotalPages(totalPages);
       } else {
-        setDataBooking([]);
-        setPagination(null);
+        setTotalItems(0);
+        setTotalPages(0);
       }
     };
 
     fetchData();
-  }, [currentPage, search, selectedStatus]);
+  }, [selectedStatus, search, currentPage]);
 
   useEffect(() => {
     if (currentModalId) {
@@ -67,16 +84,6 @@ const PesananAdmin = () => {
       fetchData();
     }
   }, [currentModalId]);
-
-  useEffect(() => {
-    if (selectedStatus === "All") {
-      setFilteredData(dataBooking);
-    } else {
-      setFilteredData(
-        dataBooking.filter((item) => item.status === selectedStatus)
-      );
-    }
-  }, [selectedStatus, dataBooking]);
 
   const toggleModal = (id: any) => {
     setCurrentModalId(id);
@@ -184,12 +191,14 @@ const PesananAdmin = () => {
               filteredData={filteredData}
               search={search}
               selectedStatus={selectedStatus}
-              pagination={pagination}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
               handleCurrentPage={handleCurrentPage}
               handleSearch={handleSearch}
-              toggleModal={toggleModal}
               handleSelectStatus={handleSelectStatus}
               handleDelete={handleDelete}
+              toggleModal={toggleModal}
               toggleModalEdit={toggleModalEdit}
             />
           </div>

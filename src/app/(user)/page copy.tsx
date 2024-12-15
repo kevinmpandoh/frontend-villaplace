@@ -4,22 +4,16 @@ import React, { useState, useEffect } from "react";
 import "@/styles/globals.css";
 import Image from "next/image";
 import Link from "next/link";
-import useFetchData from "@/hooks/useFetchData";
 import VillaCard from "@/components/VillaCard";
 import { VillaProps } from "@/types/Villa";
-import { useRouter } from "next/navigation";
 import { useFetchVilla } from "@/hooks/useFetchVilla";
+import { useRouter } from "next/navigation";
 
 const HomePage: React.FC = () => {
-  const { data } = useFetchData("http://localhost:8000/api/villa?limit=6", {
-    method: "GET",
-    withCredentials: true,
-  });
+  const { handleGetVillas } = useFetchVilla();
   const [searchQuery, setSearchQuery] = useState("");
   const [villa, setVilla] = useState([]);
   const router = useRouter();
-
-  const { handleGetVillas } = useFetchVilla();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,10 +24,9 @@ const HomePage: React.FC = () => {
       }
     };
     fetchData();
-  });
+  }, []);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = async () => {
     router.push(`/category?search=${searchQuery}`);
   };
 
@@ -79,7 +72,7 @@ const HomePage: React.FC = () => {
         <h2 className="text-4xl font-bold mb-14 text-center">Rekomendasi</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
           {villa.length > 0 ? (
-            data.data.map((villa: VillaProps) => (
+            villa.map((villa: VillaProps) => (
               <VillaCard
                 key={villa._id}
                 _id={villa._id}
@@ -91,8 +84,6 @@ const HomePage: React.FC = () => {
                 foto_villa={villa.foto_villa}
                 status={villa.status}
                 kategori={villa.kategori}
-                averageRating={villa.averageRating}
-                commentCount={villa.commentCount}
               />
             ))
           ) : (
