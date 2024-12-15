@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Users, Building2, Wallet, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { useFetchAdmin } from "@/hooks/useFetchAdmin";
-import TransactionChart from "./TransactionChartAdmin";
+import TransactionChart from "@/components/Chart/TransactionChartAdmin";
 
 interface StatCardProps {
   icon: React.ReactNode;

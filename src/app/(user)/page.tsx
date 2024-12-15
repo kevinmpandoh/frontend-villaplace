@@ -11,10 +11,6 @@ import { useRouter } from "next/navigation";
 import { useFetchVilla } from "@/hooks/useFetchVilla";
 
 const HomePage: React.FC = () => {
-  const { data } = useFetchData("http://localhost:8000/api/villa?limit=6", {
-    method: "GET",
-    withCredentials: true,
-  });
   const [searchQuery, setSearchQuery] = useState("");
   const [villa, setVilla] = useState([]);
   const router = useRouter();
@@ -24,15 +20,16 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await handleGetVillas("limit=6");
+      console.log(res);
 
-      if (res) {
+      if (res.data) {
         setVilla(res.data);
       }
     };
     fetchData();
-  });
+  }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: any) => {
     e.preventDefault();
     router.push(`/category?search=${searchQuery}`);
   };
@@ -79,7 +76,7 @@ const HomePage: React.FC = () => {
         <h2 className="text-4xl font-bold mb-14 text-center">Rekomendasi</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
           {villa.length > 0 ? (
-            data.data.map((villa: VillaProps) => (
+            villa.map((villa: VillaProps) => (
               <VillaCard
                 key={villa._id}
                 _id={villa._id}
