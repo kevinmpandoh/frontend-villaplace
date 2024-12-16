@@ -62,7 +62,7 @@ const VillaCard = ({
               <div className="flex items-center mt-2">
                 <RatingStar rating={averageRating || 0} />
                   <span className="ml-2">
-                    {averageRating ? `${averageRating.toFixed(1)} | ${commentCount} ulasan pelanggan` : "0.0 | 0 ulasan pelanggan"}
+                    {averageRating ? `${averageRating.toFixed(1)} | ${commentCount} review` : "0.0 | 0 review"}
                   </span>
               </div>
             <hr className="w-full h-[2px] bg-gray-200 mt-5" />

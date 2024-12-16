@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import "@/styles/globals.css";
 import Image from "next/image";
 import Link from "next/link";
-import useFetchData from "@/hooks/useFetchData";
 import VillaCard from "@/components/VillaCard";
 import { VillaProps } from "@/types/Villa";
 import { useRouter } from "next/navigation";
@@ -47,8 +46,8 @@ const HomePage: React.FC = () => {
         <div className="absolute inset-0 flex flex-col items-center text-center justify-center text-white">
           <h1 className="text-5xl font-bold mb-8">VILLAPLACE</h1>
           <p className="flex flex-col text-lg sm:text-2xl mb-5 sm:mb-8">
-            Temukan Pengalaman Menginap Sempurna,
-            <span className="mt-1"> Ciptakan Kenangan Tak Terlupakan</span>
+            Discover the Perfect Living Experience,
+            <span className="mt-1">Create Unforgettable Memories</span>
           </p>
           <div className="w-full max-w-2xl px-4">
             <form onSubmit={handleSearch}>

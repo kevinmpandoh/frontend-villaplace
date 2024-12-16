@@ -103,16 +103,16 @@ const Navbar = ({ token }: NavbarProps) => {
 
   const AuthButtons = () => (
     <>
-      <hr className="w-full h-[1px] bg-gray-200 my-4 md:hidden" />
+      <hr className="w-full h-[2px] bg-gray-200 md:hidden" />
       <div className="flex flex-col md:flex-row w-full md:w-auto items-start md:items-center gap-4">
         <Link href="/auth/register/user" className="w-full md:w-auto">
           <button className="border border-[#B7906C] text-[#C59E6C] hover:text-gray-900 px-4 py-1 rounded-md w-full">
-            Daftar
+            Sign Up
           </button>
         </Link>
         <Link href="/auth/login" className="w-full md:w-auto">
           <button className="bg-[#B7906C] text-white px-4 py-1 rounded-md hover:bg-[#9e7850] w-full">
-            Masuk
+            Login
           </button>
         </Link>
       </div>
@@ -176,7 +176,7 @@ const Navbar = ({ token }: NavbarProps) => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[300px]">
                 <div className="flex flex-col gap-8 mt-8">
-                  <SheetTitle className="text-2xl font-bold">
+                  <SheetTitle className="text-3xl font-bold">
                     Villa Place
                   </SheetTitle>
                   <NavLinks />
@@ -189,13 +189,14 @@ const Navbar = ({ token }: NavbarProps) => {
                     </div>
                   ) : tokenUser.length > 0 ? (
                     <DropdownUser />
-                  ) : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
+                  ) 
+                  : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
                     <Link
                       href={`/dashboard/${
                         tokenAdmin.length > 0 ? "admin" : "mitra"
                       }`}
                     >
-                      <button className="text-primary hover:bg-green-100 border-2 border-primary font-semibold rounded-lg text-sm px-4 py-2 text-center me-2 mb-2">
+                      <button className="text-primary hover:bg-green-100 border-2 border-primary font-semibold rounded-lg text-sm px-4 py-2 text-center">
                         Dashboard
                       </button>
                     </Link>

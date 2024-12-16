@@ -56,7 +56,7 @@ const LoginForm = () => {
 
   return (
     <div className="w-full max-w-sm">
-      <h1 className="text-2xl text-center font-bold mb-6">Login Admin</h1>
+      <h1 className="text-4xl text-center font-bold mb-16">Login Admin</h1>
 
       <Formik
         initialValues={{ email: "", password: "" }}
@@ -64,7 +64,7 @@ const LoginForm = () => {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
-          <Form className="space-y-6">
+          <Form className="space-y-10">
             {/* Email Field */}
             <div>
               <label

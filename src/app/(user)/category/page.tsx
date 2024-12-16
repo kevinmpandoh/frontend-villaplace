@@ -278,12 +278,12 @@ const Category = () => {
         {/* Pagination Controls */}
         <div className="w-full border-gray-200 mt-8">
           <div className="flex justify-center py-2">
-            <div className="flex space-x-2">
+            <div className="flex space-x-1 sm:space-x-2">
               {/* Previous Button */}
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
               >
                 Previous
               </button>
@@ -299,7 +299,7 @@ const Category = () => {
                       <button
                         key={pageNum}
                         onClick={() => setCurrentPage(pageNum)}
-                        className={`py-2 px-4 rounded ${
+                        className={`py-1 px-2.5 sm:py-2 sm:px-4 sm:text-md rounded ${
                           currentPage === pageNum
                             ? "bg-green-500 text-white"
                             : "bg-white text-brown-500 border border-brown-500"
@@ -315,7 +315,7 @@ const Category = () => {
                     pages.push(
                       <button
                         key={key}
-                        className="py-2 px-4 rounded bg-white text-brown-500 border border-brown-500"
+                        className="py-1 px-1.5 sm:py-2 sm:px-3 text-sm sm:text-md rounded bg-white text-brown-500 border border-brown-500"
                         disabled
                       >
                         ...
@@ -326,8 +326,8 @@ const Category = () => {
                   // Selalu tampilkan halaman pertama
                   pushPage(1);
 
-                  if (totalPages <= 7) {
-                    // Jika total halaman 7 atau kurang, tampilkan semua
+                  if (totalPages <= 5) { // Ubah dari 7 ke 5 untuk mobile
+                    // Jika total halaman 5 atau kurang, tampilkan semua
                     for (let i = 2; i < totalPages; i++) {
                       pushPage(i);
                     }
@@ -371,7 +371,7 @@ const Category = () => {
                   setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredVillas.length / itemsPerPage)))
                 }
                 disabled={currentPage === Math.ceil(filteredVillas.length / itemsPerPage)}
-                className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
               >
                 Next
               </button>

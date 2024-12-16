@@ -72,7 +72,7 @@ const LoginForm = () => {
       <div className="flex justify-center gap-7 mb-16">
         <button
           className={`text-4xl font-semibold px-4 py-2 ${
-            isUser ? "text-black border-b-2 border-green-500" : "text-gray-500"
+            isUser ? "text-black border-b-2 font-bold border-green-500" : "text-gray-500"
           }`}
           onClick={() => setIsUser(true)}
         >
@@ -81,7 +81,7 @@ const LoginForm = () => {
         <button
           className={`text-4xl font-semibold px-4 py-2 ${
             !isUser
-              ? "text-brown-500 border-b-2 border-brown-500"
+              ? "text-brown-500 border-b-2 border-brown-500 font-bold"
               : "text-gray-500"
           }`}
           onClick={() => setIsUser(false)}

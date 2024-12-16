@@ -41,20 +41,20 @@ const VillaCard = ({
           <div className="p-4 ">
             <div>
               <h3 className="text-xl font-semibold">{nama}</h3>
-              <p className="text-green-600 text-xl font-bold">
+              <p className="text-green-600 text-lg font-bold">
                 Rp. {harga.toLocaleString()}
               </p>
             </div>
   
             <div className="flex items-center text-gray-600 mt-2">
               <FontAwesomeIcon
-                className="mr-1 text-gray-500" 
+                className="mr-2 text-gray-500" 
                 icon={faLocationDot}
               />
-              <span className="ml-2 text-gray-600">{lokasi}</span>
+              <span className="text-gray-600">{lokasi}</span>
             </div>
   
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between mt-2">
               {/* Bagian kiri - Fasilitas */}
               <div className="flex items-center gap-4">
                 <div className="flex items-center">
@@ -62,22 +62,22 @@ const VillaCard = ({
                     className="mr-2" 
                     icon={faHouse} 
                   />
-                  <span className="text-sm">{fasilitas[0]}</span>
+                  <span className="text-sm sm:text-base">{fasilitas[0]}</span>
                 </div>
                 <div className="flex items-center">
                   <FontAwesomeIcon
                     className="mr-2" 
                     icon={faBath}
                   />
-                  <span className="text-sm">{fasilitas[1]}</span>
+                  <span className="text-sm sm:text-base">{fasilitas[1]}</span>
                 </div>
               </div>
 
               {/* Bagian kanan - Rating */}
-              <div className="flex items-center">
+              <div className="flex items-center mt-2 sm:mt-0 md:mt-2 lg:mt-0">
                 <RatingStar rating={averageRating || 0} />
-                <span className="ml-2">
-                  {averageRating ? `${averageRating.toFixed(1)} | ${commentCount} ulasan` : "0.0 | 0 ulasan"}
+                <span className="ml-2 text-sm sm:text-base">
+                  {averageRating ? `${averageRating.toFixed(1)} | ${commentCount} review` : "0.0 | 0 review"}
                 </span>
               </div>
             </div>

@@ -35,7 +35,7 @@ const Contact = () => {
       </div>
 
       {/* Contact Form Section */}
-      <div className="bg-green-100 py-16 px-8 md:px-16 lg:px-32">
+      <div className="bg-[#089562] py-16 px-8 md:px-16 lg:px-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <div className="bg-white p-8 rounded-lg shadow-lg">
@@ -95,11 +95,11 @@ const Contact = () => {
           </div>
 
           {/* Contact Info */}
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center text-white">
             <h2 className="text-4xl font-bold mb-6 text-center">
               Let’s talk with us
             </h2>
-            <p className="text-gray-700 mb-8 text-center">
+            <p className="mb-8 text-center">
               Have questions or need assistance? Reach out to our support team
               anytime. We’re here to help you resolve issues, answer queries,
               and ensure you have the best experience possible.
