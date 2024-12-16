@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -40,27 +40,36 @@ const RegisFormMitra = () => {
         });
         router.push("/auth/login");
       }
-    } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.errors) {
-        const errors = error.response.data.errors;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.errors
+        ) {
+          const errors = error.response.data.errors;
 
-        console.log(errors.password);
+          console.log(errors.password);
 
-        // Set error pada field yang relevan
-        if (errors.nama) {
-          setFieldError("nama", errors.nama[0]);
-        }
-        if (errors.email) {
-          setFieldError("email", "Email sudah digunakan");
-        }
-        if (errors.no_telepon) {
-          setFieldError("no_telepon", "Nomor Telepon sudah digunakan");
-        }
-        if (errors.password) {
-          setFieldError("password", errors.password[0]);
+          // Set error pada field yang relevan
+          if (errors.nama) {
+            setFieldError("nama", errors.nama[0]);
+          }
+          if (errors.email) {
+            setFieldError("email", "Email sudah digunakan");
+          }
+          if (errors.no_telepon) {
+            setFieldError("no_telepon", "Nomor Telepon sudah digunakan");
+          }
+          if (errors.password) {
+            setFieldError("password", errors.password[0]);
+          }
+        } else {
+          setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
         }
       } else {
-        setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
+        console.error("Unknown error:", error);
+        setFieldError("email", "Terjadi kesalahan yang tidak diketahui");
       }
     } finally {
       setSubmitting(false);

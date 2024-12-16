@@ -19,7 +19,6 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await handleGetVillas("limit=6");
-      console.log(res);
 
       if (res.data) {
         setVilla(res.data);
@@ -28,7 +27,7 @@ const HomePage: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push(`/category?search=${searchQuery}`);
   };

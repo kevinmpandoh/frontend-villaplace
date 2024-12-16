@@ -4,7 +4,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import DropdownUser from "./DroopdownUser";
-import Cookies from "js-cookie";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import {
@@ -189,8 +188,7 @@ const Navbar = ({ token }: NavbarProps) => {
                     </div>
                   ) : tokenUser.length > 0 ? (
                     <DropdownUser />
-                  ) 
-                  : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
+                  ) : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
                     <Link
                       href={`/dashboard/${
                         tokenAdmin.length > 0 ? "admin" : "mitra"

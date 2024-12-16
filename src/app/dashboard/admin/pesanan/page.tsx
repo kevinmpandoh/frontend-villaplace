@@ -17,7 +17,7 @@ const PesananAdmin = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [filteredData, setFilteredData] = useState<Booking[]>([]);
   const [search, setSearch] = useState("");
-  const [detailBooking, setDetailBooking] = useState<any>();
+  const [detailBooking, setDetailBooking] = useState<Booking>();
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
 
@@ -30,12 +30,12 @@ const PesananAdmin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `status=${selectedStatus}`;
-      let itemsPerPage = 5;
+      const query = `status=${selectedStatus}`;
+      const itemsPerPage = 5;
 
       const data = await handleGetAllBooking(query);
       if (data && data.data) {
-        let filteredData = data.data.filter((data: Booking) => {
+        const filteredData = data.data.filter((data: Booking) => {
           const searchKeyword = search.toLowerCase();
 
           const nama_villa = data.villa.nama?.toLowerCase() || "";
@@ -85,17 +85,17 @@ const PesananAdmin = () => {
     }
   }, [currentModalId]);
 
-  const toggleModal = (id: any) => {
+  const toggleModal = (id: string) => {
     setCurrentModalId(id);
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleModalEdit = (id: any) => {
+  const toggleModalEdit = (id: string) => {
     setCurrentModalId(id);
     setIsModalEditOpen(!isModalEditOpen);
   };
 
-  const handleSubmit = (id: string, updatedBooking: any) => {
+  const handleSubmit = (id: string, updatedBooking: Booking) => {
     handleUpdateBooking(id, updatedBooking);
     Swal.fire({
       icon: "success",
@@ -105,7 +105,7 @@ const PesananAdmin = () => {
     setFilteredData((prevData) =>
       prevData.map((item) => (item._id === id ? updatedBooking : item))
     );
-    toggleModalEdit(null);
+    toggleModalEdit("");
   };
 
   const handleDelete = (id: string) => {
@@ -206,17 +206,17 @@ const PesananAdmin = () => {
       </div>
       {isModalOpen && (
         <Modal
-          onClose={() => toggleModal(null)}
+          onClose={() => toggleModal("")}
           title="Detail Pesanan"
-          className="max-h-screen overflow-y-auto h-3/4"
+          className="max-h-screen overflow-y-auto h-1/2"
         >
-          <DetailBooking detailBooking={detailBooking} />
+          {detailBooking && <DetailBooking detailBooking={detailBooking} />}
         </Modal>
       )}
 
       {isModalEditOpen && (
         <Modal
-          onClose={() => toggleModalEdit(null)}
+          onClose={() => toggleModalEdit("")}
           title="Edit Pembayaran"
           className="max-h-screen max-w-lg overflow-y-auto h-3/2"
         >

@@ -41,7 +41,7 @@ const PembayaranAdmin = () => {
     };
 
     fetchData();
-  }, [selectedStatus]);
+  });
 
   const toggleModal = (id: string) => {
     setCurrentModalId(id);
@@ -53,7 +53,7 @@ const PembayaranAdmin = () => {
     setIsModalEditOpen(!isModalEditOpen);
   };
 
-  const handleSubmit = (id: string, updatedPayment: any) => {
+  const handleSubmit = (id: string, updatedPayment: Payment) => {
     handleUpdatePayment(id, updatedPayment);
     Swal.fire({
       icon: "success",

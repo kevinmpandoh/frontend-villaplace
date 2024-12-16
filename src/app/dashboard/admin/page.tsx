@@ -4,6 +4,7 @@ import { Users, Building2, Wallet, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { useFetchAdmin } from "@/hooks/useFetchAdmin";
 import TransactionChart from "@/components/Chart/TransactionChartAdmin";
+import { DashboardData } from "@/types/DashboardData";
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -23,17 +24,19 @@ const StatCard: React.FC<StatCardProps> = ({ icon, title, value, bgColor }) => (
 );
 
 const DashboardAdmin = () => {
-  const { handleDashboardData } = useFetchAdmin();
-  const [data, setData] = React.useState<any>(null);
+  const { handleDashboardData, success } = useFetchAdmin();
+  const [data, setData] = React.useState<DashboardData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await handleDashboardData("range=1-6");
 
-      setData(data.data);
+      if (success) {
+        setData(data.data);
+      }
     };
     fetchData();
-  }, []);
+  });
   return (
     <div>
       <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-8">
@@ -67,7 +70,7 @@ const DashboardAdmin = () => {
             <Users className="w-14 h-14 text-white border border-white rounded-full bg-green-400 p-2" />
           }
           title="Total Pengguna"
-          value={data?.userCount}
+          value={data?.userCount || 0}
           bgColor="bg-green-200/80"
         />
         <StatCard
@@ -75,7 +78,7 @@ const DashboardAdmin = () => {
             <Building2 className="w-14 h-14 text-white border border-white rounded-full bg-orange-400 p-2" />
           }
           title="Total Mitra"
-          value={data?.ownerCount}
+          value={data?.ownerCount || 0}
           bgColor="bg-orange-200/80"
         />
 
@@ -84,7 +87,7 @@ const DashboardAdmin = () => {
             <ImageIcon className="w-14 h-14 text-white border border-white rounded-full bg-blue-400 p-2" />
           }
           title="Total Postingan"
-          value={data?.villaCount}
+          value={data?.villaCount || 0}
           bgColor="bg-blue-200/80"
         />
         <StatCard
@@ -92,7 +95,7 @@ const DashboardAdmin = () => {
             <Wallet className="w-14 h-14 text-white border border-white rounded-full bg-purple-400 p-2" />
           }
           title="Total Pesanan"
-          value={data?.pesananCount}
+          value={data?.pesananCount || 0}
           bgColor="bg-purple-200/80"
         />
       </div>

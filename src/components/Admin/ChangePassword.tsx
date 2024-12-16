@@ -39,7 +39,7 @@ const ChangePassword = () => {
           handleChangePassword({ currentPassword, newPassword });
           formikHelpers.resetForm();
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error(err);
       }
     },
@@ -127,11 +127,11 @@ const ChangePassword = () => {
       </div>
 
       <div className="flex mr-10 justify-end items-end space-x-4">
-          <Link href="/profile-admin">
-            <span className="flex items-center font-semibold text-white bg-brown-500 hover:bg-brown-600 rounded text-sm px-3 py-2 dark:bg-brown-600 dark:hover:bg-brown-500">
-              Kembali
-            </span>
-          </Link>
+        <Link href="/profile-admin">
+          <span className="flex items-center font-semibold text-white bg-brown-500 hover:bg-brown-600 rounded text-sm px-3 py-2 dark:bg-brown-600 dark:hover:bg-brown-500">
+            Kembali
+          </span>
+        </Link>
         <button
           type="submit"
           className={`flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-2 me-2 dark:bg-green-600 dark:hover:bg-green-700 ${

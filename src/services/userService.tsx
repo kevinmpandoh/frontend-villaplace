@@ -6,7 +6,14 @@ const API_BASE_URL = "http://localhost:8000/api";
 
 export const updateUser = async (
   id: string,
-  data: Omit<User, "_id">
+  data: Omit<
+    {
+      nama: string;
+      email: string;
+      no_telepon: string;
+    },
+    "_id"
+  >
 ): Promise<{ status: string; data: User }> => {
   try {
     const response = await axios.put(`${API_BASE_URL}/user/${id}`, data, {
@@ -59,7 +66,9 @@ export const changePassword = async (data: {
   }
 };
 
-export const deleteUser = async (id: string): Promise<{ status: string; message: string }> => {
+export const deleteUser = async (
+  id: string
+): Promise<{ status: string; message: string }> => {
   try {
     const response = await axios.delete(`${API_BASE_URL}/user/${id}`, {
       withCredentials: true,

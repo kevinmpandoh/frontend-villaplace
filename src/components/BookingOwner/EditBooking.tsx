@@ -11,7 +11,7 @@ interface Props {
 const EditBooking = ({ bookingId, onEdit }: Props) => {
   const [dataBooking, setDataBooking] = useState<Booking | null>(null);
 
-  const { handleGetBookingById, loading, success, error } = useFetchBooking();
+  const { handleGetBookingById, loading, error } = useFetchBooking();
 
   useEffect(() => {
     // Simulasi fetch data payment berdasarkan paymentId

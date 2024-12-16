@@ -23,8 +23,8 @@ const PembayaranAdmin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `status=${selectedStatus}`;
-      let itemsPerPage = 5;
+      const query = `status=${selectedStatus}`;
+      const itemsPerPage = 5;
 
       const data = await handleGetAllPaymentOwner(query);
       if (data && data.data) {
@@ -60,7 +60,7 @@ const PembayaranAdmin = () => {
     fetchData();
   }, [search, currentPage, selectedStatus]);
 
-  const toggleModal = (id: any) => {
+  const toggleModal = (id: string) => {
     setCurrentModalId(id);
     setIsModalOpen(!isModalOpen);
   };
@@ -140,7 +140,7 @@ const PembayaranAdmin = () => {
       </div>
       {isModalOpen && (
         <Modal
-          onClose={() => toggleModal(null)}
+          onClose={() => toggleModal("")}
           title="Detail Pembayaran"
           className="max-h-screen overflow-y-auto h-3/4"
         >

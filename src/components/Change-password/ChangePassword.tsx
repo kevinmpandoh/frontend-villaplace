@@ -26,7 +26,7 @@ const ChangePassword = () => {
           handleChangePassword({ currentPassword, newPassword });
           formikHelpers.resetForm();
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error(err);
       }
     },

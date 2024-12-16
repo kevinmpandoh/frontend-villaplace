@@ -17,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({
     <div className="fixed  inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-md z-10"></div>
       <div
-        className={`bg-white rounded-lg shadow-lg p-10 z-20 flex mx-2 flex-col h-[95%] xl:h-fit  md:w-3/5 w-full ${
+        className={`bg-white rounded-lg shadow-lg p-10 z-20 flex mx-2 flex-col h-[95%] xl:h-fit max-h-[90%] md:w-3/5 w-full ${
           className && className
         }`}
       >

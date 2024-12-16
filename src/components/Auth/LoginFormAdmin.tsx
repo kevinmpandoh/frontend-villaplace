@@ -28,7 +28,7 @@ const LoginForm = () => {
   // Handle submit
   const handleSubmit = async (
     values: { email: string; password: string },
-    { setSubmitting, setFieldError }: FormikHelpers<FormValues>
+    {}: FormikHelpers<FormValues>
   ) => {
     try {
       const res = await axios.post(
@@ -45,11 +45,18 @@ const LoginForm = () => {
       if (res.status === 200) {
         router.push("/dashboard/admin");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal Login",
+          text: error?.response?.data.message,
+        });
+      }
       Swal.fire({
         icon: "error",
         title: "Gagal Login",
-        text: error.response.data.message,
+        text: "Terjadi kesalahan saat login",
       });
     }
   };

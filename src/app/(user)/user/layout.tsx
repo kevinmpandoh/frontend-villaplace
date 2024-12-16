@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   });
   return (
     <>
-      <section className="flex-col my-5 flex md:flex-row max-w-screen-xl md:h-[643px] mx-auto px-4">
+      <section className="flex-col my-8  flex md:flex-row max-w-screen-xl md:h-[643px] mx-auto px-4">
         <SidebarProfile data={data} />
 
         <main className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { updateUser, changePassword, deleteUser } from "../services/userService";
+import {
+  updateUser,
+  changePassword,
+  deleteUser,
+} from "../services/userService";
 import { User } from "../types/User";
 import Swal from "sweetalert2";
 
@@ -92,5 +96,12 @@ export const useFetchUser = () => {
     }
   };
 
-  return { handleUpdateUser, handleChangePassword, handleDeleteUser, loading, error, success };
+  return {
+    handleUpdateUser,
+    handleChangePassword,
+    handleDeleteUser,
+    loading,
+    error,
+    success,
+  };
 };

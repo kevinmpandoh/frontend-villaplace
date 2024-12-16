@@ -15,7 +15,6 @@ interface FormValues {
 const LoginForm = () => {
   const [isUser, setIsUser] = useState(true);
   const router = useRouter();
-  const [serverError, setServerError] = useState("");
 
   // Validasi Yup
   const validationSchema = Yup.object().shape({
@@ -27,7 +26,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (
     values: { email: string; password: string },
-    { setSubmitting, setFieldError }: FormikHelpers<FormValues>
+    { setFieldError }: FormikHelpers<FormValues>
   ) => {
     try {
       const res = await axios.post(
@@ -45,23 +44,27 @@ const LoginForm = () => {
           router.push("/dashboard/mitra");
         }
       }
-    } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.errors) {
-        const errors = error.response.data.errors;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.errors
+        ) {
+          const errors = error.response.data.errors;
 
-        console.log(errors.email);
+          if (errors.email) {
+            setFieldError("email", "Email tidak ditemukan");
+          }
 
-        // Set error pada field yang relevan
-
-        if (errors.email) {
-          setFieldError("email", "Email tidak ditemukan");
-        }
-
-        if (errors.password) {
-          setFieldError("password", "Password salah");
+          if (errors.password) {
+            setFieldError("password", "Password salah");
+          }
+        } else {
+          setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti");
         }
       } else {
-        setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
+        console.error("Unknown error:", error);
       }
     }
   };
@@ -72,7 +75,9 @@ const LoginForm = () => {
       <div className="flex justify-center gap-7 mb-16">
         <button
           className={`text-4xl font-semibold px-4 py-2 ${
-            isUser ? "text-black border-b-2 font-bold border-green-500" : "text-gray-500"
+            isUser
+              ? "text-black border-b-2 font-bold border-green-500"
+              : "text-gray-500"
           }`}
           onClick={() => setIsUser(true)}
         >
@@ -89,9 +94,6 @@ const LoginForm = () => {
           Mitra
         </button>
       </div>
-
-      {/* Error Message */}
-      {serverError && <p className="text-red-500">{serverError}</p>}
 
       {/* Form */}
       <Formik

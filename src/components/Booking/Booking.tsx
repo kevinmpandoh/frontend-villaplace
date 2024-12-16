@@ -25,6 +25,23 @@ type Review = {
   rating: number;
   komentar: string;
   villa: string;
+  pesanan: string;
+};
+
+type Booking = {
+  _id: string;
+  villa: {
+    _id: string;
+    nama: string;
+    lokasi: string;
+    harga: number;
+    foto_villa: [{ url: string }];
+  };
+  tanggal_mulai: string;
+  tanggal_selesai: string;
+  harga: number;
+  status: string;
+  createdAt: string;
 };
 
 const Booking = () => {
@@ -64,7 +81,7 @@ const Booking = () => {
     };
     handleFetchUlasan(data);
     setReviewData([...reviewData, data]);
-    toggleModalReview(null, "");
+    toggleModalReview("", "");
   };
 
   useEffect(() => {
@@ -85,18 +102,18 @@ const Booking = () => {
       setFilteredData(BookingData);
     } else {
       const filtered = BookingData.filter(
-        (item: any) => item.status === selectedStatus
+        (item: Booking) => item.status === selectedStatus
       );
       setFilteredData(filtered);
     }
   }, [selectedStatus, BookingData]);
 
-  const toggleModal = (id: any) => {
+  const toggleModal = (id: string) => {
     setCurrentModalPesananId(id);
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleModalReview = (id: any, pesananId: string) => {
+  const toggleModalReview = (id: string, pesananId: string) => {
     setCurrentModalReviewId(id);
     setCurrentModalPesananId(pesananId);
 
@@ -165,7 +182,7 @@ const Booking = () => {
         {loading ? (
           <SkeletonLoader />
         ) : filteredData.length > 0 ? (
-          filteredData.map((item: any, index) => (
+          filteredData.map((item: Booking, index) => (
             <div key={index} className="box-3 mb-4">
               <div className="flex justify-between mb-4 items-center">
                 <div className="inline-flex items-center text-sm font-semibold">
@@ -243,7 +260,7 @@ const Booking = () => {
                     <button
                       type="button"
                       onClick={() => toggleModal(item._id)}
-                      className="flex justify-end font-semibold text-[#089562] bg-[#089562] bg-opacity-10 border border-[#089562] hover:bg-opacity-30 rounded text-sm px-3 py-1.5 me-2 dark:bg-green-600 dark:hover:bg-green-700"
+                      className="flex justify-end font-semibold text-[#089562] bg-[#089562] bg-opacity-10 border border-[#089562] hover:bg-opacity-30 rounded text-sm px-2 py-1.5 me-2 dark:bg-green-600 dark:hover:bg-green-700"
                     >
                       Lihat Detail
                     </button>
@@ -253,16 +270,15 @@ const Booking = () => {
                         onClick={() =>
                           toggleModalReview(item.villa._id, item._id)
                         }
-                        // className="flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 dark:bg-green-600 dark:hover:bg-green-700"
-                        className={`flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-3 py-1.5 dark:bg-green-600 dark:hover:bg-green-700 ${
+                        className={`flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-2 py-1.5 dark:bg-green-600 dark:hover:bg-green-700 ${
                           reviewData.some(
-                            (review: any) => review.pesanan === item._id
+                            (review: Review) => review.pesanan === item._id
                           )
                             ? "opacity-50 cursor-not-allowed"
                             : ""
                         }`}
                         disabled={reviewData.some(
-                          (review: any) => review.pesanan === item._id
+                          (review: Review) => review.pesanan === item._id
                         )}
                       >
                         Review Villa
@@ -279,7 +295,7 @@ const Booking = () => {
       </div>
       {isModalOpen && (
         <Modal
-          onClose={() => toggleModal(null)}
+          onClose={() => toggleModal("")}
           title="Detail Pesanan Villa"
           className="max-h-screen overflow-y-auto h-3/4"
         >
@@ -288,7 +304,7 @@ const Booking = () => {
       )}
       {isModalReviewOpen && (
         <Modal
-          onClose={() => toggleModalReview(null, "")}
+          onClose={() => toggleModalReview("", "")}
           title="Beri Ulasan Villa"
           className="max-w-md"
         >

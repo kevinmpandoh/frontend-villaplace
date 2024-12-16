@@ -8,7 +8,7 @@ import {
   FaParking,
   FaBath,
 } from "react-icons/fa";
-import { MdOutlineBedroomParent, MdOutlineBathroom } from "react-icons/md";
+import { MdOutlineBedroomParent } from "react-icons/md";
 import { GiBarbecue } from "react-icons/gi";
 import { TbAirConditioning } from "react-icons/tb";
 

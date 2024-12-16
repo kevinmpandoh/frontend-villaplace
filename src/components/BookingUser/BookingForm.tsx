@@ -5,11 +5,19 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import validationSchemaBooking from "@/validations/bookingUser";
 
+interface BookingValues {
+  fullName: string;
+  email: string;
+  guests: number;
+  checkInDate: string;
+  checkOutDate: string;
+  notes: string;
+}
+
 interface BookingFormProps {
   handleChange: (event: { target: { name: string; value: string } }) => void;
-  handleSubmit: (values: any) => void;
+  handleSubmit: (values: BookingValues) => void;
   bookingDate: { tanggal_mulai: string; tanggal_selesai: string }[];
-  villa: any;
 }
 
 const BookingForm: React.FC<BookingFormProps> = ({
@@ -24,7 +32,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const getDisabledDates = (): Set<string> => {
     const disabledDates = new Set<string>();
     bookingDate.forEach(({ tanggal_mulai, tanggal_selesai }) => {
-      let currentDate = new Date(tanggal_mulai);
+      const currentDate = new Date(tanggal_mulai);
       const endDate = new Date(tanggal_selesai);
 
       // Tambahkan setiap tanggal dalam rentang ke dalam disabledDates

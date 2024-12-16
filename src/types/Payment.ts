@@ -8,9 +8,11 @@ export default interface Payment {
   status_pembayaran: string;
   tanggal_pembayaran: string;
   expiry_date: string;
+  pdf_url: string;
   bank: string;
   pesanan: {
     villa: {
+      _id: string;
       nama: string;
       foto_villa: { url: string }[];
       harga: number;

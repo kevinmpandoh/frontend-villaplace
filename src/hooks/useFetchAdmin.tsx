@@ -11,17 +11,17 @@ import Swal from "sweetalert2";
 
 export const useFetchAdmin = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState(null);
   const [success, setSuccess] = useState<boolean>(false);
 
   const handleDashboardData = async (query: string) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
     try {
-      setLoading(true);
-      setError(null);
-      setSuccess(false);
       const result = await getDashboardData(query);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       setError(err);
       throw err;
     } finally {
