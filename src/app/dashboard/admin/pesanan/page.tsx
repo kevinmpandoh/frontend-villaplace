@@ -217,7 +217,7 @@ const PesananAdmin = () => {
       {isModalEditOpen && (
         <Modal
           onClose={() => toggleModalEdit("")}
-          title="Edit Pembayaran"
+          title="Edit Pesanan"
           className="max-h-screen max-w-lg overflow-y-auto h-3/2"
         >
           <EditBooking bookingId={currentModalId} onEdit={handleSubmit} />

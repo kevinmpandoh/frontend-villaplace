@@ -42,7 +42,8 @@ const PaymentUser = () => {
 
       PaymentData.forEach((item: Payment) => {
         if (item.status_pembayaran === "pending") {
-          updatedCountdowns[item._id] = calculateCountdown(item.expiry_date);
+          console.log(item, "ITEM");
+          updatedCountdowns[item._id] = calculateCountdown(item.expiry_time);
         }
       });
 

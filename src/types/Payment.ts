@@ -7,7 +7,7 @@ export default interface Payment {
   jumlah_pembayaran: number;
   status_pembayaran: string;
   tanggal_pembayaran: string;
-  expiry_date: string;
+  expiry_time: string;
   pdf_url: string;
   bank: string;
   pesanan: {

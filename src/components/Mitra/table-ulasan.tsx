@@ -117,14 +117,17 @@ const TableUlasan = () => {
           <tbody>
             {currentData.length > 0 ? (
               currentData.map((ulasan, idx) => (
-                <tr key={idx} className="hover:bg-gray-50">
+                <tr
+                  key={idx}
+                  className="hover:bg-gray-50 border border-gray-300"
+                >
                   <td className="p-3 text-center">
                     {indexOfFirstItem + idx + 1}
                   </td>
                   <td className="p-3">{ulasan.userName}</td>
                   <td className="p-3">
                     <a
-                      href={`/villa/${ulasan.villaId}`}
+                      href={`/category/${ulasan.villaId}`}
                       className="text-brown-500"
                     >
                       {ulasan.villaName}

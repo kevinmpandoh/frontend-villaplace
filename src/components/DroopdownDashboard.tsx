@@ -268,7 +268,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
       {/* <!-- Modal Start --> */}
       {modalOpen && (
         <Modal title="Pengaturan" onClose={() => setModalOpen(false)}>
-          <section className="flex-col h-full my-5 flex xl:flex-row max-w-screen-xl mx-auto px-4">
+          <section className="flex-col h-full  flex xl:flex-row max-w-screen-xl mx-auto px-4">
             <SidebarProfileDashboard
               data={adminData || mitraData}
               setMenuOpen={setMenuOpen}
