@@ -12,7 +12,7 @@ import Empty from "../Empty";
 import SkeletonLoader from "./SkeletonLoader";
 
 // Hooks
-import useFetchData from "@/hooks/useFetchData";
+// import useFetchData from "@/hooks/useFetchData";
 import { useFetchUlasan } from "@/hooks/useFetchUlasan";
 
 // Utils
@@ -20,13 +20,8 @@ import { formatDate } from "@/utils/formatDate";
 import { getStatusColor, getStatusLabel } from "@/utils/getStatusLabelAndColor";
 import { calculateDays } from "@/utils/calculateDays";
 import Link from "next/link";
-
-type Review = {
-  rating: number;
-  komentar: string;
-  villa: string;
-  pesanan: string;
-};
+// import { Ulasan } from "@/types/Ulasan";
+import useFetchBooking from "@/hooks/useFetchBooking";
 
 type Booking = {
   _id: string;
@@ -44,6 +39,13 @@ type Booking = {
   createdAt: string;
 };
 
+interface Ulasan {
+  komentar: string;
+  rating: number;
+  villa: string;
+  pesanan: string;
+}
+
 const Booking = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,25 +54,49 @@ const Booking = () => {
   const [isModalReviewOpen, setIsModalReviewOpen] = useState(false);
   const [BookingData, setBookingData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [reviewData, setReviewData] = useState<Review[]>([]);
+  const [reviewData, setReviewData] = useState<Ulasan[]>([]);
 
-  console.log("Review Data", reviewData);
+  const { handleGetBookingByUser, loading } = useFetchBooking();
 
-  const { handleFetchUlasan } = useFetchUlasan();
+  const { handleFetchUlasan, handleGetUlasanUser } = useFetchUlasan();
 
-  const { data, loading } = useFetchData(
-    "http://localhost:8000/api/pesanan/user",
-    {
-      withCredentials: true,
-    }
-  );
+  // const { data, loading } = useFetchData(
+  //   "http://localhost:8000/api/pesanan/user",
+  //   {
+  //     withCredentials: true,
+  //   }
+  // );
 
-  const { data: dataReview } = useFetchData(
-    "http://localhost:8000/api/ulasan/user",
-    {
-      withCredentials: true,
-    }
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await handleGetBookingByUser();
+      if (data && data.data) {
+        setBookingData(data.data);
+      } else {
+        setBookingData([]);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await handleGetUlasanUser();
+      if (data && data.data) {
+        setReviewData(data.data);
+      } else {
+        setReviewData([]);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // const { data: dataReview } = useFetchData(
+  //   "http://localhost:8000/api/ulasan/user",
+  //   {
+  //     withCredentials: true,
+  //   }
+  // );
 
   const handleSubmit = (values: { rating: number; komentar: string }) => {
     const data = {
@@ -84,17 +110,17 @@ const Booking = () => {
     toggleModalReview("", "");
   };
 
-  useEffect(() => {
-    if (data) {
-      setBookingData(data.data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setBookingData(data.data);
+  //   }
+  // }, [data]);
 
-  useEffect(() => {
-    if (dataReview) {
-      setReviewData(dataReview.data);
-    }
-  }, [dataReview]);
+  // useEffect(() => {
+  //   if (dataReview) {
+  //     setReviewData(dataReview.data);
+  //   }
+  // }, [dataReview]);
 
   useEffect(() => {
     // Filter data berdasarkan status
@@ -272,13 +298,13 @@ const Booking = () => {
                         }
                         className={`flex justify-end font-semibold text-white bg-[#089562] hover:bg-green-800 rounded text-sm px-2 py-1.5 dark:bg-green-600 dark:hover:bg-green-700 ${
                           reviewData.some(
-                            (review: Review) => review.pesanan === item._id
+                            (review: Ulasan) => review.pesanan === item._id
                           )
                             ? "opacity-50 cursor-not-allowed"
                             : ""
                         }`}
                         disabled={reviewData.some(
-                          (review: Review) => review.pesanan === item._id
+                          (review: Ulasan) => review.pesanan === item._id
                         )}
                       >
                         Review Villa
