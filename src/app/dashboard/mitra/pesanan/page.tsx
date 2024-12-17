@@ -55,16 +55,16 @@ const PesananMitra = () => {
     };
 
     fetchData();
-  }, []);
+  }, [handleGetVillaByOwner]);
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `status=${selectedStatus}`;
-      let itemsPerPage = 5;
+      const query = `status=${selectedStatus}`;
+      const itemsPerPage = 5;
 
       const data = await handleGetBookingByOwner(query);
       if (data && data.data) {
-        let filteredData = data.data.filter((data: Booking) => {
+        const filteredData = data.data.filter((data: Booking) => {
           const searchKeyword = search.toLowerCase();
 
           const nama_villa = data.villa.nama?.toLowerCase() || "";
@@ -97,7 +97,7 @@ const PesananMitra = () => {
     };
 
     fetchData();
-  }, [selectedStatus, search, currentPage]);
+  }, [selectedStatus, search, currentPage, handleGetBookingByOwner]);
 
   useEffect(() => {
     if (currentModalId) {
@@ -110,7 +110,7 @@ const PesananMitra = () => {
 
       fetchData();
     }
-  }, [currentModalId]);
+  }, [currentModalId, handleGetBookingById]);
 
   const toggleModal = (id: any) => {
     setCurrentModalId(id);

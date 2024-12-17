@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -56,7 +57,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
         setMitraData(data.data);
       }
     }
-  }, [data]);
+  }, [data, role]);
 
   const handleUpdateMitra = async (
     values: Omit<Mitra, "_id">,

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import useFetchData from "@/hooks/useFetchData";
 import { formatDate } from "@/utils/formatDate";
 import { getStatusColor, getStatusLabel } from "@/utils/getStatusLabelAndColor";
 import { calculateDays } from "@/utils/calculateDays";
-import Booking from "@/types/Booking";
 
 interface DetailPesananProps {
   pesananId: string;

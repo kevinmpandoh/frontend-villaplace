@@ -71,7 +71,7 @@ const PostingAdmin = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredVilla.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredVilla.length / itemsPerPage);
+  // const totalPages = Math.ceil(filteredVilla.length / itemsPerPage); (NYALAKAN BILA MENGGUNAKAN PAGINATION)
 
   // Fungsi untuk menghapus data villa
   const deleteData = async (id: string) => {

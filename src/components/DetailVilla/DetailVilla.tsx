@@ -1,8 +1,8 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import useFetchData from "@/hooks/useFetchData";
-import Link from "next/link";
 import SkeletonDetailVilla from "./SkeletonDetailVilla";
 import ImageModal from "./ImageModal";
 import axios from "axios";
@@ -71,7 +71,8 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
             withCredentials: true,
           }
         );
-        response.data.data && setIsFavorited(true);
+        // response.data.data && setIsFavorited(true);
+        setIsFavorited(response.data.data);
       } catch (error) {
         console.error("Error fetching favorite status:", error);
       }

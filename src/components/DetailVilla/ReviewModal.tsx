@@ -4,7 +4,7 @@ import RatingStar from "./RatingStar";
 
 interface ReviewModalProps {
   ulasan: any;
-  setIsModalReviewOpen: any;
+  setIsModalReviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ReviewModal = ({ ulasan, setIsModalReviewOpen }: ReviewModalProps) => {

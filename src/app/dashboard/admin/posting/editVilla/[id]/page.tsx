@@ -21,7 +21,7 @@ interface Villa {
 
 const VillaForm = () => {
   const { id } = useParams();
-  const [images, setImages] = useState<{ file: File; timestamp: number }[]>([]);
+  const [ setImages] = useState<{ file: File; timestamp: number }[]>([]);
   const validationSchema = Yup.object({
     nama: Yup.string().required("Nama Villa harus diisi."),
     lokasi: Yup.string().required("Lokasi harus diisi."),
@@ -112,11 +112,11 @@ const VillaForm = () => {
         }).then(() => {
           window.location.href = "/dashboard/admin/posting";
         });
-      } catch (error) {
+      } catch (error: unknown) {
         Swal.fire({
           icon: "error",
           title: "Error Updating Villa",
-          text: error.response?.data?.message || error.message,
+          text: error instanceof Error ? error.message : "Unknown error",
         });
       }
     },
@@ -308,7 +308,7 @@ const VillaForm = () => {
             onChange={handleMultipleSelectChange}
             className="w-full"
           />
-          {formik.touched.fasilitas && formik.errors.fasiltas && (
+          {formik.touched.fasilitas && formik.errors.fasilitas && (
             <div className="text-red-500 text-sm">
               {formik.errors.fasilitas}
             </div>

@@ -12,12 +12,12 @@ import Link from "next/link";
 const PesananAdmin = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = React.useState(false);
-  const [currentModalId, setCurrentModalId] = useState("");
+  const [currentModalId, setCurrentModalId] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [filteredData, setFilteredData] = useState<Booking[]>([]);
   const [search, setSearch] = useState("");
-  const [detailBooking, setDetailBooking] = useState<any>();
+  const [detailBooking, setDetailBooking] = useState<Booking | null>(null);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
 
@@ -30,19 +30,16 @@ const PesananAdmin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `status=${selectedStatus}`;
-      let itemsPerPage = 5;
-
+      const query = `status=${selectedStatus}`;
+      const itemsPerPage = 5;
       const data = await handleGetAllBooking(query);
       if (data && data.data) {
-        let filteredData = data.data.filter((data: Booking) => {
+        const filteredData = data.data.filter((data: Booking) => {
           const searchKeyword = search.toLowerCase();
-
           const nama_villa = data.villa.nama?.toLowerCase() || "";
           const lokasi = data.villa.lokasi?.toLowerCase() || "";
           const nama_user = data.user?.nama?.toLowerCase() || "";
           const email_user = data.user?.email?.toLowerCase() || "";
-
           return (
             nama_villa.includes(searchKeyword) ||
             nama_user.includes(searchKeyword) ||
@@ -70,7 +67,7 @@ const PesananAdmin = () => {
     };
 
     fetchData();
-  }, [selectedStatus, search, currentPage]);
+  }, [selectedStatus, search, currentPage, handleGetAllBooking]);
 
   useEffect(() => {
     if (currentModalId) {
@@ -83,19 +80,19 @@ const PesananAdmin = () => {
 
       fetchData();
     }
-  }, [currentModalId]);
+  }, [currentModalId, handleGetBookingById]);
 
-  const toggleModal = (id: any) => {
+  const toggleModal = (id: string) => {
     setCurrentModalId(id);
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleModalEdit = (id: any) => {
+  const toggleModalEdit = (id: string) => {
     setCurrentModalId(id);
     setIsModalEditOpen(!isModalEditOpen);
   };
 
-  const handleSubmit = (id: string, updatedBooking: any) => {
+  const handleSubmit = (id: string, updatedBooking: Booking) => {
     handleUpdateBooking(id, updatedBooking);
     Swal.fire({
       icon: "success",
@@ -105,7 +102,7 @@ const PesananAdmin = () => {
     setFilteredData((prevData) =>
       prevData.map((item) => (item._id === id ? updatedBooking : item))
     );
-    toggleModalEdit(null);
+    toggleModalEdit("");
   };
 
   const handleDelete = (id: string) => {
@@ -206,17 +203,17 @@ const PesananAdmin = () => {
       </div>
       {isModalOpen && (
         <Modal
-          onClose={() => toggleModal(null)}
+          onClose={() => toggleModal("")}
           title="Detail Pesanan"
           className="max-h-screen overflow-y-auto h-3/4"
         >
-          <DetailBooking detailBooking={detailBooking} />
+          <DetailBooking detailBooking={detailBooking as Booking} />
         </Modal>
       )}
 
       {isModalEditOpen && (
         <Modal
-          onClose={() => toggleModalEdit(null)}
+          onClose={() => toggleModalEdit("")}
           title="Edit Pembayaran"
           className="max-h-screen max-w-lg overflow-y-auto h-3/2"
         >

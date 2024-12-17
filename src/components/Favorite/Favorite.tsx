@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import useFetchData from "@/hooks/useFetchData";
 import { useFetchFavorite } from "@/hooks/useFetchFavorite";
@@ -10,7 +11,7 @@ const Favorite: React.FC = () => {
   const { handleDeleteFavorite } = useFetchFavorite();
   const [favorites, setFavorites] = useState([]);
 
-  const { data, error, loading } = useFetchData(
+  const { data, loading } = useFetchData(
     "http://localhost:8000/api/favorite",
     {
       withCredentials: true,

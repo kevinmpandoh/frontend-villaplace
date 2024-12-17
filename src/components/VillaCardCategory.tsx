@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { VillaProps } from "@/types/Villa";
@@ -38,7 +37,7 @@ const VillaCard = ({
           </div>
   
           {/* Information Section */}
-          <div className="p-4 ">
+          <div className="p-4">
             <div>
               <h3 className="text-xl font-semibold">{nama}</h3>
               <p className="text-green-600 text-lg font-bold">

@@ -26,9 +26,9 @@ const HomePage: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [handleGetVillas]);
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push(`/category?search=${searchQuery}`);
   };

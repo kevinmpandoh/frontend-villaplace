@@ -15,7 +15,7 @@ interface FormValues {
 const LoginForm = () => {
   const [isUser, setIsUser] = useState(true);
   const router = useRouter();
-  const [serverError, setServerError] = useState("");
+  const [serverError] = useState("");
 
   // Validasi Yup
   const validationSchema = Yup.object().shape({
@@ -27,7 +27,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (
     values: { email: string; password: string },
-    { setSubmitting, setFieldError }: FormikHelpers<FormValues>
+    { setFieldError }: FormikHelpers<FormValues>
   ) => {
     try {
       const res = await axios.post(
@@ -45,23 +45,24 @@ const LoginForm = () => {
           router.push("/dashboard/mitra");
         }
       }
-    } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.errors) {
-        const errors = error.response.data.errors;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          const errors = error.response.data.errors;
+          console.log(errors.email);
 
-        console.log(errors.email);
+          // Set error pada field yang relevan
 
-        // Set error pada field yang relevan
+          if (errors.email) {
+            setFieldError("email", "Email tidak ditemukan");
+          }
 
-        if (errors.email) {
-          setFieldError("email", "Email tidak ditemukan");
+          if (errors.password) {
+            setFieldError("password", "Password salah");
+          }
+        } else {
+          setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
         }
-
-        if (errors.password) {
-          setFieldError("password", "Password salah");
-        }
-      } else {
-        setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
       }
     }
   };

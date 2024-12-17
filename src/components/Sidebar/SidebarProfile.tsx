@@ -1,9 +1,9 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useFetchData from "@/hooks/useFetchData";
 
 interface SidebarProfileProps {
   data: any;

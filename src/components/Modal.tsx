@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ModalProps {
-  onClose: any;
+  onClose: () => void;
   title: string;
   children: React.ReactNode;
   className?: string;

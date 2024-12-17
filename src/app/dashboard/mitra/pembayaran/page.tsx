@@ -23,8 +23,8 @@ const PembayaranAdmin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `status=${selectedStatus}`;
-      let itemsPerPage = 5;
+      const query = `status=${selectedStatus}`;
+      const itemsPerPage = 5;
 
       const data = await handleGetAllPaymentOwner(query);
       if (data && data.data) {
@@ -58,7 +58,7 @@ const PembayaranAdmin = () => {
     };
 
     fetchData();
-  }, [search, currentPage, selectedStatus]);
+  }, [search, currentPage, selectedStatus, handleGetAllPaymentOwner]);
 
   const toggleModal = (id: any) => {
     setCurrentModalId(id);

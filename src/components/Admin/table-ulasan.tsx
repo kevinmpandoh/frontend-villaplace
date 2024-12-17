@@ -159,7 +159,7 @@ const TableUlasan = () => {
                   <td className="p-3" >{ulasan.userName}</td>
                   <td className="p-3">
                     <a
-                      href={`/villa/${ulasan.villaId}`}
+                      href={`/category/${ulasan.villaId}`}
                       className="text-brown-500"
                     >
                       {ulasan.villaName}

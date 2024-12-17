@@ -8,7 +8,7 @@ import useFetchBooking from "@/hooks/useFetchBooking";
 import { calculateRentalDays } from "@/utils/calculateDays";
 import Swal from "sweetalert2";
 import generateBookingId from "@/utils/generateBookingId";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 interface BookingProps {
   villa: any;
@@ -26,7 +26,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
   });
   const [rentalDays, setRentalDays] = useState(0);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const { handleCreatePayment } = useFetchPayment();
   const { handleCreateBooking } = useFetchBooking();
@@ -116,7 +116,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
   useEffect(() => {
     const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
 
-    let scriptTag = document.createElement("script");
+    const scriptTag = document.createElement("script");
     scriptTag.src = midtransUrl;
 
     const midtransClientKey = "SB-Mid-client-biw0_z5pnI4tFfTA";
@@ -133,7 +133,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
     if (!tokenMidtrans) return;
     try {
       window.snap.pay(tokenMidtrans, {
-        onSuccess: async (result: any) => {
+        onSuccess: async (result) => {
           const dataBooking = {
             jumlah_orang: formData.guests,
             tanggal_mulai: formData.checkInDate,
@@ -170,7 +170,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
 
           window.location.href = "/user/bookings";
         },
-        onPending: async (result: any) => {
+        onPending: async (result) => {
           const midtransData = await axios.get(
             `http://localhost:8000/api/pembayaran/status/${result.order_id}`,
             {
@@ -226,7 +226,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
           });
           window.location.href = `/user/payment-history`;
         },
-        onError: (error: any) => {
+        onError: (error) => {
           Swal.fire({
             icon: "error",
             title: "Gagal",
@@ -244,7 +244,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
       alert("Error");
       console.log(err);
     }
-  }, [tokenMidtrans]);
+  }, [formData, handleCreateBooking, handleCreatePayment, modal, rentalDays, tokenMidtrans, villa._id, villa.harga]);
 
   return (
     <div className="max-w-7xl  mx-auto   p-4">

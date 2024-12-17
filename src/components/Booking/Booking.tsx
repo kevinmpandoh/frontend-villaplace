@@ -96,7 +96,7 @@ const Booking = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleModalReview = (id: any, pesananId: string) => {
+  const toggleModalReview = (id: any, pesananId: any) => {
     setCurrentModalReviewId(id);
     setCurrentModalPesananId(pesananId);
 

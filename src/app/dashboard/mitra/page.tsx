@@ -34,7 +34,7 @@ const DashboardMitra = () => {
       setData(data.data);
     };
     fetchData();
-  }, []);
+  }, [handleDashboardData]);
   return (
     <div>
       <div className="bg-white p-4 shadow-md rounded-md mb-4 mx-8">

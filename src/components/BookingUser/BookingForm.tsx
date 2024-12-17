@@ -24,7 +24,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const getDisabledDates = (): Set<string> => {
     const disabledDates = new Set<string>();
     bookingDate.forEach(({ tanggal_mulai, tanggal_selesai }) => {
-      let currentDate = new Date(tanggal_mulai);
+      const currentDate = new Date(tanggal_mulai);
       const endDate = new Date(tanggal_selesai);
 
       // Tambahkan setiap tanggal dalam rentang ke dalam disabledDates

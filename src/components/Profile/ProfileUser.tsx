@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import ProfilePictureUploader from "./ProfilePictureUploader";
 import ProfileDisplay from "./ProfileDisplay";

@@ -41,13 +41,13 @@ const Category = () => {
   const villas = useMemo(() => data?.data || [], [data]);
 
   // Mendapatkan kategori unik
-  const availableCategories = useMemo(() => {
-    const categories = new Set<string>();
-    villas.forEach((villa: VillaProps) => {
-      villa.kategori.forEach((cat: string) => categories.add(cat));
-    });
-    return Array.from(categories);
-  }, [villas]);
+  // const availableCategories = useMemo(() => {
+  //   const categories = new Set<string>();
+  //   villas.forEach((villa: VillaProps) => {
+  //     villa.kategori.forEach((cat: string) => categories.add(cat));
+  //   });
+  //   return Array.from(categories);
+  // }, [villas]);
 
   // Filter villas berdasarkan kondisi
   const filteredVillas = useMemo(() => {
@@ -92,7 +92,7 @@ const Category = () => {
     return filteredVillas.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredVillas, currentPage]);
 
-  const totalPages = Math.ceil(filteredVillas.length / itemsPerPage);
+  // const totalPages = Math.ceil(filteredVillas.length / itemsPerPage);
 
   // Handler functions
   const handlePriceRangeChange = useCallback((min: number, max: number) => {

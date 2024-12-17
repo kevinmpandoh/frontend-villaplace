@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 
@@ -6,14 +7,14 @@ interface SidebarProfileProps {
   data: any;
   menuOpen?: any;
   setMenuOpen?: any;
-  role?: any;
+  // role?: any; (Hidupkan jika dipakai)
 }
 
 const SidebarProfileDashboard: React.FC<SidebarProfileProps> = ({
   data,
   setMenuOpen,
   menuOpen,
-  role,
+  // role, (Hidupkan jika dipakai)
 }) => {
   return (
     <aside className="xl:w-1/3 flex flex-col gap-4 w-full mr-4 mb-4">
