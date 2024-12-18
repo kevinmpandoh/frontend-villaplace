@@ -14,20 +14,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout kode dari repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Step 2: Setup Node.js (versi yang sesuai proyek Anda)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      # Step 3: Install dependencies
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Jalankan test (tanpa build)
+      - name: Check Jest Tests
+        run: npm test -- --listTests
+
       - name: Run Tests
-        run: npm run test BackButton.test.tsx Footer.test.tsx RatingFilter.test.tsx Modal.test.tsx Button.test.tsx Input.test.tsx Separator.test.tsx ProfileAdmin.test.tsx Empty.test.tsx Loader.test.tsx
+        run: npm test --passWithNoTests
