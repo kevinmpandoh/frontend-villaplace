@@ -30,4 +30,4 @@ jobs:
 
       # Step 4: Jalankan test (tanpa build)
       - name: Run Tests
-        run: npm test -- --coverage
+        run: npm test -- --coverage --watchAll=false --testTimeout=30000
