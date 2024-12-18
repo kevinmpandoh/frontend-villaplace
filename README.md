@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
+# VillaPlace - Frontend
 
 ```bash
 npm run dev
-# or
+# atau
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka aplikasi di browser: [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✅ Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Proyek ini dilengkapi dengan unit testing menggunakan Jest dan React Testing Library.
 
-## Learn More
+- Jalankan semua test:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm test
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Jalankan test dengan laporan coverage:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run test -- --coverage
+```
 
-## Deploy on Vercel
+- Folder hasil coverage: `coverage/`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Fitur Utama
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Dashboard Admin & User: Mengelola data villa, booking, dan profil pengguna.
+2. Filter & Search: Filter villa berdasarkan lokasi, rating, dan harga.
+3. Rating & Review: Menampilkan rating bintang dan ulasan pengguna.
+4. Responsif: Desain yang optimal untuk desktop, tablet, dan mobile.
+5. Pengaturan Profil: Edit profil dan ubah password.
+6. Integrasi API: Menghubungkan frontend dengan backend melalui HTTP API.
+
+## 📸 Screenshot
+
+### Halaman Utama 
+
+![Home Page Villaplace](https://github.com/user-attachments/assets/6ca071e1-dd57-477b-93cb-e6d21f921473)
+
+### Dashboard Admin
+
+![Dashboard Admin](https://github.com/user-attachments/assets/4aec77bb-3ddd-4a4e-84bc-a63d678074b3)
+
+### Filter Villa
+
+![Filter Villa](https://github.com/user-attachments/assets/ace4c035-b31c-4dc2-b7f4-1ecc85780b49)
+
+### Unit Testing
+
+![Unit Testing](https://github.com/user-attachments/assets/4f15d2a3-171f-44b7-bbba-78e9e040c3ac) ![Unit Testing 2](https://github.com/user-attachments/assets/2af94a37-8b0f-41c0-9cb3-e2e7a5a988e7)
+
+## 👨‍💻 Tim & Role
+
+1. [Rr. Denti Nurramadhona](https://www.linkedin.com/in/rrdentin/) : Project Manager
+2. [Kevin Mclaren Pandoh](https://www.linkedin.com/in/kevinmpandoh/) : PIC Fullstack Engineer
+3. Maria M. Y. K. : PIC UI/UX Designer
+4. [Azkhal Zavier](https://www.linkedin.com/in/azkhal-zavier/) : PIC Frontend
+5. [Fery Yulia Rahman](https://www.linkedin.com/in/feryyuliarahman/) : PIC Backend
+
+## ⭐ Support Proyek Kami
+
+Jika Anda menyukai proyek ini, silakan berikan ⭐ di repository ini! 😊
