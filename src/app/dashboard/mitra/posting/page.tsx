@@ -136,7 +136,7 @@ const PostingMitra = () => {
             <li>
               <span className="text-gray-500">/</span>
             </li>
-            <li>Manajemen Ulasan</li>
+            <li>Manajemen Posting</li>
           </ol>
         </nav>
       </div>

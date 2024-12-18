@@ -27,9 +27,9 @@ const Contact = () => {
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
           <h1 className="text-5xl font-bold mb-8">Contact Us</h1>
           <p className="text-md lg:text-xl px-10 md:px-12 lg:px-50 mb-2 text-center">
-            Have questions or need assistance? Reach out to our <br /> support
-            team anytime. We re here to help you resolve <br /> issues, anewer
-            queries, and ensure you have the best <br /> experience possible.
+            Have questions or need assistance? Reach out to our support
+            team anytime. We re here to help you resolve issues, anewer
+            queries, and ensure you have the best experience possible.
           </p>
         </div>
       </div>

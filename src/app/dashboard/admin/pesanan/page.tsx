@@ -12,12 +12,12 @@ import Link from "next/link";
 const PesananAdmin = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = React.useState(false);
-  const [currentModalId, setCurrentModalId] = useState<string>("");
+  const [currentModalId, setCurrentModalId] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [filteredData, setFilteredData] = useState<Booking[]>([]);
   const [search, setSearch] = useState("");
-  const [detailBooking, setDetailBooking] = useState<Booking | null>(null);
+  const [detailBooking, setDetailBooking] = useState<Booking>();
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
 
@@ -32,14 +32,17 @@ const PesananAdmin = () => {
     const fetchData = async () => {
       const query = `status=${selectedStatus}`;
       const itemsPerPage = 5;
+
       const data = await handleGetAllBooking(query);
       if (data && data.data) {
         const filteredData = data.data.filter((data: Booking) => {
           const searchKeyword = search.toLowerCase();
+
           const nama_villa = data.villa.nama?.toLowerCase() || "";
           const lokasi = data.villa.lokasi?.toLowerCase() || "";
           const nama_user = data.user?.nama?.toLowerCase() || "";
           const email_user = data.user?.email?.toLowerCase() || "";
+
           return (
             nama_villa.includes(searchKeyword) ||
             nama_user.includes(searchKeyword) ||
@@ -67,7 +70,7 @@ const PesananAdmin = () => {
     };
 
     fetchData();
-  }, [selectedStatus, search, currentPage, handleGetAllBooking]);
+  }, [selectedStatus, search, currentPage]);
 
   useEffect(() => {
     if (currentModalId) {
@@ -80,7 +83,7 @@ const PesananAdmin = () => {
 
       fetchData();
     }
-  }, [currentModalId, handleGetBookingById]);
+  }, [currentModalId]);
 
   const toggleModal = (id: string) => {
     setCurrentModalId(id);
@@ -205,16 +208,16 @@ const PesananAdmin = () => {
         <Modal
           onClose={() => toggleModal("")}
           title="Detail Pesanan"
-          className="max-h-screen overflow-y-auto h-3/4"
+          className="max-h-screen overflow-y-auto h-1/2"
         >
-          <DetailBooking detailBooking={detailBooking as Booking} />
+          {detailBooking && <DetailBooking detailBooking={detailBooking} />}
         </Modal>
       )}
 
       {isModalEditOpen && (
         <Modal
           onClose={() => toggleModalEdit("")}
-          title="Edit Pembayaran"
+          title="Edit Pesanan"
           className="max-h-screen max-w-lg overflow-y-auto h-3/2"
         >
           <EditBooking bookingId={currentModalId} onEdit={handleSubmit} />

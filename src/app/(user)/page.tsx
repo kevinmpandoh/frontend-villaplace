@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
       }
     };
     fetchData();
-  }, [handleGetVillas]);
+  }, []);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

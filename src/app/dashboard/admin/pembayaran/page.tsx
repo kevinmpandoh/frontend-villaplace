@@ -41,7 +41,7 @@ const PembayaranAdmin = () => {
     };
 
     fetchData();
-  }, [selectedStatus, handleGetAllPayment]);
+  }, [selectedStatus]);
 
   const toggleModal = (id: string) => {
     setCurrentModalId(id);

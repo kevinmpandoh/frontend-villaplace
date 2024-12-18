@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({
         onClick={onClose}
       ></div>
       <div
-        className={`bg-white rounded-lg shadow-lg p-10 z-20 flex mx-2 flex-col h-[95%] xl:h-fit md:w-3/5 w-full ${
+        className={`bg-white rounded-lg shadow-lg p-10 z-20 flex mx-2 flex-col h-fit max-h-[90%] xl:h-fit md:w-3/5 w-full ${
           className || ""
         }`}
       >

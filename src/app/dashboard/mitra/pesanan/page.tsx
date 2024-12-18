@@ -97,7 +97,7 @@ const PesananMitra = () => {
     };
 
     fetchData();
-  }, [selectedStatus, search, currentPage, handleGetBookingByOwner]);
+  }, [selectedStatus, search, currentPage]);
 
   useEffect(() => {
     if (currentModalId) {
@@ -110,7 +110,7 @@ const PesananMitra = () => {
 
       fetchData();
     }
-  }, [currentModalId, handleGetBookingById]);
+  }, [currentModalId]);
 
   const toggleModal = (id: any) => {
     setCurrentModalId(id);
