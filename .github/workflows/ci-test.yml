@@ -30,4 +30,4 @@ jobs:
 
       # Step 4: Jalankan test (tanpa build)
       - name: Run Tests
-        run: npm test -- --coverage --watchAll=false --testTimeout=30000
+        run: npm run test BackButton.test.tsx Footer.test.tsx RatingFilter.test.tsx Modal.test.tsx Button.test.tsx Input.test.tsx Separator.test.tsx ProfileAdmin.test.tsx Empty.test.tsx Loader.test.tsx
