@@ -167,14 +167,14 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
             className="flex items-center gap-4"
             href="#"
           >
-            <span className="hidden text-right lg:block">
+            <div className="hidden text-right lg:block">
               <span className="block text-sm font-semibold text-slate-800 dark:text-white">
                 {data.data.nama}
               </span>
               {/* <span className="block text-xs">{user.data.email}</span> */}
-            </span>
+            </div>
 
-            <span className="h-12 w-12 rounded-full border">
+            <div className="h-12 w-12 rounded-full border">
               <Image
                 width={112}
                 height={112}
@@ -182,7 +182,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
                 className="rounded-full object-cover w-full h-full"
                 alt="User"
               />
-            </span>
+            </div>
 
             <svg
               className="hidden fill-current sm:block"
