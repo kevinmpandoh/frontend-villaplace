@@ -3,7 +3,7 @@ import BackButton from '../ui/BackButton';
 import '@testing-library/jest-dom';
 
 describe('BackButton Component', () => {
-  test('renders BackButton with correct text and icon', () => {
+  test('Menampilkan teks "Back" dengan teks dan ikon', () => {
     // Render komponen
     render(<BackButton />);
 
@@ -16,7 +16,7 @@ describe('BackButton Component', () => {
     expect(icon).toBeInTheDocument();
   });
 
-  test('has correct href in Link component', () => {
+  test('memiliki href yang benar dalam Link', () => {
     // Render komponen
     render(<BackButton />);
 

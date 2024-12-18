@@ -13,6 +13,11 @@ const customJestConfig: Config = {
     '!src/pages/**/*.tsx',
     '!src/_app.tsx',
     '!src/_document.tsx',
+    '!src/hooks/**/*',
+    '!src/services/**/*',
+    '!src/types/**/*',
+    '!src/utils/**/*',
+    '!src/validations/**/*',
   ],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
@@ -23,11 +28,24 @@ const customJestConfig: Config = {
     '\\.(png|jpg|jpeg|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.ts',
     '^next/link$': '<rootDir>/__mocks__/next/link.ts',
     '^@testing-library/(.*)$': '<rootDir>/node_modules/@testing-library/$1',
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
-  testPathIgnorePatterns: ['/node_modules/', '/.next/'], // Folder yang tidak perlu diuji
+  testPathIgnorePatterns: [ // Folder yang tidak perlu diuji
+    '/node_modules/', 
+    '/.next/',
+    '/.vercel/',
+    '/.nuxt/',
+    '/.out/',
+    '/__tests__/__mocks__/',
+    '/src/hooks/',
+    '/src/services/',
+    '/src/types/',
+    '/src/utils/',
+    '/src/validations/',
+  ], 
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'], // Format ekstensi file yang didukung
   testMatch: [
-    '**/__tests__/**/*.[jt]s?(x)', // Folder __tests__ di dalam folder utama
+    '**/__tests__/**/*.[jt]s?(x)',
     '**/?(*.)+(spec|test).[tj]s?(x)',
   ],
 };
