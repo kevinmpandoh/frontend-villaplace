@@ -7,14 +7,14 @@ interface SidebarProfileProps {
   data: any;
   menuOpen?: any;
   setMenuOpen?: any;
-  // role?: any; (Hidupkan jika dipakai)
+  role?: string;
 }
 
 const SidebarProfileDashboard: React.FC<SidebarProfileProps> = ({
   data,
   setMenuOpen,
   menuOpen,
-  // role, (Hidupkan jika dipakai)
+  role,
 }) => {
   return (
     <aside className="xl:w-1/3 flex flex-col gap-4 w-full mr-4 mb-4">

@@ -2,15 +2,15 @@ import { render, screen } from "@testing-library/react";
 import Footer from "../Footer";
 
 describe("Footer Component", () => {
-  it("renders the footer text correctly", () => {
+  test("Menampilkan teks yang sesuai", () => {
     render(<Footer />);
     
-    // Check for the text in the Footer component
+    // Cari elemen dengan teks "Copyright © 2024 VillaPlace"
     const footerText = screen.getByText(/Copyright © 2024 VillaPlace/i);
     expect(footerText).toBeInTheDocument();
   });
 
-  it("has the correct class names for styling", () => {
+  test("Menggunakan style yang sesuai", () => {
     render(<Footer />);
     
     const footerElement = screen.getByText(/VillaPlace/i);
