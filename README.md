@@ -1,6 +1,6 @@
 # VillaPlace - Frontend
 
-🏡 **Selamat Datang di VillaPlace!**
+🏡 **Selamat Datang di VillaPlace!** 
 VillaPlace adalah aplikasi **frontend modern** yang dirancang untuk mengelola dan menelusuri sewa villa dengan **mudah, cepat, dan responsif**. Dibangun menggunakan teknologi terkini, proyek ini berfokus pada performa tinggi, pengalaman pengguna yang menyenangkan, dan desain yang ramah semua perangkat.
 
 ## 🚀 Teknologi yang Digunakan
@@ -136,7 +136,7 @@ npm run test -- --coverage
 - [ ] Implementasikan i18n untuk multi-bahasa.
 - [ ] Testing E2E dengan Cypress.
 
-## 🚀 Kontribusi dan Kolaborasi
+## 💡 Kontribusi dan Kolaborasi
 
 Kami percaya proyek ini dapat berkembang lebih baik dengan bantuan komunitas. Jika Anda seorang developer, desainer, atau hanya tertarik dengan proyek ini, kami menyambut kontribusi Anda! Berikut caranya:
 
@@ -166,7 +166,7 @@ Buka [Issue](https://github.com/Villa-Place/Frontend_VillaPlace/issues) baru jik
 
 1. [Rr. Denti Nurramadhona](https://www.linkedin.com/in/rrdentin/) : Project Manager
 2. [Kevin Mclaren Pandoh](https://www.linkedin.com/in/kevinmpandoh/) : PIC Fullstack Engineer
-3. Maria M. Y. K. : PIC UI/UX Designer
+3. [Maria M. Y. K.](https://www.instagram.com/mariasunlla/) : PIC UI/UX Designer
 4. [Azkhal Zavier](https://www.linkedin.com/in/azkhal-zavier/) : PIC Frontend
 5. [Fery Yulia Rahman](https://www.linkedin.com/in/feryyuliarahman/) : PIC Backend
 
