@@ -7,7 +7,7 @@ export const getStatusLabel = (status: string) => {
       return "Sedang Berlangsung";
     case "completed":
       return "Selesai";
-    case "canceled":
+    case "failed":
       return "Dibatalkan";
     default:
       return "Tidak Diketahui";

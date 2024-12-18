@@ -33,8 +33,8 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
   const [mitraData, setMitraData] = useState<Mitra>();
   const [adminData, setAdminData] = useState<Admin>();
 
-  const { handleUpdateMitra: updateMitra, error: errorMitra } = useFetchMitra();
-  const { handleUpdateAdmin: updateAdmin, error: errorAdmin } = useFetchAdmin();
+  const { handleUpdateMitra: updateMitra } = useFetchMitra();
+  const { handleUpdateAdmin: updateAdmin } = useFetchAdmin();
 
   const { data } = useFetchData(
     `http://localhost:8000/api/${
