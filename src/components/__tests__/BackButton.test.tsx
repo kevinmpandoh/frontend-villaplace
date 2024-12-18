@@ -2,26 +2,34 @@ import { render, screen } from '@testing-library/react';
 import BackButton from '../ui/BackButton';
 import '@testing-library/jest-dom';
 
+jest.mock('@fortawesome/react-fontawesome', () => ({
+  FontAwesomeIcon: (props: any) => <svg data-testid={props['data-testid']} />,
+}));
+
+jest.mock('next/link', () => {
+  return ({ children }: any) => children;
+});
+
 describe('BackButton Component', () => {
   test('Menampilkan teks "Back" dengan teks dan ikon', () => {
-    // Render komponen
     render(<BackButton />);
-
-    // Cari elemen dengan teks "Back"
     const backButtonText = screen.getByText('Back');
     expect(backButtonText).toBeInTheDocument();
 
-    // Cari ikon dengan data-testid
     const icon = screen.getByTestId('fa-arrow-left');
     expect(icon).toBeInTheDocument();
   });
 
-  test('memiliki href yang benar dalam Link', () => {
-    // Render komponen
+  test('Memiliki href yang benar dalam Link', () => {
     render(<BackButton />);
-
-    // Cari elemen <a> di dalam Link
-    const linkElement = screen.getByRole('link');
+  
+    const linkElement = screen.getByRole('link', { name: /back/i, hidden: true });
     expect(linkElement).toHaveAttribute('href', '/');
+  });
+  
+
+  test('Snapshot testing untuk memastikan struktur elemen', () => {
+    const { asFragment } = render(<BackButton />);
+    expect(asFragment()).toMatchSnapshot();
   });
 });

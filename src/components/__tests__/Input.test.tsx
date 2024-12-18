@@ -22,8 +22,10 @@ describe("Input Component", () => {
   });
 
   test("renders input dengan type custom", () => {
-    render(<Input type="password" />);
-    const input = screen.getByRole("textbox");
+    render(<Input type="password" placeholder="Enter password" />);
+    const input = screen.getByPlaceholderText("Enter password");
+
+    // Memeriksa atribut type
     expect(input).toHaveAttribute("type", "password");
   });
 
@@ -55,5 +57,15 @@ describe("Input Component", () => {
     render(<Input ref={ref} />);
 
     expect(ref.current).toBeInstanceOf(HTMLInputElement);
+  });
+
+  test("input merespons fokus", () => {
+    render(<Input placeholder="Focus here" />);
+    const input = screen.getByPlaceholderText("Focus here");
+
+    fireEvent.focus(input);
+
+    // Memastikan elemen memiliki fokus
+    expect(input).toHaveFocus();
   });
 });

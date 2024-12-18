@@ -3,49 +3,47 @@ import "@testing-library/jest-dom";
 import { Button } from "../ui/button";
 
 describe("Button Component", () => {
+  const renderButton = (props: any) => render(<Button {...props} />);
+
   test("renders default button", () => {
-    render(<Button>Default Button</Button>);
+    renderButton({ children: "Default Button" });
 
     const button = screen.getByRole("button", { name: /default button/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass("bg-primary text-primary-foreground");
-    expect(button).toHaveClass("h-10 px-4 py-2");
+    expect(button).toHaveClass("bg-primary text-primary-foreground h-10 px-4 py-2");
   });
 
   test("renders button with different variants", () => {
-    const { rerender } = render(<Button variant="destructive">Delete</Button>);
-    let button = screen.getByRole("button", { name: /delete/i });
-    expect(button).toHaveClass("bg-destructive text-destructive-foreground");
+    const variants = [
+      { variant: "destructive", className: "bg-destructive text-destructive-foreground" },
+      { variant: "outline", className: "border border-input bg-background" },
+      { variant: "ghost", className: "hover:bg-accent hover:text-accent-foreground" },
+      { variant: "link", className: "text-primary underline-offset-4 hover:underline" },
+    ];
 
-    rerender(<Button variant="outline">Outline</Button>);
-    button = screen.getByRole("button", { name: /outline/i });
-    expect(button).toHaveClass("border border-input bg-background");
-
-    rerender(<Button variant="ghost">Ghost</Button>);
-    button = screen.getByRole("button", { name: /ghost/i });
-    expect(button).toHaveClass("hover:bg-accent hover:text-accent-foreground");
-
-    rerender(<Button variant="link">Link</Button>);
-    button = screen.getByRole("button", { name: /link/i });
-    expect(button).toHaveClass("text-primary underline-offset-4 hover:underline");
+    variants.forEach(({ variant, className }) => {
+      renderButton({ children: variant, variant });
+      const button = screen.getByRole("button", { name: new RegExp(variant, "i") });
+      expect(button).toHaveClass(className);
+    });
   });
 
   test("renders button with different sizes", () => {
-    const { rerender } = render(<Button size="sm">Small</Button>);
-    let button = screen.getByRole("button", { name: /small/i });
-    expect(button).toHaveClass("h-9 rounded-md px-3");
+    const sizes = [
+      { size: "sm", className: "h-9 rounded-md px-3" },
+      { size: "lg", className: "h-11 rounded-md px-8" },
+      { size: "icon", className: "h-10 w-10" },
+    ];
 
-    rerender(<Button size="lg">Large</Button>);
-    button = screen.getByRole("button", { name: /large/i });
-    expect(button).toHaveClass("h-11 rounded-md px-8");
-
-    rerender(<Button size="icon">Icon</Button>);
-    button = screen.getByRole("button", { name: /icon/i });
-    expect(button).toHaveClass("h-10 w-10");
+    sizes.forEach(({ size, className }) => {
+      renderButton({ children: size, size });
+      const button = screen.getByRole("button", { name: new RegExp(size, "i") });
+      expect(button).toHaveClass(className);
+    });
   });
 
   test("renders button with custom className", () => {
-    render(<Button className="custom-class">Custom</Button>);
+    renderButton({ children: "Custom", className: "custom-class" });
     const button = screen.getByRole("button", { name: /custom/i });
     expect(button).toHaveClass("custom-class");
   });
@@ -61,7 +59,7 @@ describe("Button Component", () => {
   });
 
   test("button dapat di-disabled", () => {
-    render(<Button disabled>Disabled</Button>);
+    renderButton({ children: "Disabled", disabled: true });
     const button = screen.getByRole("button", { name: /disabled/i });
     expect(button).toBeDisabled();
     expect(button).toHaveClass("disabled:opacity-50");
@@ -69,10 +67,38 @@ describe("Button Component", () => {
 
   test("button dapat diklik", () => {
     const handleClick = jest.fn();
-    render(<Button onClick={handleClick}>Click Me</Button>);
+    renderButton({ children: "Click Me", onClick: handleClick });
 
     const button = screen.getByRole("button", { name: /click me/i });
     fireEvent.click(button);
     expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  test("button memiliki atribut aksesibilitas dengan type default", () => {
+    render(<Button>Accessible Button</Button>);
+    screen.debug();
+  
+    const button = screen.getByRole("button", { name: /accessible button/i });
+    expect(button).toHaveAttribute("type", "button");
+  });
+  
+  test("button tidak memiliki atribut type jika digunakan sebagai elemen anak", () => {
+    render(
+      <Button asChild>
+        <a href="/link">Child Link</a>
+      </Button>
+    );
+  
+    const link = screen.getByRole("link", { name: /child link/i });
+    expect(link).not.toHaveAttribute("type");
+  });
+  
+
+  test("button menerima fokus", () => {
+    renderButton({ children: "Focusable Button" });
+    const button = screen.getByRole("button", { name: /focusable button/i });
+
+    button.focus();
+    expect(button).toHaveFocus();
   });
 });

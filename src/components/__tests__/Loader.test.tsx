@@ -7,31 +7,17 @@ describe("Loader Component", () => {
   test("renders the loader component", () => {
     render(<Loader />);
 
-    const spinnerElement = screen.getByRole("presentation");
-    expect(spinnerElement).toBeInTheDocument();
-
-    expect(spinnerElement).toHaveClass("animate-spin");
-    expect(spinnerElement).toHaveClass("rounded-full");
-    expect(spinnerElement).toHaveClass("border-4");
-    expect(spinnerElement).toHaveClass("border-solid");
-    expect(spinnerElement).toHaveClass("border-primary");
-    expect(spinnerElement).toHaveClass("border-t-transparent");
+    // Verifikasi elemen loader
+    const loaderElement = screen.getByTestId("loader-spinner");
+    expect(loaderElement).toBeInTheDocument();
+    expect(loaderElement).toHaveClass("animate-spin rounded-full border-4 border-solid border-primary border-t-transparent");
   });
 
-  test("cek elemen memiliki kelas yang sesuai", () => {
+  test("container memiliki kelas yang sesuai", () => {
     render(<Loader />);
 
-    const loaderContainer = screen.getByRole("presentation").parentElement;
-    expect(loaderContainer).toHaveClass("bg-white");
-  });
-
-  test("memastikan elemen memiliki kelas yang sesuai", () => {
-    render(<Loader />);
-
-    const loaderContainer = screen.getByRole("presentation").parentElement;
-    expect(loaderContainer).toHaveClass("flex");
-    expect(loaderContainer).toHaveClass("h-screen");
-    expect(loaderContainer).toHaveClass("items-center");
-    expect(loaderContainer).toHaveClass("justify-center");
+    // Verifikasi elemen container
+    const containerElement = screen.getByTestId("loader-container");
+    expect(containerElement).toHaveClass("flex h-screen items-center justify-center bg-white");
   });
 });

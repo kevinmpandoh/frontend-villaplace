@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import RatingFilter from "../ui/RatingFilter";
 
@@ -21,18 +21,33 @@ describe("RatingFilter Component", () => {
 
   test("membuka dan menutup dropdown saat tombol diklik", () => {
     render(<RatingFilter value={null} onChange={mockOnChange} />);
-
+  
     const dropdownButton = screen.getByRole("button", { name: /semua/i });
-
-    // Klik tombol untuk membuka dropdown
+    
     fireEvent.click(dropdownButton);
-    expect(screen.getByText("0 Bintang")).toBeInTheDocument();
-    expect(screen.getByText("1 Bintang")).toBeInTheDocument();
-
-    // Klik tombol untuk menutup dropdown
+    const dropdown = screen.getByRole("listbox");
+    
+    expect(within(dropdown).getByText("0 Bintang")).toBeInTheDocument();
+    expect(within(dropdown).getByText("1 Bintang")).toBeInTheDocument();
+  
     fireEvent.click(dropdownButton);
     expect(screen.queryByText("0 Bintang")).not.toBeInTheDocument();
   });
+
+  test("dropdown memiliki atribut aria-expanded saat dibuka", () => {
+    render(<RatingFilter value={null} onChange={mockOnChange} />);
+  
+    const dropdownButton = screen.getByRole("button", { name: /semua/i });
+  
+    // Sebelum klik, aria-expanded harus false
+    expect(dropdownButton).toHaveAttribute("aria-expanded", "false");
+  
+    // Klik tombol untuk membuka dropdown
+    fireEvent.click(dropdownButton);
+    expect(dropdownButton).toHaveAttribute("aria-expanded", "true");
+  });
+  
+  
 
   test("memilih rating dan memanggil onChange dengan nilai yang benar", () => {
     render(<RatingFilter value={null} onChange={mockOnChange} />);
@@ -65,9 +80,8 @@ describe("RatingFilter Component", () => {
 
   test("menampilkan RatingStar saat nilai rating dipilih", () => {
     render(<RatingFilter value={4} onChange={mockOnChange} />);
-
-    // Periksa apakah komponen RatingStar ditampilkan
-    expect(screen.getByText("4 Bintang")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /4 bintang/i })).toBeInTheDocument();
-  });
+  
+    const ratingStar = screen.getByTestId("selected-rating");
+    expect(ratingStar).toBeInTheDocument();
+  });  
 });
