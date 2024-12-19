@@ -30,8 +30,8 @@ Frontend_VillaPlace/
 │   │   ├── dashboard/       # Routing dashboard aplikasi
 │   │   ├── global.d.ts      # Definisi tipe global
 │   │   └── layout.tsx       # Layout utama aplikasi
-│   ├── components/          # Reusable UI components
-|       ├── __tests__/       # Test files
+│   └── components/          # Reusable UI components
+|       └── __tests__/       # Test files
 │   ├── context/             # Context API untuk state management global
 │   ├── hooks/               # Custom hooks
 │   ├── lib/                 # Library utilitas tambahan
