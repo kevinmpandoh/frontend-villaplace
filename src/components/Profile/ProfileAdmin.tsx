@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import ProfileDisplayAdmin from "./ProfileDisplayAdmin";
 import EditProfileModalAdmin from "./EditProfileModalAdmin";
@@ -57,7 +58,7 @@ const ProfileAdmin = () => {
         {showModal && (
           <EditProfileModalAdmin
             adminData={adminData}
-            onSubmit={(values: any, formikHelpers: any) =>
+            onSubmit={(values, formikHelpers) =>
               handleUpdate(values, formikHelpers)
             }
             onClose={() => setShowModal(false)}

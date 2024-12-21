@@ -26,7 +26,7 @@ const PostingMitra = () => {
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(15); // 10 item per halaman
+  const [itemsPerPage] = useState(10); // 10 item per halaman
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,7 +136,7 @@ const PostingMitra = () => {
             <li>
               <span className="text-gray-500">/</span>
             </li>
-            <li>Manajemen Ulasan</li>
+            <li>Manajemen Posting</li>
           </ol>
         </nav>
       </div>
@@ -146,7 +146,7 @@ const PostingMitra = () => {
         <div className="bg-white border-2 rounded-xl flex justify-between mb-5 p-6">
           <div>
             <h2 className="text-2xl font-bold mb-3">Manajemen Posting</h2>
-            <p className="text-lg font-normal text-gray-500">Description</p>
+            <p className="text-lg font-normal text-gray-500">Halaman untuk memanajemen posting</p>
           </div>
           <div>
             <Link href="/dashboard/mitra/posting/tambahVilla">
@@ -347,45 +347,102 @@ const PostingMitra = () => {
               </div>
 
               {/* Pagination Controls */}
-              <div className="w-full border-t border-gray-200">
-                <div className="flex justify-center py-6">
-                  <div className="flex space-x-2">
+              <div className="w-full border-gray-200 mt-8">
+                <div className="flex justify-center py-2">
+                  <div className="flex space-x-1 sm:space-x-2">
+                    {/* Previous Button */}
                     <button
                       onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                       disabled={currentPage === 1}
-                      className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                      className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
                     >
                       Previous
                     </button>
+
                     <div className="flex space-x-1">
-                      {Array.from(
-                        { length: Math.ceil(filteredVilla.length / itemsPerPage) },
-                        (_, i) => (
-                          <button
-                            key={i}
-                            onClick={() => setCurrentPage(i + 1)}
-                            className={`py-2 px-4 rounded ${
-                              currentPage === i + 1
-                                ? "bg-green-500 text-white"
-                                : "bg-white text-brown-500 border border-brown-500"
-                            }`}
-                          >
-                            {i + 1}
-                          </button>
-                        )
-                      )}
+                      {(() => {
+                        const pages: JSX.Element[] = [];
+                        const totalPages = Math.ceil(filteredVilla.length / itemsPerPage);
+                        
+                        // Fungsi untuk menambahkan nomor halaman
+                        const pushPage = (pageNum: number) => {
+                          pages.push(
+                            <button
+                              key={pageNum}
+                              onClick={() => setCurrentPage(pageNum)}
+                              className={`py-1 px-2.5 sm:py-2 sm:px-4 sm:text-md rounded ${
+                                currentPage === pageNum
+                                  ? "bg-green-500 text-white"
+                                  : "bg-white text-brown-500 border border-brown-500"
+                              }`}
+                            >
+                              {pageNum}
+                            </button>
+                          );
+                        };
+
+                        // Fungsi untuk menambahkan ellipsis
+                        const pushEllipsis = (key: string) => {
+                          pages.push(
+                            <button
+                              key={key}
+                              className="py-1 px-1.5 sm:py-2 sm:px-3 text-sm sm:text-md rounded bg-white text-brown-500 border border-brown-500"
+                              disabled
+                            >
+                              ...
+                            </button>
+                          );
+                        };
+
+                        // Selalu tampilkan halaman pertama
+                        pushPage(1);
+
+                        if (totalPages <= 5) { // Ubah dari 7 ke 5 untuk mobile
+                          // Jika total halaman 5 atau kurang, tampilkan semua
+                          for (let i = 2; i < totalPages; i++) {
+                            pushPage(i);
+                          }
+                        } else {
+                          // Logika untuk halaman dengan ellipsis
+                          if (currentPage > 3) {
+                            pushEllipsis('start');
+                          }
+                          // Tampilkan halaman di sekitar halaman saat ini
+                          let start = Math.max(2, currentPage - 1);
+                          let end = Math.min(totalPages - 1, currentPage + 1);
+                          
+                          if (currentPage <= 3) {
+                            end = 4;
+                          }
+                          if (currentPage >= totalPages - 2) {
+                            start = totalPages - 3;
+                          }
+                          
+                          for (let i = start; i <= end; i++) {
+                            pushPage(i);
+                          }
+                          
+                          if (currentPage < totalPages - 2) {
+                            pushEllipsis('end');
+                          }
+                        }
+
+                        // Selalu tampilkan halaman terakhir jika lebih dari 1 halaman
+                        if (totalPages > 1) {
+                          pushPage(totalPages);
+                        }
+
+                        return pages;
+                      })()}
                     </div>
+
+                    {/* Next Button */}
                     <button
                       onClick={() =>
-                        setCurrentPage((prev) =>
-                          Math.min(
-                            prev + 1,
-                            Math.ceil(filteredVilla.length / itemsPerPage)
-                          )
-                        )
+                        setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredVilla.length / itemsPerPage)))
                       }
-                      disabled={currentPage * itemsPerPage >= filteredVilla.length}
-                      className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                      disabled={currentPage === Math.ceil(filteredVilla.length / itemsPerPage)}
+                      className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
                     >
                       Next
                     </button>

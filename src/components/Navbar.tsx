@@ -1,37 +1,43 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import DropdownUser from "./DroopdownUser";
-import Cookies from "js-cookie";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet";
 
-const Navbar: React.FC = () => {
-  const [tokenUser, setTokenUser] = useState<boolean>(false);
+interface NavbarProps {
+  token: { name: string; value: string }[];
+}
+
+const Navbar = ({ token }: NavbarProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const tokenAdmin = token.filter((cookie) => cookie.name === "tokenAdmin");
+  const tokenUser = token.filter((cookie) => cookie.name === "tokenUser");
+  const tokenOwner = token.filter((cookie) => cookie.name === "tokenOwner");
 
   const currentPath = usePathname();
 
   useEffect(() => {
     const checkToken = () => {
-      const token = Cookies.get("tokenUser");
-      if (token) {
-        setTokenUser(true);
+      if (
+        tokenAdmin.length > 0 ||
+        tokenUser.length > 0 ||
+        tokenOwner.length > 0
+      ) {
+        setIsLoading(false);
       } else {
-        setTokenUser(false);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
-
-    checkToken();
 
     const intervalId = setInterval(() => {
       setIsLoading(true);
@@ -39,7 +45,7 @@ const Navbar: React.FC = () => {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [tokenAdmin, tokenUser, tokenOwner]); // Hapus jika error
 
   const NavLinks = () => (
     <ul className="flex flex-col md:flex-row md:gap-10 gap-6">
@@ -76,7 +82,7 @@ const Navbar: React.FC = () => {
               : "text-[#606060] hover:text-[#111111] font-semibold"
           }
         >
-          Kategori
+          Category
         </Link>
       </li>
       <li>
@@ -96,16 +102,16 @@ const Navbar: React.FC = () => {
 
   const AuthButtons = () => (
     <>
-      <hr className="w-full h-[1px] bg-gray-200 my-4 md:hidden" />
+      <hr className="w-full h-[2px] bg-gray-200 md:hidden" />
       <div className="flex flex-col md:flex-row w-full md:w-auto items-start md:items-center gap-4">
         <Link href="/auth/register/user" className="w-full md:w-auto">
-          <button className="border border-[#B7906C] text-[#C59E6C] hover:text-gray-900 px-4 py-1 rounded-md w-full">
-            Daftar
+          <button className="border-2 border-[#B7906C] text-[#B7906C] hover:text-gray-900 px-4 py-1 rounded-md w-full">
+            Sign Up
           </button>
         </Link>
         <Link href="/auth/login" className="w-full md:w-auto">
           <button className="bg-[#B7906C] text-white px-4 py-1 rounded-md hover:bg-[#9e7850] w-full">
-            + Masuk
+            Login
           </button>
         </Link>
       </div>
@@ -144,8 +150,16 @@ const Navbar: React.FC = () => {
                 </div>
                 <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
               </div>
-            ) : tokenUser ? (
+            ) : tokenUser.length > 0 ? (
               <DropdownUser />
+            ) : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
+              <Link
+                href={`/dashboard/${tokenAdmin.length > 0 ? "admin" : "mitra"}`}
+              >
+                <button className="text-primary hover:bg-green-100 border-2 border-primary font-semibold rounded-lg text-sm px-4 py-2 text-center me-2 mb-2">
+                  Dashboard
+                </button>
+              </Link>
             ) : (
               <AuthButtons />
             )}
@@ -161,7 +175,7 @@ const Navbar: React.FC = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[300px]">
                 <div className="flex flex-col gap-8 mt-8">
-                  <SheetTitle className="text-2xl font-bold">
+                  <SheetTitle className="text-3xl font-bold">
                     Villa Place
                   </SheetTitle>
                   <NavLinks />
@@ -172,8 +186,19 @@ const Navbar: React.FC = () => {
                       </div>
                       <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
                     </div>
-                  ) : tokenUser ? (
+                  ) : tokenUser.length > 0 ? (
                     <DropdownUser />
+                  ) 
+                  : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
+                    <Link
+                      href={`/dashboard/${
+                        tokenAdmin.length > 0 ? "admin" : "mitra"
+                      }`}
+                    >
+                      <button className="text-primary hover:bg-green-100 border-2 border-primary font-semibold rounded-lg text-sm px-4 py-2 text-center">
+                        Dashboard
+                      </button>
+                    </Link>
                   ) : (
                     <AuthButtons />
                   )}

@@ -17,8 +17,6 @@ import { TableBookingOwnerProps } from "@/types/Props/TableBookingProps";
 // Utils
 import { formatDate } from "@/utils/formatDate";
 import ButtonDetail from "./ButtonDetail";
-import ButtonDelete from "./ButtonDelete";
-import ButtonEdit from "./ButtonEdit";
 import Booking from "@/types/Booking";
 import { getStatusColor, getStatusLabel } from "@/utils/getStatusLabelAndColor";
 
@@ -26,7 +24,9 @@ const TableBookingOwner = ({
   search,
   filteredData,
   selectedStatus,
-  pagination,
+  currentPage,
+  totalItems,
+  totalPages,
   handleCurrentPage,
   handleSearch,
   handleSelectStatus,
@@ -106,7 +106,7 @@ const TableBookingOwner = ({
                         <Image
                           src={
                             "http://localhost:8000/images/user-profile/" +
-                              bookingItem?.user.foto_profile &&
+                              bookingItem?.user?.foto_profile &&
                             "/assets/images/profile-default.png"
                           }
                           width={48}
@@ -117,10 +117,10 @@ const TableBookingOwner = ({
                       </div>
                       <div className="flex flex-col">
                         <h5 className="font-semibold text-gray-800 dark:text-white">
-                          {bookingItem.user.nama ?? "-"}
+                          {bookingItem?.user?.nama ?? "Owner"}
                         </h5>
                         <p className="text-sm text-gray-500">
-                          {bookingItem.user.email ?? "-"}
+                          {bookingItem?.user?.email ?? "owner@gmail.com"}
                         </p>
                       </div>
                     </div>
@@ -135,6 +135,7 @@ const TableBookingOwner = ({
                           }
                           width={70}
                           height={60}
+                          className="rounded-md object-cover h-24 w-28"
                           alt="Product"
                         />
                       </div>
@@ -191,7 +192,9 @@ const TableBookingOwner = ({
       </div>
       {!loading && !error && filteredData.length > 0 && (
         <Pagination
-          pagination={pagination}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          totalItems={totalItems}
           handleCurrentPage={handleCurrentPage}
         />
       )}

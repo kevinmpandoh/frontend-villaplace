@@ -5,6 +5,7 @@ import useFetchData from "@/hooks/useFetchData";
 import VillaCard from "@/components/VillaCardCategory";
 import { VillaProps } from "@/types/Villa";
 import RatingFilter from "@/components/ui/RatingFilter";
+import { useSearchParams } from "next/navigation";
 
 // Filter types
 interface FilterState {
@@ -22,9 +23,11 @@ const Category = () => {
     method: "GET",
     withCredentials: true,
   });
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
 
   // State management
-  const [searchQuery, setSearchQuery] = useState("Villa");
+  const [searchQuery, setSearchQuery] = useState(search || "");
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<FilterState>({
     priceRange: { min: 0, max: 999999999 },
@@ -38,13 +41,13 @@ const Category = () => {
   const villas = useMemo(() => data?.data || [], [data]);
 
   // Mendapatkan kategori unik
-  const availableCategories = useMemo(() => {
-    const categories = new Set<string>();
-    villas.forEach((villa: VillaProps) => {
-      villa.kategori.forEach((cat: string) => categories.add(cat));
-    });
-    return Array.from(categories);
-  }, [villas]);
+  // const availableCategories = useMemo(() => {
+  //   const categories = new Set<string>();
+  //   villas.forEach((villa: VillaProps) => {
+  //     villa.kategori.forEach((cat: string) => categories.add(cat));
+  //   });
+  //   return Array.from(categories);
+  // }, [villas]);
 
   // Filter villas berdasarkan kondisi
   const filteredVillas = useMemo(() => {
@@ -89,7 +92,7 @@ const Category = () => {
     return filteredVillas.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredVillas, currentPage]);
 
-  const totalPages = Math.ceil(filteredVillas.length / itemsPerPage);
+  // const totalPages = Math.ceil(filteredVillas.length / itemsPerPage);
 
   // Handler functions
   const handlePriceRangeChange = useCallback((min: number, max: number) => {
@@ -98,16 +101,6 @@ const Category = () => {
       priceRange: { min, max },
     }));
     setCurrentPage(1); // Reset page on filter change
-  }, []);
-
-  const handleKategoriChange = useCallback((kategori: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      kategori: prev.kategori.includes(kategori)
-        ? prev.kategori.filter((k) => k !== kategori)
-        : [...prev.kategori, kategori],
-    }));
-    setCurrentPage(1);
   }, []);
 
   const handleKamarChange = useCallback((kamar: number | null) => {
@@ -129,18 +122,41 @@ const Category = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Search and Filter Section */}
         <div className="space-y-6 mb-8">
-          {/* Search Bar */}
-          <div className="flex items-center">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-6 py-4 rounded-l-lg text-gray-900 border border-gray-300"
-              placeholder="Cari villa..."
-            />
-            <button className="bg-brown-500 text-white px-6 py-4 rounded-r-lg hover:bg-brown-600">
-              Cari
-            </button>
+          <div>
+            <label
+              htmlFor="default-search"
+              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            >
+              Search
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg
+                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                id="default-search"
+                className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                required
+                placeholder="Cari villa..."
+              />
+            </div>
           </div>
 
           {/* Filters */}
@@ -180,7 +196,7 @@ const Category = () => {
                 Jumlah Kamar
               </label>
               <select
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-3 py-2 border rounded bg-white text-left flex items-center justify-between"
                 value={filters.kamar || ""}
                 onChange={(e) =>
                   handleKamarChange(
@@ -202,8 +218,9 @@ const Category = () => {
                 onChange={handleRatingChange}
               />
             </div>
+
             {/* Category Filter */}
-            <div className="space-y-2 md:col-span-3">
+            {/* <div className="space-y-2 md:col-span-3">
               <label className="block text-md font-semibold">Kategori</label>
               <div className="flex flex-wrap gap-2">
                 {availableCategories.map((kategori) => (
@@ -221,7 +238,7 @@ const Category = () => {
                   </label>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Room Filter */}
           </div>
@@ -258,40 +275,109 @@ const Category = () => {
           )}
         </div>
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="mt-10 flex justify-center items-center space-x-2">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 rounded bg-brown-500 text-white disabled:bg-gray-300"
-            >
-              Previous
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        {/* Pagination Controls */}
+        <div className="w-full border-gray-200 mt-8">
+          <div className="flex justify-center py-2">
+            <div className="flex space-x-1 sm:space-x-2">
+              {/* Previous Button */}
               <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`px-4 py-2 rounded ${
-                  currentPage === page
-                    ? "bg-green-500 text-white"
-                    : "bg-white text-brown-500 border border-brown-500"
-                }`}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
               >
-                {page}
+                Previous
               </button>
-            ))}
-            <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 rounded bg-brown-500 text-white disabled:bg-gray-300"
-            >
-              Next
-            </button>
+
+              <div className="flex space-x-1">
+                {(() => {
+                  const pages: JSX.Element[] = [];
+                  const totalPages = Math.ceil(filteredVillas.length / itemsPerPage);
+                  
+                  // Fungsi untuk menambahkan nomor halaman
+                  const pushPage = (pageNum: number) => {
+                    pages.push(
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`py-1 px-2.5 sm:py-2 sm:px-4 sm:text-md rounded ${
+                          currentPage === pageNum
+                            ? "bg-green-500 text-white"
+                            : "bg-white text-brown-500 border border-brown-500"
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  };
+
+                  // Fungsi untuk menambahkan ellipsis
+                  const pushEllipsis = (key: string) => {
+                    pages.push(
+                      <button
+                        key={key}
+                        className="py-1 px-1.5 sm:py-2 sm:px-3 text-sm sm:text-md rounded bg-white text-brown-500 border border-brown-500"
+                        disabled
+                      >
+                        ...
+                      </button>
+                    );
+                  };
+
+                  // Selalu tampilkan halaman pertama
+                  pushPage(1);
+
+                  if (totalPages <= 5) { // Ubah dari 7 ke 5 untuk mobile
+                    // Jika total halaman 5 atau kurang, tampilkan semua
+                    for (let i = 2; i < totalPages; i++) {
+                      pushPage(i);
+                    }
+                  } else {
+                    // Logika untuk halaman dengan ellipsis
+                    if (currentPage > 3) {
+                      pushEllipsis('start');
+                    }
+                    // Tampilkan halaman di sekitar halaman saat ini
+                    let start = Math.max(2, currentPage - 1);
+                    let end = Math.min(totalPages - 1, currentPage + 1);
+                    
+                    if (currentPage <= 3) {
+                      end = 4;
+                    }
+                    if (currentPage >= totalPages - 2) {
+                      start = totalPages - 3;
+                    }
+                    
+                    for (let i = start; i <= end; i++) {
+                      pushPage(i);
+                    }
+                    
+                    if (currentPage < totalPages - 2) {
+                      pushEllipsis('end');
+                    }
+                  }
+
+                  // Selalu tampilkan halaman terakhir jika lebih dari 1 halaman
+                  if (totalPages > 1) {
+                    pushPage(totalPages);
+                  }
+
+                  return pages;
+                })()}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredVillas.length / itemsPerPage)))
+                }
+                disabled={currentPage === Math.ceil(filteredVillas.length / itemsPerPage)}
+                className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
+              >
+                Next
+              </button>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

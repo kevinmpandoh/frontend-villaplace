@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import useFetchData from "@/hooks/useFetchData";
 import { formatDate } from "@/utils/formatDate";
@@ -52,22 +52,27 @@ const DetailPesanan: React.FC<DetailPesananProps> = ({ pesananId }) => {
             <div className="flex  mb-2">
               <p className="md:w-40 w-30 ">Nama Villa</p>
               <span className="mr-3">:</span>
-              <p className="font-semibold">{data?.data.villa.nama}</p>
+              <p className="font-semibold">{data?.data?.villa.nama}</p>
             </div>
             <div className="flex mb-2">
               <p className="md:w-40 w-30">Lokasi</p>
               <span className="mr-3">:</span>
-              <p className="font-semibold">Manado</p>
-            </div>
-            <div className="flex mb-2">
-              <p className="md:w-40 w-30">Kategori</p>
-              <span className="mr-3">:</span>
-              <p className="font-semibold">{data?.data.villa.kategori}</p>
+              <p className="font-semibold">{data?.data.villa.lokasi}</p>
             </div>
             <div className="flex mb-2">
               <p className="md:w-40 w-30">Fasilitas</p>
               <span className="mr-3">:</span>
-              <p className="font-semibold">{data?.data.villa.fasilitas}</p>
+              <div className="flex flew-wrap gap-2">
+                {data?.data?.villa.fasilitas?.map(
+                  (fasilitas: any, index: number) => (
+                    <p key={index} className="font-semibold">
+                      {fasilitas}
+                      {", "}
+                    </p>
+                  )
+                )}
+              </div>
+              {/* <p className="font-semibold">{detailBooking?.villa.fasilitas}</p> */}
             </div>
             <div className="flex mb-2">
               <p className="md:w-40 w-30">Harga</p>

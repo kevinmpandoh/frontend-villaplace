@@ -20,13 +20,15 @@ import ButtonDetail from "./ButtonDetail";
 import ButtonDelete from "./ButtonDelete";
 import ButtonEdit from "./ButtonEdit";
 import Booking from "@/types/Booking";
-import { getStatusColor, getStatusLabel } from "@/utils/getStatusLabelAndColor";
+import { getStatusColor } from "@/utils/getStatusLabelAndColor";
 
 const TableBookingAdmin = ({
   search,
   filteredData,
   selectedStatus,
-  pagination,
+  currentPage,
+  totalItems,
+  totalPages,
   handleCurrentPage,
   handleDelete,
   handleSearch,
@@ -119,10 +121,10 @@ const TableBookingAdmin = ({
                       </div>
                       <div className="flex flex-col">
                         <h5 className="font-semibold text-gray-800 dark:text-white">
-                          {bookingItem.user?.nama ?? "-"}
+                          {bookingItem.user?.nama ?? "Owner"}
                         </h5>
                         <p className="text-sm text-gray-500">
-                          {bookingItem.user?.email ?? "-"}
+                          {bookingItem.user?.email ?? "owner@gmail.com"}
                         </p>
                       </div>
                     </div>
@@ -199,7 +201,9 @@ const TableBookingAdmin = ({
       </div>
       {!loading && !error && filteredData.length > 0 && (
         <Pagination
-          pagination={pagination}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          totalItems={totalItems}
           handleCurrentPage={handleCurrentPage}
         />
       )}

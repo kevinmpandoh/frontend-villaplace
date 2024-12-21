@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 import axios from "axios";
@@ -64,7 +65,7 @@ const VillaForm = () => {
     onSubmit: async (values) => {
       // let fasilitas = [];
       // fasilitas.push(`Kamar ${values.kamar}`, `K. Mandi ${values.kamar_mandi}`);
-      let fasilitas = [
+      const fasilitas = [
         `Kamar ${values.kamar}`,
         `K. Mandi ${values.kamar_mandi}`,
         ...values.fasilitas, // Menambahkan fasilitas yang dipilih
@@ -232,7 +233,7 @@ const VillaForm = () => {
               formik.setFieldValue(
                 "fasilitas",
                 selectedOptions
-                  ? selectedOptions.map((option: any) => option.value)
+                  ? selectedOptions.map((option) => option.value)
                   : []
               );
             }}

@@ -44,7 +44,7 @@ const ManajemenPengguna = () => {
           <h1 className="text-2xl font-bold mb-2">
             Manajemen Pengguna - Mitra
           </h1>
-          <p>Halaman untuk me manajemen role mitra</p>
+          <p>Halaman untuk memanajemen role mitra</p>
         </div>
       </div>
 

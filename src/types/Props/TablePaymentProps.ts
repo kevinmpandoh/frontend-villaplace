@@ -4,7 +4,9 @@ export interface TablePaymentProps {
   search: string;
   filteredData: Payment[];
   selectedStatus: string;
-  pagination: any;
+  totalPages: number;
+  currentPage: number;
+  totalItems: number;
   handleCurrentPage: (currentPage: number) => void;
   handleSearch: (keyword: string) => void;
   handleSelectStatus: (selectedStatus: string) => void;
@@ -15,7 +17,9 @@ export interface TablePaymentAdminProps {
   search: string;
   filteredData: Payment[];
   selectedStatus: string;
-  pagination: any;
+  totalPages: number;
+  currentPage: number;
+  totalItems: number;
   handleCurrentPage: (currentPage: number) => void;
   handleSearch: (keyword: string) => void;
   handleSelectStatus: (selectedStatus: string) => void;

@@ -10,6 +10,7 @@ export default interface Booking {
     nama: string;
     kategori: string;
     fasilitas: string[];
+    lokasi: string;
     foto_villa: {
       url: string;
     }[];

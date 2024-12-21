@@ -12,53 +12,53 @@ import Link from "next/link";
 const PembayaranAdmin = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [currentModalId, setCurrentModalId] = useState("");
-  const [dataPayment, setDataPayment] = useState<Payment[]>([]);
-  const [pagination, setPagination] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [filteredData, setFilteredData] = useState<Payment[]>([]);
   const [search, setSearch] = useState("");
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const { handleGetAllPaymentOwner } = useFetchPayment();
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `limit=5&page=${currentPage}`;
-      if (search) {
-        query += `&searchQuery=${search}`;
-      }
+      const query = `status=${selectedStatus}`;
+      const itemsPerPage = 5;
 
       const data = await handleGetAllPaymentOwner(query);
       if (data && data.data) {
-        let filteredData = data.data;
+        const filteredData = data.data.filter((data: Payment) => {
+          const searchKeyword = search.toLowerCase();
 
-        // Filter by status di frontend jika selectedStatus bukan "All"
-        if (selectedStatus !== "All") {
-          filteredData = filteredData.filter(
-            (item: any) => item.status_pembayaran === selectedStatus
+          const nama_villa = data.pesanan.villa.nama?.toLowerCase() || "";
+          const bank = data.bank?.toLowerCase() || "";
+          const nama_pembayar = data.nama_pembayar?.toLowerCase() || "";
+          const lokasi = data.pesanan.villa?.lokasi.toLowerCase() || "";
+
+          return (
+            nama_pembayar.includes(searchKeyword) ||
+            bank.includes(searchKeyword) ||
+            nama_villa.includes(searchKeyword) ||
+            lokasi.includes(searchKeyword)
           );
-        }
+        });
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = filteredData.slice(
+          indexOfFirstItem,
+          indexOfLastItem
+        );
+        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-        setDataPayment(filteredData);
-        setPagination(data.pagination);
-      } else {
-        setDataPayment([]);
-        setPagination(null);
+        setFilteredData(currentItems);
+        setTotalItems(filteredData.length);
+        setTotalPages(totalPages);
       }
     };
 
     fetchData();
-  }, [currentPage, search, selectedStatus]);
-
-  useEffect(() => {
-    if (selectedStatus === "All") {
-      setFilteredData(dataPayment);
-    } else {
-      setFilteredData(
-        dataPayment.filter((item) => item.status_pembayaran === selectedStatus)
-      );
-    }
-  }, [selectedStatus, dataPayment]);
+  }, [search, currentPage, selectedStatus]);
 
   const toggleModal = (id: any) => {
     setCurrentModalId(id);
@@ -114,7 +114,7 @@ const PembayaranAdmin = () => {
       <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Pembayaran</h1>
-          <p>Description</p>
+          <p>Halaman untuk memanajemen pembayaran villa</p>
         </div>
       </div>
 
@@ -126,8 +126,10 @@ const PembayaranAdmin = () => {
             <TablePayment
               filteredData={filteredData}
               search={search}
+              currentPage={currentPage}
               selectedStatus={selectedStatus}
-              pagination={pagination}
+              totalPages={totalPages}
+              totalItems={totalItems}
               handleCurrentPage={handleCurrentPage}
               handleSearch={handleSearch}
               toggleModal={toggleModal}

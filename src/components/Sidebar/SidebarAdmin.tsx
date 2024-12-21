@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,12 +14,9 @@ import {
   faChevronDown,
   faChevronUp,
   faBars,
-  faGear,
-  faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import DropdownDashboard from "../DroopdownDashboard";
 
 interface SubItem {
@@ -68,67 +66,6 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-const ProfileSection = ({
-  onClose,
-  isMobile = false,
-}: {
-  onClose?: () => void;
-  isMobile?: boolean;
-}) => (
-  <div
-    className={`flex items-center ${
-      isMobile ? "flex-col space-y-4" : "space-x-6"
-    }`}
-  >
-    <Link href="/profile-admin" className={`${isMobile ? "w-full pr-6" : ""}`}>
-      <button
-        onClick={onClose}
-        className={`text-gray-600 font-semibold flex items-center space-x-2
-          ${
-            isMobile
-              ? "w-full text-white px-4 py-2 hover:bg-black/10 rounded-r-xl"
-              : ""
-          }`}
-      >
-        <FontAwesomeIcon
-          icon={faGear}
-          className={isMobile ? "w-5 text-white" : "hidden"}
-        />
-        <span>Pengaturan</span>
-      </button>
-    </Link>
-    <Link
-      href="/auth/login/admin"
-      className={`${isMobile ? "w-full pr-6" : ""}`}
-    >
-      <button
-        onClick={onClose}
-        className={`text-gray-600 font-semibold flex items-center space-x-2
-          ${
-            isMobile
-              ? "w-full text-white px-4 py-2 hover:bg-black/10 rounded-r-xl"
-              : ""
-          }`}
-      >
-        <FontAwesomeIcon
-          icon={faSignOut}
-          className={isMobile ? "w-5 text-white" : "hidden"}
-        />
-        <span>Keluar</span>
-      </button>
-    </Link>
-    <div className="relative w-10 h-10">
-      <Image
-        src="/assets/images/profile-default.png"
-        alt="Profile Admin"
-        width={60}
-        height={60}
-        className="rounded-full"
-      />
-    </div>
-  </div>
-);
-
 const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
   const pathname = usePathname();
   const [openSubmenus, setOpenSubmenus] = React.useState<
@@ -158,18 +95,20 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
     <div className="h-full flex flex-col overflow-y-auto">
       {/* Header Sidebar */}
       <div className="px-5 py-8">
-        <div className="flex items-center space-x-3">
-          <div className="relative w-10 h-10 flex-shrink-0">
-            <Image
-              src="/assets/images/logo.png"
-              alt="Villa Place Logo"
-              width={50}
-              height={50}
-              className="rounded-full"
-            />
+        <Link href="/">
+          <div className="flex items-center space-x-3">
+            <div className="relative w-10 h-10 flex-shrink-0">
+              <Image
+                src="/assets/images/logo.png"
+                alt="Villa Place Logo"
+                width={50}
+                height={50}
+                className="rounded-full"
+              />
+            </div>
+            <span className="text-xl font-bold text-white">Villa Place</span>
           </div>
-          <span className="text-xl font-bold text-white">Villa Place</span>
-        </div>
+        </Link>
       </div>
 
       {/* Menu Content Sidebar */}
@@ -188,7 +127,7 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
                       onClick={handleClick}
                       className={`flex items-center px-4 py-4 rounded-r-xl transition-colors w-full ${
                         isActive
-                          ? "bg-white text-green-500 font-semibold"
+                          ? "bg-white text-primary font-semibold"
                           : "text-white hover:bg-black/10"
                       }`}
                     >
@@ -200,7 +139,7 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
                       onClick={() => toggleSubmenu(item.label)}
                       className={`flex items-center px-4 py-4 rounded-r-xl transition-colors w-full text-left ${
                         isActive
-                          ? "bg-white text-green-500 font-semibold"
+                          ? "bg-white text-primary font-semibold"
                           : "text-white hover:bg-black/10"
                       }`}
                     >
@@ -225,7 +164,7 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
                           onClick={handleClick}
                           className={`block px-4 py-2 rounded-lg transition-colors ${
                             pathname === subItem.href
-                              ? "bg-white/85 text-green-600 font-semibold"
+                              ? "bg-white/85 text-primary font-semibold"
                               : "text-white hover:bg-black/10"
                           }`}
                         >
@@ -260,7 +199,7 @@ const SidebarAdmin = () => {
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-80 p-0 bg-gradient-to-b from-green-500 to-brown-500 overflow-y-auto"
+              className="w-80 p-0 bg-gradient-to-b from-primary to-brown-500 overflow-y-auto"
             >
               <SidebarContent onClose={() => setOpen(false)} />
             </SheetContent>
@@ -280,7 +219,7 @@ const SidebarAdmin = () => {
       </div>
 
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-green-500 to-brown-500 overflow-y-auto">
+      <nav className="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-primary to-brown-500 overflow-y-auto">
         <SidebarContent />
       </nav>
 

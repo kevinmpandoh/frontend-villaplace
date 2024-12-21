@@ -8,17 +8,18 @@ import Swal from "sweetalert2";
 import TableBookingAdmin from "@/components/BookingAdmin/TableBookingAdmin";
 import Booking from "@/types/Booking";
 import Link from "next/link";
+
 const PesananAdmin = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = React.useState(false);
   const [currentModalId, setCurrentModalId] = useState("");
-  const [dataBooking, setDataBooking] = useState<Booking[]>([]);
-  const [pagination, setPagination] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [filteredData, setFilteredData] = useState<Booking[]>([]);
   const [search, setSearch] = useState("");
-  const [detailBooking, setDetailBooking] = useState<any>();
+  const [detailBooking, setDetailBooking] = useState<Booking>();
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const {
     handleUpdateBooking,
@@ -29,31 +30,47 @@ const PesananAdmin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let query = `limit=5&page=${currentPage}`;
+      const query = `status=${selectedStatus}`;
+      const itemsPerPage = 5;
 
       const data = await handleGetAllBooking(query);
       if (data && data.data) {
-        let filteredData = data.data.filter((item: Booking) => {
-          const matchesSearch =
-            // item.user?.nama?.toLowerCase().includes(search.toLowerCase()) ||
-            item.villa.nama.toLowerCase().includes(search.toLowerCase());
+        const filteredData = data.data.filter((data: Booking) => {
+          const searchKeyword = search.toLowerCase();
 
-          const matchesStatus =
-            selectedStatus === "All" || item.status === selectedStatus;
+          const nama_villa = data.villa.nama?.toLowerCase() || "";
+          const lokasi = data.villa.lokasi?.toLowerCase() || "";
+          const nama_user = data.user?.nama?.toLowerCase() || "";
+          const email_user = data.user?.email?.toLowerCase() || "";
 
-          return matchesSearch && matchesStatus; // Gabungkan filter search dan status
+          return (
+            nama_villa.includes(searchKeyword) ||
+            nama_user.includes(searchKeyword) ||
+            email_user.includes(searchKeyword) ||
+            lokasi.includes(searchKeyword)
+          );
         });
 
-        setDataBooking(filteredData);
-        setPagination(data.pagination);
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = filteredData.slice(
+          indexOfFirstItem,
+          indexOfLastItem
+        );
+
+        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+        setFilteredData(currentItems);
+        setTotalItems(filteredData.length);
+        setTotalPages(totalPages);
       } else {
-        setDataBooking([]);
-        setPagination(null);
+        setTotalItems(0);
+        setTotalPages(0);
       }
     };
 
     fetchData();
-  }, [currentPage, search, selectedStatus]);
+  }, [selectedStatus, search, currentPage]);
 
   useEffect(() => {
     if (currentModalId) {
@@ -68,27 +85,17 @@ const PesananAdmin = () => {
     }
   }, [currentModalId]);
 
-  useEffect(() => {
-    if (selectedStatus === "All") {
-      setFilteredData(dataBooking);
-    } else {
-      setFilteredData(
-        dataBooking.filter((item) => item.status === selectedStatus)
-      );
-    }
-  }, [selectedStatus, dataBooking]);
-
-  const toggleModal = (id: any) => {
+  const toggleModal = (id: string) => {
     setCurrentModalId(id);
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleModalEdit = (id: any) => {
+  const toggleModalEdit = (id: string) => {
     setCurrentModalId(id);
     setIsModalEditOpen(!isModalEditOpen);
   };
 
-  const handleSubmit = (id: string, updatedBooking: any) => {
+  const handleSubmit = (id: string, updatedBooking: Booking) => {
     handleUpdateBooking(id, updatedBooking);
     Swal.fire({
       icon: "success",
@@ -98,7 +105,7 @@ const PesananAdmin = () => {
     setFilteredData((prevData) =>
       prevData.map((item) => (item._id === id ? updatedBooking : item))
     );
-    toggleModalEdit(null);
+    toggleModalEdit("");
   };
 
   const handleDelete = (id: string) => {
@@ -171,7 +178,7 @@ const PesananAdmin = () => {
       <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
         <div>
           <h1 className="text-2xl font-bold mb-2">Manajemen Pesanan</h1>
-          <p>Description</p>
+          <p>Halaman untuk memanajemen pesanan</p>
         </div>
       </div>
 
@@ -184,12 +191,14 @@ const PesananAdmin = () => {
               filteredData={filteredData}
               search={search}
               selectedStatus={selectedStatus}
-              pagination={pagination}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
               handleCurrentPage={handleCurrentPage}
               handleSearch={handleSearch}
-              toggleModal={toggleModal}
               handleSelectStatus={handleSelectStatus}
               handleDelete={handleDelete}
+              toggleModal={toggleModal}
               toggleModalEdit={toggleModalEdit}
             />
           </div>
@@ -197,18 +206,18 @@ const PesananAdmin = () => {
       </div>
       {isModalOpen && (
         <Modal
-          onClose={() => toggleModal(null)}
+          onClose={() => toggleModal("")}
           title="Detail Pesanan"
-          className="max-h-screen overflow-y-auto h-3/4"
+          className="max-h-screen overflow-y-auto h-1/2"
         >
-          <DetailBooking detailBooking={detailBooking} />
+          {detailBooking && <DetailBooking detailBooking={detailBooking} />}
         </Modal>
       )}
 
       {isModalEditOpen && (
         <Modal
-          onClose={() => toggleModalEdit(null)}
-          title="Edit Pembayaran"
+          onClose={() => toggleModalEdit("")}
+          title="Edit Pesanan"
           className="max-h-screen max-w-lg overflow-y-auto h-3/2"
         >
           <EditBooking bookingId={currentModalId} onEdit={handleSubmit} />

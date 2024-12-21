@@ -3,6 +3,20 @@ import { Mitra } from "../types/Mitra";
 
 const API_BASE_URL = "http://localhost:8000/api";
 
+export const getDashboardData = async (query: string) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/pembayaran/chart?${query}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response ? error.response.data : error;
+  }
+};
+
 export const updateMitra = async (
   id: string,
   data: Omit<Mitra, "_id">

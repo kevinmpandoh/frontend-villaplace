@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -84,18 +85,20 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
     <div className="h-full flex flex-col overflow-y-auto">
       {/* Header Sidebar */}
       <div className="px-5 py-8">
-        <div className="flex items-center space-x-3">
-          <div className="relative w-10 h-10 flex-shrink-0">
-            <Image
-              src="/assets/images/logo.png"
-              alt="Villa Place Logo"
-              width={50}
-              height={50}
-              className="rounded-full"
-            />
+        <Link href="/">
+          <div className="flex items-center space-x-3">
+            <div className="relative w-10 h-10 flex-shrink-0">
+              <Image
+                src="/assets/images/logo.png"
+                alt="Villa Place Logo"
+                width={50}
+                height={50}
+                className="rounded-full"
+              />
+            </div>
+            <span className="text-xl font-bold text-white">Villa Place</span>
           </div>
-          <span className="text-xl font-bold text-white">Villa Place</span>
-        </div>
+        </Link>
       </div>
 
       {/* Menu Content Sidebar */}
@@ -114,7 +117,7 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
                       onClick={handleClick}
                       className={`flex items-center px-4 py-4 rounded-r-xl transition-colors w-full ${
                         isActive
-                          ? "bg-white text-green-500 font-semibold"
+                          ? "bg-white text-primary font-semibold"
                           : "text-white hover:bg-black/10"
                       }`}
                     >
@@ -126,7 +129,7 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
                       onClick={() => toggleSubmenu(item.label)}
                       className={`flex items-center px-4 py-4 rounded-r-xl transition-colors w-full text-left ${
                         isActive
-                          ? "bg-white text-green-500 font-semibold"
+                          ? "bg-white text-primary font-semibold"
                           : "text-white hover:bg-black/10"
                       }`}
                     >
@@ -186,7 +189,7 @@ const SidebarMitra = () => {
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-80 p-0 bg-gradient-to-b from-green-500 to-brown-500 overflow-y-auto"
+              className="w-80 p-0 bg-gradient-to-b from-primary to-brown-500 overflow-y-auto"
             >
               <SidebarContent onClose={() => setOpen(false)} />
             </SheetContent>
@@ -206,7 +209,7 @@ const SidebarMitra = () => {
       </div>
 
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-green-500 to-brown-500 overflow-y-auto">
+      <nav className="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-primary to-brown-500 overflow-y-auto">
         <SidebarContent />
       </nav>
 

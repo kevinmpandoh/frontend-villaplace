@@ -1,124 +1,178 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import registerValidationSchema from "@/validations/register";
+
+interface FormValues {
+  nama: string;
+  email: string;
+  no_telepon: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const RegisFormMitra = () => {
-  const [formData, setFormData] = useState({
-    nama: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    // Validasi password
-    if (formData.password !== formData.confirmPassword) {
-      setError("Password tidak sama");
-      return;
-    }
-
+  const handleSubmit = async (
+    values: FormValues,
+    { setFieldError }: FormikHelpers<FormValues>
+  ) => {
     try {
       const res = await axios.post(
         "http://localhost:8000/api/auth/owner/register",
         {
-          nama: formData.nama,
-          email: formData.email,
-          no_telepon: formData.phone,
-          password: formData.password,
+          nama: values.nama,
+          email: values.email,
+          no_telepon: values.no_telepon,
+          password: values.password,
         }
       );
 
       if (res.status === 201) {
+        await Swal.fire({
+          title: "Berhasil",
+          text: "Anda telah berhasil mendaftar",
+          icon: "success",
+        });
         router.push("/auth/login");
       }
-    } catch (error: any) {
-      setError(error.response.data.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          const errors = error.response.data.errors;
+          console.log(errors.password);
+  
+          // Set error pada field yang relevan
+          if (errors.nama) {
+            setFieldError("nama", errors.nama[0]);
+          }
+          if (errors.email) {
+            setFieldError("email", "Email sudah digunakan");
+          }
+          if (errors.no_telepon) {
+            setFieldError("no_telepon", "Nomor Telepon sudah digunakan");
+          }
+          if (errors.password) {
+            setFieldError("password", errors.password[0]);
+          }
+        } else {
+          setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
+        }
+      } 
     }
   };
+
   return (
-    <form className="w-full max-w-md space-y-6" onSubmit={handleSubmit}>
-      <h2 className="text-2xl font-bold text-center">Daftar sebagai Mitra</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Nama Lengkap
-        </label>
-        <input
-          type="text"
-          placeholder="Nama Lengkap"
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          required
-          value={formData.nama}
-          onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          placeholder="Email"
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          required
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          No Telepon
-        </label>
-        <input
-          type="text"
-          placeholder="No Telepon"
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          required
-          value={formData.phone}
-          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Password
-        </label>
-        <input
-          type="password"
-          placeholder="Password"
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          required
-          value={formData.password}
-          onChange={(e) =>
-            setFormData({ ...formData, password: e.target.value })
-          }
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Konfirmasi Password
-        </label>
-        <input
-          type="password"
-          placeholder="Konfirmasi Password"
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          required
-          value={formData.confirmPassword}
-          onChange={(e) =>
-            setFormData({ ...formData, confirmPassword: e.target.value })
-          }
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700"
-      >
-        Daftar
-      </button>
-    </form>
+    <Formik
+      initialValues={{
+        nama: "",
+        email: "",
+        no_telepon: "",
+        password: "",
+        confirmPassword: "",
+      }}
+      validationSchema={registerValidationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ isSubmitting }) => (
+        <Form className="w-full max-w-md space-y-6">
+          <h2 className="text-2xl font-bold text-center">
+            Daftar sebagai Mitra
+          </h2>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Nama Lengkap
+            </label>
+            <Field
+              type="text"
+              name="nama"
+              placeholder="Nama Lengkap"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+            <ErrorMessage
+              name="nama"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <Field
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+            <ErrorMessage
+              name="email"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              No Telepon
+            </label>
+            <Field
+              type="text"
+              name="no_telepon"
+              placeholder="No Telepon"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+            <ErrorMessage
+              name="no_telepon"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <Field
+              type="password"
+              name="password"
+              placeholder="Password"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+            <ErrorMessage
+              name="password"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Konfirmasi Password
+            </label>
+            <Field
+              type="password"
+              name="confirmPassword"
+              placeholder="Konfirmasi Password"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+            <ErrorMessage
+              name="confirmPassword"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700"
+          >
+            {isSubmitting ? "Mendaftar..." : "Daftar"}
+          </button>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

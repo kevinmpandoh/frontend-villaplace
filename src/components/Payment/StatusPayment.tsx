@@ -2,7 +2,7 @@ import React from "react";
 
 interface StatusPaymentProps {
   selectedStatus: string;
-  handleSelectStatus: any;
+  handleSelectStatus: (selectedStatus: string) => void;
 }
 
 const StatusPayment = ({

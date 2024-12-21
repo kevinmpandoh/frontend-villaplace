@@ -52,7 +52,7 @@ const DetailBooking = ({ detailBooking }: Props) => {
             <div className="flex mb-2">
               <p className="md:w-40 w-30">Lokasi</p>
               <span className="mr-3">:</span>
-              <p className="font-semibold">Manado</p>
+              <p className="font-semibold">{detailBooking?.villa.lokasi}</p>
             </div>
             <div className="flex mb-2">
               <p className="md:w-40 w-30">Kategori</p>
@@ -66,6 +66,7 @@ const DetailBooking = ({ detailBooking }: Props) => {
                 {detailBooking?.villa.fasilitas.map((fasilitas, index) => (
                   <p key={index} className="font-semibold">
                     {fasilitas}
+                    {", "}
                   </p>
                 ))}
               </div>

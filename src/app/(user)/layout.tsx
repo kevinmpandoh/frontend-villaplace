@@ -1,14 +1,20 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+import { cookies } from "next/headers";
+
+const Layout = async ({ children }: { children: React.ReactNode }) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.getAll();
   return (
-    <>
-      <Navbar />
+    <div className="bg-gray-100">
+      <Navbar token={token} />
       <main>
-        <div>{children}</div>
+        <div >{children}</div>
       </main>
       <Footer />
-    </>
+    </div>
   );
-}
+};
+
+export default Layout;

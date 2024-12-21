@@ -1,4 +1,5 @@
 "use client";
+
 import axios from "axios";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
@@ -6,6 +7,7 @@ import Swal from "sweetalert2";
 import Link from "next/link";
 import ButtonEdit from "@/components/Payment/ButtonEdit";
 import ButtonDelete from "@/components/BookingAdmin/ButtonDelete";
+import Modal from "@/components/Modal";
 
 interface Villa {
   _id: string;
@@ -25,7 +27,7 @@ const PostingAdmin = () => {
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(15); // 20 item per halaman
+  const [itemsPerPage] = useState(10); // 10 item per halaman
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +72,11 @@ const PostingAdmin = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredVilla.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredVilla.length / itemsPerPage);
+  // const totalPages = Math.ceil(filteredVilla.length / itemsPerPage); (NYALAKAN BILA MENGGUNAKAN PAGINATION)
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedVillaId, setSelectedVillaId] = useState<string | null>(null);
+
 
   // Fungsi untuk menghapus data villa
   const deleteData = async (id: string) => {
@@ -174,7 +180,7 @@ const PostingAdmin = () => {
               </li>
               <li>
                 <span className="text-gray-500"></span>
-                Manajemen Posting Admin
+                Manajemen Posting
               </li>
             </ol>
           </nav>
@@ -182,8 +188,8 @@ const PostingAdmin = () => {
 
         <div className="flex justify-between border-2 shadow-lg rounded-md items-center mb-3 bg-white p-6 m-8">
           <div>
-            <h1 className="text-2xl font-bold mb-2">Manajemen Posting Admin</h1>
-            <p>Description</p>
+            <h1 className="text-2xl font-bold mb-2">Manajemen Posting</h1>
+            <p>Halaman untuk memanajemen posting villa</p>
           </div>
         </div>
 
@@ -278,16 +284,16 @@ const PostingAdmin = () => {
                           <th className="min-w-[20px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                             No
                           </th>
-                          <th className="min-w-[220px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[220px] py-4 px-2 font-semibold text-gray-50 dark:text-white">
                             Villa
                           </th>
-                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[120px] py-4 px-3 font-semibold text-gray-50 dark:text-white">
                             Fasilitas
                           </th>
-                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[120px] py-4 px-3 font-semibold text-gray-50 dark:text-white">
                             Lokasi
                           </th>
-                          <th className="min-w-[20px] py-4  font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[20px] py-4 font-semibold text-gray-50 dark:text-white">
                             Kategori
                           </th>
                           <th className="min-w-[20px] py-4 px-2 font-semibold text-gray-50 dark:text-white">
@@ -296,7 +302,7 @@ const PostingAdmin = () => {
                           <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                             Action
                           </th>
-                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[120px] py-4 px-3 font-semibold text-gray-50 dark:text-white">
                             Status
                           </th>
                         </tr>
@@ -376,30 +382,15 @@ const PostingAdmin = () => {
                               </td>
                               <td className="p-3 text-center justify-center gap-5 border-r ">
                                 {/* Tombol untuk mengubah status */}
-                                <div className="mt-2 flex flex-col gap-4">
+                                <div className="flex flex-col gap-4">
                                   <button
-                                    className="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-sm"
-                                    onClick={() =>
-                                      handleChangeStatus(data._id, "success")
-                                    }
+                                    className="px-4 py-1 border-2 border-brown-500 hover:bg-[#B7906C] hover:text-white rounded"
+                                    onClick={() => {
+                                      setShowModal(true);
+                                      setSelectedVillaId(data._id);
+                                    }}
                                   >
-                                    Success
-                                  </button>
-                                  <button
-                                    className="px-2 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm"
-                                    onClick={() =>
-                                      handleChangeStatus(data._id, "pending")
-                                    }
-                                  >
-                                    Pending
-                                  </button>
-                                  <button
-                                    className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm"
-                                    onClick={() =>
-                                      handleChangeStatus(data._id, "rejected")
-                                    }
-                                  >
-                                    Reject
+                                    <p className="text-sm">Ubah Status</p>
                                   </button>
                                 </div>
                               </td>
@@ -408,46 +399,143 @@ const PostingAdmin = () => {
                         )}
                       </tbody>
                     </table>
+                  {showModal && (
+                    <Modal
+                      title="Ubah Status Villa"
+                      onClose={() => setShowModal(false)}
+                      className="max-w-md max-h-min"
+                    >
+                      <div className="flex flex-col gap-4">
+                        <button
+                          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                          onClick={() => {
+                            if (selectedVillaId) handleChangeStatus(selectedVillaId, "success");
+                            setShowModal(false);
+                          }}
+                        >
+                          Success
+                        </button>
+                        <button
+                          className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                          onClick={() => {
+                            if (selectedVillaId) handleChangeStatus(selectedVillaId, "pending");
+                            setShowModal(false);
+                          }}
+                        >
+                          Pending
+                        </button>
+                        <button
+                          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                          onClick={() => {
+                            if (selectedVillaId) handleChangeStatus(selectedVillaId, "rejected");
+                            setShowModal(false);
+                          }}
+                          >
+                          Rejected
+                        </button>
+                      </div>
+                    </Modal>
+                  )}
                   </div>
 
+
                   {/* Pagination Controls */}
-                  <div className="w-full border-t border-gray-200">
-                    <div className="flex justify-center py-6">
-                      <div className="flex space-x-2">
+                  <div className="w-full border-gray-200 mt-8">
+                    <div className="flex justify-center py-2">
+                      <div className="flex space-x-1 sm:space-x-2">
+                        {/* Previous Button */}
                         <button
-                          onClick={() =>
-                            setCurrentPage((prev) => Math.max(prev - 1, 1))
-                          }
+                          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                           disabled={currentPage === 1}
-                          className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                          className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
                         >
                           Previous
                         </button>
+
                         <div className="flex space-x-1">
-                          {Array.from({ length: totalPages }, (_, i) => (
-                            <button
-                              key={i}
-                              onClick={() => setCurrentPage(i + 1)}
-                              className={`py-2 px-4 rounded ${
-                                currentPage === i + 1
-                                  ? "bg-green-500 text-white"
-                                  : "bg-white text-brown-500 border border-brown-500"
-                              }`}
-                            >
-                              {i + 1}
-                            </button>
-                          ))}
+                          {(() => {
+                            const pages: JSX.Element[] = [];
+                            const totalPages = Math.ceil(filteredVilla.length / itemsPerPage);
+                            
+                            // Fungsi untuk menambahkan nomor halaman
+                            const pushPage = (pageNum: number) => {
+                              pages.push(
+                                <button
+                                  key={pageNum}
+                                  onClick={() => setCurrentPage(pageNum)}
+                                  className={`py-1 px-2.5 sm:py-2 sm:px-4 sm:text-md rounded ${
+                                    currentPage === pageNum
+                                      ? "bg-green-500 text-white"
+                                      : "bg-white text-brown-500 border border-brown-500"
+                                  }`}
+                                >
+                                  {pageNum}
+                                </button>
+                              );
+                            };
+
+                            // Fungsi untuk menambahkan ellipsis
+                            const pushEllipsis = (key: string) => {
+                              pages.push(
+                                <button
+                                  key={key}
+                                  className="py-1 px-1.5 sm:py-2 sm:px-3 text-sm sm:text-md rounded bg-white text-brown-500 border border-brown-500"
+                                  disabled
+                                >
+                                  ...
+                                </button>
+                              );
+                            };
+
+                            // Selalu tampilkan halaman pertama
+                            pushPage(1);
+
+                            if (totalPages <= 5) { // Ubah dari 7 ke 5 untuk mobile
+                              // Jika total halaman 5 atau kurang, tampilkan semua
+                              for (let i = 2; i < totalPages; i++) {
+                                pushPage(i);
+                              }
+                            } else {
+                              // Logika untuk halaman dengan ellipsis
+                              if (currentPage > 3) {
+                                pushEllipsis('start');
+                              }
+                              // Tampilkan halaman di sekitar halaman saat ini
+                              let start = Math.max(2, currentPage - 1);
+                              let end = Math.min(totalPages - 1, currentPage + 1);
+                              
+                              if (currentPage <= 3) {
+                                end = 4;
+                              }
+                              if (currentPage >= totalPages - 2) {
+                                start = totalPages - 3;
+                              }
+                              
+                              for (let i = start; i <= end; i++) {
+                                pushPage(i);
+                              }
+                              
+                              if (currentPage < totalPages - 2) {
+                                pushEllipsis('end');
+                              }
+                            }
+
+                            // Selalu tampilkan halaman terakhir jika lebih dari 1 halaman
+                            if (totalPages > 1) {
+                              pushPage(totalPages);
+                            }
+
+                            return pages;
+                          })()}
                         </div>
+
+                        {/* Next Button */}
                         <button
                           onClick={() =>
-                            setCurrentPage((prev) =>
-                              Math.min(prev + 1, totalPages)
-                            )
+                            setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredVilla.length / itemsPerPage)))
                           }
-                          disabled={
-                            currentPage * itemsPerPage >= filteredVilla.length
-                          }
-                          className="p-2 bg-brown-500 text-white rounded disabled:bg-gray-300"
+                          disabled={currentPage === Math.ceil(filteredVilla.length / itemsPerPage)}
+                          className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
                         >
                           Next
                         </button>

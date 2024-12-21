@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { VillaProps } from "@/types/Villa";
@@ -34,7 +33,7 @@ const VillaCard = ({
             className="w-full h-full object-cover rounded-top-md"
           />
         </div>
-        <div className="p-4">
+        <div className="px-4 py-3">
           <h3 className="text-xl font-semibold">{nama}</h3>
           <div className="flex items-center mt-2">
             <FontAwesomeIcon 
@@ -62,10 +61,10 @@ const VillaCard = ({
               <div className="flex items-center mt-2">
                 <RatingStar rating={averageRating || 0} />
                   <span className="ml-2">
-                    {averageRating ? `${averageRating.toFixed(1)} | ${commentCount} ulasan pelanggan` : "0.0 | 0 ulasan pelanggan"}
+                    {averageRating ? `${averageRating.toFixed(1)} | ${commentCount} review` : "0.0 | 0 review"}
                   </span>
               </div>
-            <hr className="w-full h-[2px] bg-gray-200 mt-5" />
+            <hr className="w-full h-[2px] bg-gray-200 mt-3" />
             <p className=" text-green-600 font-semibold items-center flex flex-col mt-3 text-xl">
               Rp. {harga.toLocaleString()}
             </p>
