@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 
@@ -6,7 +7,7 @@ interface SidebarProfileProps {
   data: any;
   menuOpen?: any;
   setMenuOpen?: any;
-  role?: any;
+  role?: string;
 }
 
 const SidebarProfileDashboard: React.FC<SidebarProfileProps> = ({

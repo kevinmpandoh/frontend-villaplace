@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import DropdownUser from "./DroopdownUser";
 import { usePathname } from "next/navigation";
@@ -45,7 +45,7 @@ const Navbar = ({ token }: NavbarProps) => {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [tokenAdmin, tokenUser, tokenOwner]); // Hapus jika error
 
   const NavLinks = () => (
     <ul className="flex flex-col md:flex-row md:gap-10 gap-6">
@@ -82,7 +82,7 @@ const Navbar = ({ token }: NavbarProps) => {
               : "text-[#606060] hover:text-[#111111] font-semibold"
           }
         >
-          Kategori
+          Category
         </Link>
       </li>
       <li>
@@ -105,7 +105,7 @@ const Navbar = ({ token }: NavbarProps) => {
       <hr className="w-full h-[2px] bg-gray-200 md:hidden" />
       <div className="flex flex-col md:flex-row w-full md:w-auto items-start md:items-center gap-4">
         <Link href="/auth/register/user" className="w-full md:w-auto">
-          <button className="border border-[#B7906C] text-[#C59E6C] hover:text-gray-900 px-4 py-1 rounded-md w-full">
+          <button className="border-2 border-[#B7906C] text-[#B7906C] hover:text-gray-900 px-4 py-1 rounded-md w-full">
             Sign Up
           </button>
         </Link>

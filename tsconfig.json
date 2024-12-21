@@ -6,15 +6,15 @@
       "esnext"
     ],
     "allowJs": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
+    "jsx": "preserve", // Mengubah 'preserve' ke 'react-jsx' untuk mendukung Next.js dan React 17+
+    "module": "CommonJS",
     "moduleResolution": "node", // Mengubah menjadi 'node' untuk kompatibilitas yang lebih baik
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve", // Mengubah 'preserve' ke 'react-jsx' untuk mendukung Next.js dan React 17+
     "incremental": true,
     "plugins": [
       {
@@ -24,7 +24,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "src/*"
       ]
     },
     "target": "ES2017"
@@ -33,9 +33,11 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "__mocks__/**/*",
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next"
   ]
 }

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import useFetchData from "@/hooks/useFetchData";
 import { useFetchFavorite } from "@/hooks/useFetchFavorite";

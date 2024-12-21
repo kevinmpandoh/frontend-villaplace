@@ -112,11 +112,11 @@ const VillaForm = () => {
         }).then(() => {
           window.location.href = "/dashboard/mitra/posting";
         });
-      } catch (error) {
+      } catch (error: unknown) {
         Swal.fire({
           icon: "error",
           title: "Error Updating Villa",
-          text: error.response?.data?.message || error.message,
+          text: "An error occurred while updating the villa.",
         });
       }
     },
@@ -308,7 +308,7 @@ const VillaForm = () => {
             onChange={handleMultipleSelectChange}
             className="w-full"
           />
-          {formik.touched.fasilitas && formik.errors.fasiltas && (
+          {formik.touched.fasilitas && formik.errors.fasilitas && (
             <div className="text-red-500 text-sm">
               {formik.errors.fasilitas}
             </div>

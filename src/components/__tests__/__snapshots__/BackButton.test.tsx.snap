@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BackButton Component Snapshot testing untuk memastikan struktur elemen 1`] = `
+<DocumentFragment>
+  <a
+    aria-label="Back"
+    class="inline-flex items-center gap-2 justify-center px-3 py-2 rounded-lg hover:bg-green-100 border-2 border-primary text-primary font-semibold text-center"
+  >
+    <svg
+      data-testid="fa-arrow-left"
+    />
+    <span>
+      Back
+    </span>
+  </a>
+</DocumentFragment>
+`;

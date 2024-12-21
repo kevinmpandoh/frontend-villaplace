@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -19,7 +20,7 @@ const RegisFormMitra = () => {
 
   const handleSubmit = async (
     values: FormValues,
-    { setSubmitting, setFieldError }: FormikHelpers<FormValues>
+    { setFieldError }: FormikHelpers<FormValues>
   ) => {
     try {
       const res = await axios.post(

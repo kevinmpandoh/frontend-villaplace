@@ -122,6 +122,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
     const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
 
     const scriptTag = document.createElement("script");
+    const scriptTag = document.createElement("script");
     scriptTag.src = midtransUrl;
 
     const midtransClientKey = "SB-Mid-client-biw0_z5pnI4tFfTA";
@@ -138,6 +139,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
     if (!tokenMidtrans) return;
     try {
       window.snap.pay(tokenMidtrans, {
+        onSuccess: async (result) => {
         onSuccess: async (result) => {
           const dataBooking = {
             jumlah_orang: formData.guests,
@@ -175,6 +177,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
 
           window.location.href = "/user/bookings";
         },
+        onPending: async (result) => {
         onPending: async (result) => {
           const midtransData = await axios.get(
             `http://localhost:8000/api/pembayaran/status/${result.order_id}`,
@@ -232,6 +235,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
           window.location.href = `/user/payment-history`;
         },
         onError: (error) => {
+        onError: (error) => {
           Swal.fire({
             icon: "error",
             title: "Gagal",
@@ -249,7 +253,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
       alert("Error");
       console.log(err);
     }
-  }, [tokenMidtrans]);
+  }, [formData, handleCreateBooking, handleCreatePayment, modal, rentalDays, tokenMidtrans, villa._id, villa.harga]);
 
   return (
     <div className="max-w-7xl  mx-auto   p-4">

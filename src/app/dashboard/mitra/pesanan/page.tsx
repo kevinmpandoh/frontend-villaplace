@@ -64,7 +64,7 @@ const PesananMitra = () => {
     };
 
     fetchData();
-  }, []);
+  }, [handleGetVillaByOwner]);
 
   useEffect(() => {
     const fetchData = async () => {

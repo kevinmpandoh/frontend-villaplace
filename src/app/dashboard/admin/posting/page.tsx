@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import Link from "next/link";
 import ButtonEdit from "@/components/Payment/ButtonEdit";
 import ButtonDelete from "@/components/BookingAdmin/ButtonDelete";
+import Modal from "@/components/Modal";
 
 interface Villa {
   _id: string;
@@ -71,7 +72,11 @@ const PostingAdmin = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredVilla.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredVilla.length / itemsPerPage);
+  // const totalPages = Math.ceil(filteredVilla.length / itemsPerPage); (NYALAKAN BILA MENGGUNAKAN PAGINATION)
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedVillaId, setSelectedVillaId] = useState<string | null>(null);
+
 
   // Fungsi untuk menghapus data villa
   const deleteData = async (id: string) => {
@@ -279,16 +284,16 @@ const PostingAdmin = () => {
                           <th className="min-w-[20px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                             No
                           </th>
-                          <th className="min-w-[220px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[220px] py-4 px-2 font-semibold text-gray-50 dark:text-white">
                             Villa
                           </th>
-                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[120px] py-4 px-3 font-semibold text-gray-50 dark:text-white">
                             Fasilitas
                           </th>
-                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[120px] py-4 px-3 font-semibold text-gray-50 dark:text-white">
                             Lokasi
                           </th>
-                          <th className="min-w-[20px] py-4  font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[20px] py-4 font-semibold text-gray-50 dark:text-white">
                             Kategori
                           </th>
                           <th className="min-w-[20px] py-4 px-2 font-semibold text-gray-50 dark:text-white">
@@ -297,7 +302,7 @@ const PostingAdmin = () => {
                           <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
                             Action
                           </th>
-                          <th className="min-w-[120px] py-4 px-4 font-semibold text-gray-50 dark:text-white">
+                          <th className="min-w-[120px] py-4 px-3 font-semibold text-gray-50 dark:text-white">
                             Status
                           </th>
                         </tr>
@@ -377,30 +382,15 @@ const PostingAdmin = () => {
                               </td>
                               <td className="p-3 text-center justify-center gap-5 border-r ">
                                 {/* Tombol untuk mengubah status */}
-                                <div className="mt-2 flex flex-col gap-4">
+                                <div className="flex flex-col gap-4">
                                   <button
-                                    className="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-sm"
-                                    onClick={() =>
-                                      handleChangeStatus(data._id, "success")
-                                    }
+                                    className="px-4 py-1 border-2 border-brown-500 hover:bg-[#B7906C] hover:text-white rounded"
+                                    onClick={() => {
+                                      setShowModal(true);
+                                      setSelectedVillaId(data._id);
+                                    }}
                                   >
-                                    Success
-                                  </button>
-                                  <button
-                                    className="px-2 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm"
-                                    onClick={() =>
-                                      handleChangeStatus(data._id, "pending")
-                                    }
-                                  >
-                                    Pending
-                                  </button>
-                                  <button
-                                    className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm"
-                                    onClick={() =>
-                                      handleChangeStatus(data._id, "rejected")
-                                    }
-                                  >
-                                    Reject
+                                    <p className="text-sm">Ubah Status</p>
                                   </button>
                                 </div>
                               </td>
@@ -409,7 +399,45 @@ const PostingAdmin = () => {
                         )}
                       </tbody>
                     </table>
+                  {showModal && (
+                    <Modal
+                      title="Ubah Status Villa"
+                      onClose={() => setShowModal(false)}
+                      className="max-w-md max-h-min"
+                    >
+                      <div className="flex flex-col gap-4">
+                        <button
+                          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                          onClick={() => {
+                            if (selectedVillaId) handleChangeStatus(selectedVillaId, "success");
+                            setShowModal(false);
+                          }}
+                        >
+                          Success
+                        </button>
+                        <button
+                          className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                          onClick={() => {
+                            if (selectedVillaId) handleChangeStatus(selectedVillaId, "pending");
+                            setShowModal(false);
+                          }}
+                        >
+                          Pending
+                        </button>
+                        <button
+                          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                          onClick={() => {
+                            if (selectedVillaId) handleChangeStatus(selectedVillaId, "rejected");
+                            setShowModal(false);
+                          }}
+                          >
+                          Rejected
+                        </button>
+                      </div>
+                    </Modal>
+                  )}
                   </div>
+
 
                   {/* Pagination Controls */}
                   <div className="w-full border-gray-200 mt-8">

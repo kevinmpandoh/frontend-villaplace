@@ -27,6 +27,7 @@ const LoginForm = () => {
   const handleSubmit = async (
     values: { email: string; password: string },
     { setFieldError }: FormikHelpers<FormValues>
+    { setFieldError }: FormikHelpers<FormValues>
   ) => {
     try {
       const res = await axios.post(

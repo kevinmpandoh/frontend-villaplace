@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,8 +14,6 @@ import {
   faChevronDown,
   faChevronUp,
   faBars,
-  faGear,
-  faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -66,67 +65,6 @@ const menuItems: MenuItem[] = [
     ],
   },
 ];
-
-const ProfileSection = ({
-  onClose,
-  isMobile = false,
-}: {
-  onClose?: () => void;
-  isMobile?: boolean;
-}) => (
-  <div
-    className={`flex items-center ${
-      isMobile ? "flex-col space-y-4" : "space-x-6"
-    }`}
-  >
-    <Link href="/profile-admin" className={`${isMobile ? "w-full pr-6" : ""}`}>
-      <button
-        onClick={onClose}
-        className={`text-gray-600 font-semibold flex items-center space-x-2
-          ${
-            isMobile
-              ? "w-full text-white px-4 py-2 hover:bg-black/10 rounded-r-xl"
-              : ""
-          }`}
-      >
-        <FontAwesomeIcon
-          icon={faGear}
-          className={isMobile ? "w-5 text-white" : "hidden"}
-        />
-        <span>Pengaturan</span>
-      </button>
-    </Link>
-    <Link
-      href="/auth/login/admin"
-      className={`${isMobile ? "w-full pr-6" : ""}`}
-    >
-      <button
-        onClick={onClose}
-        className={`text-gray-600 font-semibold flex items-center space-x-2
-          ${
-            isMobile
-              ? "w-full text-white px-4 py-2 hover:bg-black/10 rounded-r-xl"
-              : ""
-          }`}
-      >
-        <FontAwesomeIcon
-          icon={faSignOut}
-          className={isMobile ? "w-5 text-white" : "hidden"}
-        />
-        <span>Keluar</span>
-      </button>
-    </Link>
-    <div className="relative w-10 h-10">
-      <Image
-        src="/assets/images/profile-default.png"
-        alt="Profile Admin"
-        width={60}
-        height={60}
-        className="rounded-full"
-      />
-    </div>
-  </div>
-);
 
 const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
   const pathname = usePathname();

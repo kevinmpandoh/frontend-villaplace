@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import ProfileDisplayAdmin from "./ProfileDisplayAdmin";
 import EditProfileModalAdmin from "./EditProfileModalAdmin";

@@ -1,8 +1,6 @@
-import React from "react";
-
 interface SearchInputProps {
   search: string;
-  handleSearch: any;
+  handleSearch: (keyword: string) => void;
 }
 
 const SearchInput = ({ search, handleSearch }: SearchInputProps) => {

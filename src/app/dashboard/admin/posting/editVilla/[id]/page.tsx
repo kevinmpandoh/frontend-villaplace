@@ -299,7 +299,7 @@ const VillaForm = () => {
             onChange={handleMultipleSelectChange}
             className="w-full"
           />
-          {formik.touched.fasilitas && formik.errors.fasiltas && (
+          {formik.touched.fasilitas && formik.errors.fasilitas && (
             <div className="text-red-500 text-sm">
               {formik.errors.fasilitas}
             </div>
