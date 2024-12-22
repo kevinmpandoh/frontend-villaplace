@@ -8,6 +8,7 @@ import useFetchData from "../../hooks/useFetchData";
 import { useFetchUser } from "../../hooks/useFetchUser";
 import Swal from "sweetalert2";
 import { FormikHelpers } from "formik";
+import axios from "axios";
 
 interface UserData {
   _id: string;
@@ -17,7 +18,7 @@ interface UserData {
 }
 
 const ProfileUser = () => {
-  const { handleUpdateUser, error } = useFetchUser();
+  const { handleUpdateUser } = useFetchUser();
   const [showModal, setShowModal] = useState(false);
   const [userData, setUserData] = useState({
     _id: "",
@@ -50,20 +51,38 @@ const ProfileUser = () => {
       setShowModal(false);
       setUserData(updatedUser.data);
     } catch (err) {
-      if (error.errors) {
-        const backendErrors = error.errors;
-        Object.keys(backendErrors).forEach((key) => {
-          formikHelpers.setFieldError(key, backendErrors[key]);
-        });
+      if (axios.isAxiosError(err)) {
+        if (err.response && err.response.data && err.response.data.errors) {
+          const errors = err.response.data.errors;
+          Object.keys(errors).forEach((key) => {
+            formikHelpers.setFieldError(key, errors[key]);
+          });
+        } else {
+          Swal.fire({
+            title: "Gagal!",
+            text: "Gagal memperbarui profil. Silakan coba lagi.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       } else {
-        Swal.fire({
-          title: "Gagal!",
-          text: "Gagal memperbarui profil. Silakan coba lagi.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-        console.error(err);
+        console.error("Unknown error:", err);
       }
+
+      // if (error.errors) {
+      //   const backendErrors = error.errors;
+      //   Object.keys(backendErrors).forEach((key) => {
+      //     formikHelpers.setFieldError(key, backendErrors[key]);
+      //   });
+      // } else {
+      //   Swal.fire({
+      //     title: "Gagal!",
+      //     text: "Gagal memperbarui profil. Silakan coba lagi.",
+      //     icon: "error",
+      //     confirmButtonText: "OK",
+      //   });
+      //   console.error(err);
+      // }
     }
   };
 

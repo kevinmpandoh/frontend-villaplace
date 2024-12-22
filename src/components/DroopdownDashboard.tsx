@@ -18,6 +18,7 @@ import { Admin } from "@/types/Admin";
 import { useFetchAdmin } from "@/hooks/useFetchAdmin";
 import EditProfileDashboardAdmin from "./Profile/EditProfileModalDashboardAdmin";
 import ChangePasswordAdmin from "./Change-password/ChangePasswordAdmin";
+import { FormikHelpers } from "formik";
 
 interface DropdownDashboardProps {
   role: string;
@@ -31,8 +32,17 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState("profile");
 
-  const [mitraData, setMitraData] = useState<Mitra>();
-  const [adminData, setAdminData] = useState<Admin>();
+  const [mitraData, setMitraData] = useState<Mitra>({
+    _id: "",
+    nama: "",
+    email: "",
+    no_telepon: "",
+  });
+  const [adminData, setAdminData] = useState<Admin>({
+    _id: "",
+    nama: "",
+    email: "",
+  });
 
   const { handleUpdateMitra: updateMitra } = useFetchMitra();
   const { handleUpdateAdmin: updateAdmin } = useFetchAdmin();
@@ -49,7 +59,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
 
   useEffect(() => {
     if (role === "admin") {
-      if (data) {
+      if (data && data.data && data !== undefined) {
         setAdminData(data.data);
       }
     } else {
@@ -61,50 +71,84 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
 
   const handleUpdateMitra = async (
     values: Omit<Mitra, "_id">,
-    formikHelpers: any
+    formikHelpers: FormikHelpers<Omit<Mitra, "_id">>
   ) => {
     try {
       const updatedMitra = await updateMitra(data.data._id, values);
       setMitraData(updatedMitra.data);
       setMenuOpen("profile");
-    } catch (err: any) {
-      if (err.errors) {
-        const backendErrors = err.errors;
-        Object.keys(backendErrors).forEach((key) => {
-          formikHelpers.setFieldError(key, backendErrors[key]);
-        });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response && err.response.data && err.response.data.errors) {
+          const errors = err.response.data.errors;
+          Object.keys(errors).forEach((key) => {
+            formikHelpers.setFieldError(key, errors[key]);
+          });
+        } else {
+          Swal.fire({
+            title: "Gagal!",
+            text: "Gagal memperbarui profil. Silakan coba lagi.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       } else {
-        Swal.fire({
-          title: "Gagal!",
-          text: "Gagal memperbarui profil. Silakan coba lagi.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        console.error("Unknown error:", err);
       }
+      // if (err.errors) {
+      //   const backendErrors = err.errors;
+      //   Object.keys(backendErrors).forEach((key) => {
+      //     formikHelpers.setFieldError(key, backendErrors[key]);
+      //   });
+      // } else {
+      //   Swal.fire({
+      //     title: "Gagal!",
+      //     text: "Gagal memperbarui profil. Silakan coba lagi.",
+      //     icon: "error",
+      //     confirmButtonText: "OK",
+      //   });
+      // }
     }
   };
   const handleUpdateAdmin = async (
     values: Omit<Admin, "_id">,
-    formikHelpers: any
+    formikHelpers: FormikHelpers<Omit<Admin, "_id">>
   ) => {
     try {
       const updatedAdmin = await updateAdmin(data.data._id, values);
       setAdminData(updatedAdmin.data);
       setMenuOpen("profile");
-    } catch (err: any) {
-      if (err.errors) {
-        const backendErrors = err.errors;
-        Object.keys(backendErrors).forEach((key) => {
-          formikHelpers.setFieldError(key, backendErrors[key]);
-        });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response && err.response.data && err.response.data.errors) {
+          const errors = err.response.data.errors;
+          Object.keys(errors).forEach((key) => {
+            formikHelpers.setFieldError(key, errors[key]);
+          });
+        } else {
+          Swal.fire({
+            title: "Gagal!",
+            text: "Gagal memperbarui profil. Silakan coba lagi.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       } else {
-        Swal.fire({
-          title: "Gagal!",
-          text: "Gagal memperbarui profil. Silakan coba lagi.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        console.error("Unknown error:", err);
       }
+      // if (err.errors) {
+      //   const backendErrors = err.errors;
+      //   Object.keys(backendErrors).forEach((key) => {
+      //     formikHelpers.setFieldError(key, backendErrors[key]);
+      //   });
+      // } else {
+      //   Swal.fire({
+      //     title: "Gagal!",
+      //     text: "Gagal memperbarui profil. Silakan coba lagi.",
+      //     icon: "error",
+      //     confirmButtonText: "OK",
+      //   });
+      // }
     }
   };
 

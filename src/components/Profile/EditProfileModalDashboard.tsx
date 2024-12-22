@@ -4,7 +4,7 @@ import * as Yup from "yup";
 
 interface EditProfileProps {
   data: {
-    _id: string;
+    // _id: string;
     nama: string;
     email: string;
     no_telepon: string;
@@ -12,13 +12,13 @@ interface EditProfileProps {
   setMenuOpen: (menu: string) => void;
   handleSubmitMitra: (
     values: {
-      _id: string;
+      // _id: string;
       nama: string;
       email: string;
       no_telepon: string;
     },
     formikHelpers: FormikHelpers<{
-      _id: string;
+      // _id: string;
       nama: string;
       email: string;
       no_telepon: string;

@@ -11,7 +11,7 @@ interface EditPaymentProps {
 const EditPayment: React.FC<EditPaymentProps> = ({ paymentId, onSubmit }) => {
   const [paymentData, setPaymentData] = useState<Payment | null>(null);
 
-  const { handleGetPaymentById, loading, error } = useFetchPayment();
+  const { handleGetPaymentById, loading } = useFetchPayment();
 
   useEffect(() => {
     // Simulasi fetch data payment berdasarkan paymentId
@@ -45,8 +45,7 @@ const EditPayment: React.FC<EditPaymentProps> = ({ paymentId, onSubmit }) => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p>Loading...</p>;  
   if (!paymentData) return <p>No payment data available</p>;
   return (
     <>

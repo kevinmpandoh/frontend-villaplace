@@ -97,6 +97,7 @@ const TableUlasan = () => {
       villaId: ulasan.villa?._id || "",
       user: ulasan.user,
       villa: ulasan.villa,
+      pesanan: ulasan.pesanan,
     }));
 
     const indexOfLastItem = currentPage * itemsPerPage;

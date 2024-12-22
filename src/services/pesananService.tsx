@@ -1,6 +1,6 @@
 import Booking from "@/types/Booking";
 import axios from "axios";
-
+import AddBooking from "@/types/AddBooking";
 const API_URL = "http://localhost:8000/api/pesanan";
 
 export const getPesanan = async (query: string) => {
@@ -35,7 +35,7 @@ export const getPesananUser = async () => {
   return response.data;
 };
 
-export const createPesanan = async (data: Booking) => {
+export const createPesanan = async (data: AddBooking) => {
   const response = await axios.post(API_URL, data, {
     withCredentials: true,
     headers: { "Content-Type": "application/json" },
@@ -43,7 +43,7 @@ export const createPesanan = async (data: Booking) => {
   return response.data;
 };
 
-export const createPesananOwner = async (data: Booking) => {
+export const createPesananOwner = async (data: AddBooking) => {
   const response = await axios.post(`${API_URL}/createPesananOwner`, data, {
     withCredentials: true,
     headers: { "Content-Type": "application/json" },

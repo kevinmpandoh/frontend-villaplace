@@ -6,7 +6,7 @@ interface ProfileProps {
     _id: string;
     nama: string;
     email: string;
-    no_telepon: string;
+    no_telepon?: string;
   };
   setMenuOpen: (menu: string) => void;
   role: string;

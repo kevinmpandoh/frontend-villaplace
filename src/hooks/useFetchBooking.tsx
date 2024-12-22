@@ -8,6 +8,7 @@ import {
   getPesanan,
   getPesananUser,
 } from "@/services/pesananService";
+import AddBooking from "@/types/AddBooking";
 import Booking from "@/types/Booking";
 
 import { useState } from "react";
@@ -78,7 +79,7 @@ const useFetchBooking = () => {
     }
   };
 
-  const handleCreateBooking = async (dataBooking: Booking) => {
+  const handleCreateBooking = async (dataBooking: AddBooking) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -96,7 +97,7 @@ const useFetchBooking = () => {
     }
   };
 
-  const handleCreateBookingOwner = async (dataBooking: Booking) => {
+  const handleCreateBookingOwner = async (dataBooking: AddBooking) => {
     setLoading(true);
     setError(null);
     setSuccess(false);

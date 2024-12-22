@@ -15,10 +15,10 @@ import Link from "next/link";
 
 interface AddBookingValue {
   guests: number;
-  checkInDate: Date;
-  checkOutDate: Date;
+  checkInDate: string;
+  checkOutDate: string;
   total: number;
-  villa: { value: string; label: string };
+  villa: { value: string; label: string } | null;
   fullName: string;
   email: string;
 }
@@ -58,7 +58,7 @@ const PesananMitra = () => {
     const fetchData = async () => {
       const data = await handleGetVillaByOwner("limit=5&page=1");
 
-      if (data && data.data) {
+      if (data && data.data && data !== undefined && data.data !== undefined) {
         setVilla(data.data);
       }
     };
@@ -149,7 +149,7 @@ const PesananMitra = () => {
       tanggal_selesai: values.checkOutDate,
       status: "success",
       harga: values.total,
-      villa: values.villa.value,
+      villa: values?.villa?.value || "",
     });
 
     if (!res) {
