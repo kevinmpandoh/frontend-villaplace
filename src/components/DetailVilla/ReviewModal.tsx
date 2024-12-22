@@ -12,6 +12,9 @@ interface Ulasan {
   };
 }
 
+const BASE_URL_BACKEND =
+  process.env.NEXT_PUBLIC_BASE_URL_BACKEND || "http://localhost:8000";
+
 interface ReviewModalProps {
   ulasan: Ulasan[] | undefined;
   setIsModalReviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,7 +30,7 @@ const ReviewModal = ({ ulasan, setIsModalReviewOpen }: ReviewModalProps) => {
           {ulasan?.map((ulasan: Ulasan, index: number) => (
             <div key={index} className="flex gap-4 items-start">
               <Image
-                src={`http://localhost:8000/images/user-profile/${ulasan.user.foto_profile}`}
+                src={`${BASE_URL_BACKEND}/images/user-profile/${ulasan.user.foto_profile}`}
                 alt="User"
                 width={40}
                 height={40}

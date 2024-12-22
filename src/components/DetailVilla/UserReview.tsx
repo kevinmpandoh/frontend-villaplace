@@ -19,6 +19,9 @@ interface UserReviewProps {
   setIsModalReviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const BASE_URL_BACKEND =
+  process.env.NEXT_PUBLIC_BASE_URL_BACKEND || "http://localhost:8000";
+
 const UserReview = ({
   ulasan,
   commentCount,
@@ -36,7 +39,7 @@ const UserReview = ({
       {ulasan.slice(0, 3).map((data: Ulasan, index: number) => (
         <div className="mt-4 flex gap-4 items-start" key={index}>
           <Image
-            src={`http://localhost:8000/images/user-profile/${data.user.foto_profile}`}
+            src={`${BASE_URL_BACKEND}/images/user-profile/${data.user.foto_profile}`}
             alt="User"
             width={40}
             height={40}
