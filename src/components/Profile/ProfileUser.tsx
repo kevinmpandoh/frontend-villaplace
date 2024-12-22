@@ -10,6 +10,9 @@ import Swal from "sweetalert2";
 import { FormikHelpers } from "formik";
 import axios from "axios";
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 interface UserData {
   _id: string;
   nama: string;
@@ -27,7 +30,7 @@ const ProfileUser = () => {
     no_telepon: "",
   });
 
-  const { data } = useFetchData("http://localhost:8000/api/user/current-user", {
+  const { data } = useFetchData(`${API_BASE_URL}/user/current-user`, {
     withCredentials: true,
   });
 

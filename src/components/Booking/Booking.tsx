@@ -60,13 +60,6 @@ const Booking = () => {
 
   const { handleFetchUlasan, handleGetUlasanUser } = useFetchUlasan();
 
-  // const { data, loading } = useFetchData(
-  //   "http://localhost:8000/api/pesanan/user",
-  //   {
-  //     withCredentials: true,
-  //   }
-  // );
-
   useEffect(() => {
     const fetchData = async () => {
       const data = await handleGetBookingByUser();
@@ -90,13 +83,6 @@ const Booking = () => {
     };
     fetchData();
   }, []);
-
-  // const { data: dataReview } = useFetchData(
-  //   "http://localhost:8000/api/ulasan/user",
-  //   {
-  //     withCredentials: true,
-  //   }
-  // );
 
   const handleSubmit = (values: { rating: number; komentar: string }) => {
     const data = {
@@ -323,7 +309,7 @@ const Booking = () => {
         <Modal
           onClose={() => toggleModal("")}
           title="Detail Pesanan Villa"
-          className="max-h-screen overflow-y-auto h-3/4"
+          className=" overflow-y-auto h-3/4"
         >
           <DetailPesanan pesananId={currentModalPesananId} />
         </Modal>

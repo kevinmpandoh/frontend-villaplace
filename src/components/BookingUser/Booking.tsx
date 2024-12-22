@@ -10,6 +10,9 @@ import Swal from "sweetalert2";
 import generateBookingId from "@/utils/generateBookingId";
 import { VillaProps } from "@/types/Villa";
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 interface BookingValues {
   fullName: string;
   email: string;
@@ -103,7 +106,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/pembayaran/transaksi",
+        `${API_BASE_URL}/pembayaran/transaksi`,
         dataPayment,
         {
           headers: {
@@ -177,7 +180,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
 
         onPending: async (result) => {
           const midtransData = await axios.get(
-            `http://localhost:8000/api/pembayaran/status/${result.order_id}`,
+            `${API_BASE_URL}/pembayaran/status/${result.order_id}`,
             {
               headers: {
                 "Content-Type": "application/json",

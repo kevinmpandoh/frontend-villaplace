@@ -19,6 +19,8 @@ interface Villa {
   status: string;
   foto_villa?: { url: string }[]; // Opsional jika properti ini bisa null/undefined
 }
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
 
 const PostingAdmin = () => {
   const [villa, setVilla] = useState<Villa[]>([]);
@@ -33,8 +35,8 @@ const PostingAdmin = () => {
     const fetchData = async () => {
       try {
         const url = status
-          ? `http://localhost:8000/api/villa/admin?show${status}=true`
-          : "http://localhost:8000/api/villa/admin";
+          ? `${API_BASE_URL}/villa/admin?show${status}=true`
+          : `${API_BASE_URL}/villa/admin`;
         const response = await axios.get(url, {
           withCredentials: true,
         });
@@ -77,14 +79,12 @@ const PostingAdmin = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedVillaId, setSelectedVillaId] = useState<string | null>(null);
 
-
   // Fungsi untuk menghapus data villa
   const deleteData = async (id: string) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/api/villa/${id}`,
-        { withCredentials: true }
-      );
+      const response = await axios.delete(`${API_BASE_URL}/villa/${id}`, {
+        withCredentials: true,
+      });
       console.log(response);
 
       // Menampilkan SweetAlert jika data berhasil dihapus
@@ -128,7 +128,7 @@ const PostingAdmin = () => {
   const handleChangeStatus = async (id: string, status: string) => {
     try {
       const response = await axios.patch(
-        `http://localhost:8000/api/villa/${id}/change-status`,
+        `${API_BASE_URL}/villa/${id}/change-status`,
         { status }, // Mengirim status baru dalam body request
         { withCredentials: true }
       );
@@ -198,10 +198,10 @@ const PostingAdmin = () => {
           <div className="bg-white border-2 rounded-xl shadow-lg p-6 border-gray-200">
             <h2 className="text-xl font-bold mb-6">Posting</h2>
             <div className="border-b-2 border-gray-200 w-full md:w-[600px]"></div>
-            
+
             <div className="mt-2">
               <div className="bg-white rounded-xl border-gray-200">
-              {/* Input Pencarian */}
+                {/* Input Pencarian */}
                 <div className="flex flex-col lg:flex-row justify-between pt-4">
                   <form className="lg:w-100 mb-5">
                     <label
@@ -327,7 +327,8 @@ const PostingAdmin = () => {
                                 <div>
                                   <Image
                                     src={
-                                      data.foto_villa?.[0]?.url || "/default-image.png"
+                                      data.foto_villa?.[0]?.url ||
+                                      "/default-image.png"
                                     }
                                     alt="Gambar Villa"
                                     width={70}
@@ -399,45 +400,47 @@ const PostingAdmin = () => {
                         )}
                       </tbody>
                     </table>
-                  {showModal && (
-                    <Modal
-                      title="Ubah Status Villa"
-                      onClose={() => setShowModal(false)}
-                      className="max-w-md max-h-min"
-                    >
-                      <div className="flex flex-col gap-4">
-                        <button
-                          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                          onClick={() => {
-                            if (selectedVillaId) handleChangeStatus(selectedVillaId, "success");
-                            setShowModal(false);
-                          }}
-                        >
-                          Success
-                        </button>
-                        <button
-                          className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-                          onClick={() => {
-                            if (selectedVillaId) handleChangeStatus(selectedVillaId, "pending");
-                            setShowModal(false);
-                          }}
-                        >
-                          Pending
-                        </button>
-                        <button
-                          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                          onClick={() => {
-                            if (selectedVillaId) handleChangeStatus(selectedVillaId, "rejected");
-                            setShowModal(false);
-                          }}
+                    {showModal && (
+                      <Modal
+                        title="Ubah Status Villa"
+                        onClose={() => setShowModal(false)}
+                        className="max-w-md max-h-min"
+                      >
+                        <div className="flex flex-col gap-4">
+                          <button
+                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                            onClick={() => {
+                              if (selectedVillaId)
+                                handleChangeStatus(selectedVillaId, "success");
+                              setShowModal(false);
+                            }}
                           >
-                          Rejected
-                        </button>
-                      </div>
-                    </Modal>
-                  )}
+                            Success
+                          </button>
+                          <button
+                            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                            onClick={() => {
+                              if (selectedVillaId)
+                                handleChangeStatus(selectedVillaId, "pending");
+                              setShowModal(false);
+                            }}
+                          >
+                            Pending
+                          </button>
+                          <button
+                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                            onClick={() => {
+                              if (selectedVillaId)
+                                handleChangeStatus(selectedVillaId, "rejected");
+                              setShowModal(false);
+                            }}
+                          >
+                            Rejected
+                          </button>
+                        </div>
+                      </Modal>
+                    )}
                   </div>
-
 
                   {/* Pagination Controls */}
                   <div className="w-full border-gray-200 mt-8">
@@ -445,7 +448,9 @@ const PostingAdmin = () => {
                       <div className="flex space-x-1 sm:space-x-2">
                         {/* Previous Button */}
                         <button
-                          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                          onClick={() =>
+                            setCurrentPage((prev) => Math.max(prev - 1, 1))
+                          }
                           disabled={currentPage === 1}
                           className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
                         >
@@ -455,8 +460,10 @@ const PostingAdmin = () => {
                         <div className="flex space-x-1">
                           {(() => {
                             const pages: JSX.Element[] = [];
-                            const totalPages = Math.ceil(filteredVilla.length / itemsPerPage);
-                            
+                            const totalPages = Math.ceil(
+                              filteredVilla.length / itemsPerPage
+                            );
+
                             // Fungsi untuk menambahkan nomor halaman
                             const pushPage = (pageNum: number) => {
                               pages.push(
@@ -490,7 +497,8 @@ const PostingAdmin = () => {
                             // Selalu tampilkan halaman pertama
                             pushPage(1);
 
-                            if (totalPages <= 5) { // Ubah dari 7 ke 5 untuk mobile
+                            if (totalPages <= 5) {
+                              // Ubah dari 7 ke 5 untuk mobile
                               // Jika total halaman 5 atau kurang, tampilkan semua
                               for (let i = 2; i < totalPages; i++) {
                                 pushPage(i);
@@ -498,25 +506,28 @@ const PostingAdmin = () => {
                             } else {
                               // Logika untuk halaman dengan ellipsis
                               if (currentPage > 3) {
-                                pushEllipsis('start');
+                                pushEllipsis("start");
                               }
                               // Tampilkan halaman di sekitar halaman saat ini
                               let start = Math.max(2, currentPage - 1);
-                              let end = Math.min(totalPages - 1, currentPage + 1);
-                              
+                              let end = Math.min(
+                                totalPages - 1,
+                                currentPage + 1
+                              );
+
                               if (currentPage <= 3) {
                                 end = 4;
                               }
                               if (currentPage >= totalPages - 2) {
                                 start = totalPages - 3;
                               }
-                              
+
                               for (let i = start; i <= end; i++) {
                                 pushPage(i);
                               }
-                              
+
                               if (currentPage < totalPages - 2) {
-                                pushEllipsis('end');
+                                pushEllipsis("end");
                               }
                             }
 
@@ -532,9 +543,17 @@ const PostingAdmin = () => {
                         {/* Next Button */}
                         <button
                           onClick={() =>
-                            setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredVilla.length / itemsPerPage)))
+                            setCurrentPage((prev) =>
+                              Math.min(
+                                prev + 1,
+                                Math.ceil(filteredVilla.length / itemsPerPage)
+                              )
+                            )
                           }
-                          disabled={currentPage === Math.ceil(filteredVilla.length / itemsPerPage)}
+                          disabled={
+                            currentPage ===
+                            Math.ceil(filteredVilla.length / itemsPerPage)
+                          }
                           className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
                         >
                           Next
