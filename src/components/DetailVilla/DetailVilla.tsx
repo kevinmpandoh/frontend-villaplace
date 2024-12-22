@@ -43,6 +43,8 @@ interface Villa {
       foto_profile: string;
     };
     komentar: string;
+    rating: number;
+    createdAt: string;
   }[];
   starPercentage: number[];
 }
@@ -185,7 +187,7 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
   );
 
   useEffect(() => {
-    if (data) {
+    if (data && data) {
       setDetailVilla(data.data);
     }
   }, [data]);

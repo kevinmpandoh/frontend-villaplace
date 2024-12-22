@@ -3,12 +3,10 @@ import Image from "next/image";
 import RatingStar from "./RatingStar";
 
 interface Ulasan {
-  id: number;
   rating: number;
   komentar: string;
   createdAt: string;
   user: {
-    id: number;
     nama: string;
     foto_profile: string;
   };

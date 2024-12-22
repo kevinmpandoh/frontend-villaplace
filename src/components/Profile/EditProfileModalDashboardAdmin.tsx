@@ -4,24 +4,21 @@ import * as Yup from "yup";
 
 interface EditProfileProps {
   data: {
-    _id: string;
+    // _id: string;
     nama: string;
     email: string;
-    no_telepon: string;
   };
   setMenuOpen: (menu: string) => void;
   handleSubmitAdmin: (
     values: {
-      _id: string;
+      // _id: string;
       nama: string;
       email: string;
-      no_telepon: string;
     },
     formikHelpers: FormikHelpers<{
-      _id: string;
+      // _id: string;
       nama: string;
       email: string;
-      no_telepon: string;
     }>
   ) => void;
 }

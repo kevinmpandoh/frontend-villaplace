@@ -7,16 +7,25 @@ import * as Yup from "yup";
 import { calculateRentalDays } from "@/utils/calculateDays";
 import { useFetchVilla } from "@/hooks/useFetchVilla";
 
+interface VillaProps {
+  _id: string;
+  nama: string;
+  deskripsi: string;
+  lokasi: string;
+  kategori: string[];
+  fasilitas: string[];
+  harga: number;
+  status: string;
+}
+
 interface VillaOption {
   label: string;
   value: string;
-  nama: string;
-  _id: string;
 }
 
 interface AddBookingProps {
   handleAddBooking: (values: BookingValues) => void;
-  villaList: VillaOption[];
+  villaList: VillaProps[];
 }
 
 // Tipe untuk Nilai Booking
@@ -27,7 +36,7 @@ interface BookingValues {
   checkInDate: string;
   checkOutDate: string;
   notes: string;
-  villa: VillaOption | null;
+  villa: SingleValue<VillaOption> | null;
   total: number;
 }
 

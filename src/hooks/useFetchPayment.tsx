@@ -6,6 +6,7 @@ import {
   deletePayment,
   updatePayment,
 } from "@/services/paymentService";
+import AddPayment from "@/types/AddPayment";
 import Payment from "@/types/Payment";
 import { useState } from "react";
 
@@ -62,7 +63,7 @@ const useFetchPayment = () => {
     }
   };
 
-  const handleCreatePayment = async (dataPayment: Payment) => {
+  const handleCreatePayment = async (dataPayment: AddPayment) => {
     setLoading(true);
     setError(null);
     setSuccess(false);

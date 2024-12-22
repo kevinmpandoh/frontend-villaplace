@@ -1,3 +1,4 @@
+import AddPayment from "@/types/AddPayment";
 import Payment from "@/types/Payment";
 import axios from "axios";
 
@@ -33,7 +34,7 @@ export const getPaymentById = async (id: string) => {
   return response.data;
 };
 
-export const createPembayaran = async (data: Payment) => {
+export const createPembayaran = async (data: AddPayment) => {
   const response = await axios.post(API_URL, data, {
     withCredentials: true,
     headers: { "Content-Type": "application/json" },
