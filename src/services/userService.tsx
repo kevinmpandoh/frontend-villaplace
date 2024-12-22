@@ -2,7 +2,8 @@
 import axios, { AxiosError } from "axios";
 import { User } from "../types/User";
 
-const API_BASE_URL = "http://localhost:8000/api";
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
 
 export const updateUser = async (
   id: string,

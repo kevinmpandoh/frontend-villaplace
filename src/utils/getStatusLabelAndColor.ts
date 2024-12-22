@@ -7,7 +7,7 @@ export const getStatusLabel = (status: string) => {
       return "Sedang Berlangsung";
     case "completed":
       return "Selesai";
-    case "failed":
+    case "canceled":
       return "Dibatalkan";
     default:
       return "Tidak Diketahui";
@@ -35,7 +35,7 @@ export const getStatusColor = (status: string) => {
       return "bg-green-600 border-green-500 text-green-600";
     case "completed":
       return "bg-green-800 border-green-800 text-green-800";
-    case "failed":
+    case "canceled":
       return "bg-red-500 border-red-500 text-red-500";
     default:
       return "bg-gray-100 border-gray-500 text-gray-800";

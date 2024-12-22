@@ -19,6 +19,9 @@ interface Villa {
   foto_villa?: { url: string }[]; // Opsional jika properti ini bisa null/undefined
 }
 
+const API_BASE_URL =
+  `${process.env.API_BASE_URL}` || "http://localhost:8000/api";
+
 const PostingMitra = () => {
   const [villa, setVilla] = useState<Villa[]>([]);
   const [status, setStatus] = useState<string>("");
@@ -32,8 +35,8 @@ const PostingMitra = () => {
     const fetchData = async () => {
       try {
         const url = status
-          ? `http://localhost:8000/api/villa/owner?show${status}=true`
-          : "http://localhost:8000/api/villa/owner";
+          ? `${API_BASE_URL}/villa/owner?show${status}=true`
+          : `${API_BASE_URL}/villa/owner`;
         const response = await axios.get(url, {
           withCredentials: true,
         });
@@ -75,10 +78,9 @@ const PostingMitra = () => {
   // Fungsi untuk menghapus data villa
   const deleteData = async (id: string) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/api/villa/${id}`,
-        { withCredentials: true }
-      );
+      const response = await axios.delete(`${API_BASE_URL}/villa/${id}`, {
+        withCredentials: true,
+      });
       console.log(response);
 
       // Menampilkan SweetAlert jika data berhasil dihapus

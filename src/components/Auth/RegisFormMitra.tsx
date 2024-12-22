@@ -14,6 +14,9 @@ interface FormValues {
   confirmPassword: string;
 }
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const RegisFormMitra = () => {
   const router = useRouter();
 
@@ -22,15 +25,12 @@ const RegisFormMitra = () => {
     { setFieldError, setSubmitting }: FormikHelpers<FormValues>
   ) => {
     try {
-      const res = await axios.post(
-        "http://localhost:8000/api/auth/owner/register",
-        {
-          nama: values.nama,
-          email: values.email,
-          no_telepon: values.no_telepon,
-          password: values.password,
-        }
-      );
+      const res = await axios.post(`${API_BASE_URL}/auth/owner/register`, {
+        nama: values.nama,
+        email: values.email,
+        no_telepon: values.no_telepon,
+        password: values.password,
+      });
 
       if (res.status === 201) {
         await Swal.fire({

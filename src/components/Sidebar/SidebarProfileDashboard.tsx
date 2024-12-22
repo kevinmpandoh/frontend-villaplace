@@ -14,7 +14,6 @@ const SidebarProfileDashboard: React.FC<SidebarProfileProps> = ({
   data,
   setMenuOpen,
   menuOpen,
-  role,
 }) => {
   return (
     <aside className="xl:w-1/3 flex flex-col gap-4 w-full mr-4 mb-4 h-full ">

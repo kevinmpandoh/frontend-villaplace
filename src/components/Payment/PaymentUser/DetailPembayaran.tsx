@@ -13,15 +13,15 @@ interface DetailPembayaranProps {
   pembayaranId: string;
 }
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const DetailPembayaran: React.FC<DetailPembayaranProps> = ({
   pembayaranId,
 }) => {
-  const { data } = useFetchData(
-    `http://localhost:8000/api/pembayaran/${pembayaranId}`,
-    {
-      withCredentials: true,
-    }
-  );
+  const { data } = useFetchData(`${API_BASE_URL}/pembayaran/${pembayaranId}`, {
+    withCredentials: true,
+  });
 
   return (
     <>

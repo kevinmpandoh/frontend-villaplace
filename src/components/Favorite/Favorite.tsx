@@ -19,11 +19,14 @@ interface FavoriteData {
   };
 }
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const Favorite: React.FC = () => {
   const { handleDeleteFavorite } = useFetchFavorite();
   const [favorites, setFavorites] = useState([]);
 
-  const { data, loading } = useFetchData("http://localhost:8000/api/favorite", {
+  const { data, loading } = useFetchData(`${API_BASE_URL}/favorite`, {
     withCredentials: true,
   });
 

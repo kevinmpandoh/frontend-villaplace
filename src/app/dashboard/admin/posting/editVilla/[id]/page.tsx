@@ -19,6 +19,9 @@ interface Villa {
   fasilitas: [];
 }
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const VillaForm = () => {
   const { id } = useParams();
   const validationSchema = Yup.object({
@@ -56,10 +59,9 @@ const VillaForm = () => {
   useEffect(() => {
     const getDataByID = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/villa/${id}`,
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${API_BASE_URL}/villa/${id}`, {
+          withCredentials: true,
+        });
         const data = response.data.data;
         setVilla({
           ...data,
@@ -98,7 +100,7 @@ const VillaForm = () => {
           ],
         };
 
-        await axios.put(`http://localhost:8000/api/villa/${id}`, updatedVilla, {
+        await axios.put(`${API_BASE_URL}/villa/${id}`, updatedVilla, {
           withCredentials: true,
         });
 
@@ -165,7 +167,7 @@ const VillaForm = () => {
       }));
 
       await axios.put(
-        `http://localhost:8000/api/villa/${id}/edit-villa-images/${villa.foto_villa[index]._id}`,
+        `${API_BASE_URL}/villa/${id}/edit-villa-images/${villa.foto_villa[index]._id}`,
         { foto_villa: files[0].file, photoId: files[0].photoId },
         {
           headers: { "Content-Type": "multipart/form-data" },

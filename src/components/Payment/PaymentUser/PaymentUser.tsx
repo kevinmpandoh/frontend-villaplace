@@ -15,6 +15,9 @@ import PaymentCard from "./PaymentCard";
 import calculateCountdown from "@/utils/calculateCountdown";
 import Payment from "@/types/Payment";
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const PaymentUser = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,15 +26,12 @@ const PaymentUser = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [countdowns, setCountdowns] = useState<{ [key: string]: string }>({});
 
-  const { data, loading } = useFetchData(
-    "http://localhost:8000/api/pembayaran/user",
-    {
-      withCredentials: true,
-    }
-  );
+  const { data, loading } = useFetchData(`${API_BASE_URL}/pembayaran/user`, {
+    withCredentials: true,
+  });
 
   useEffect(() => {
-    if (data) {
+    if (data && data.data) {
       setPaymentData(data.data);
     }
   }, [data]);
@@ -42,7 +42,6 @@ const PaymentUser = () => {
 
       PaymentData.forEach((item: Payment) => {
         if (item.status_pembayaran === "pending") {
-          console.log(item, "ITEM");
           updatedCountdowns[item._id] = calculateCountdown(item.expiry_time);
         }
       });
@@ -139,7 +138,7 @@ const PaymentUser = () => {
         <Modal
           onClose={() => toggleModal("")}
           title="Detail Pembayaran"
-          className="max-h-screen overflow-y-auto h-3/4"
+          className="overflow-y-auto h-3/4"
         >
           <DetailPembayaran pembayaranId={currentModalId} />
         </Modal>

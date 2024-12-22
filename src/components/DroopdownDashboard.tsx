@@ -24,6 +24,9 @@ interface DropdownDashboardProps {
   role: string;
 }
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -48,7 +51,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
   const { handleUpdateAdmin: updateAdmin } = useFetchAdmin();
 
   const { data } = useFetchData(
-    `http://localhost:8000/api/${
+    `${API_BASE_URL}/${
       role === "admin" ? "admin/current-admin" : "owner/current-owner"
     }`,
     {
@@ -155,7 +158,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/auth/${
+        `${API_BASE_URL}/auth/${
           role === "admin" ? "admin/logout" : "owner/logout"
         }`,
         {},

@@ -299,9 +299,6 @@ const AddBooking = ({ handleAddBooking, villaList }: AddBookingProps) => {
                       ? new Date(checkInDate.getTime() + 24 * 60 * 60 * 1000)
                       : new Date()
                   }
-                  // excludeDates={[...disabledDates].map(
-                  //   (date) => new Date(date)
-                  // )}
                   excludeDates={[...excludedCheckOutDates].map(
                     (date) => new Date(date)
                   )}

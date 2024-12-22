@@ -12,6 +12,9 @@ interface FormValues {
   password: string;
 }
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const LoginForm = () => {
   const router = useRouter();
 
@@ -32,7 +35,7 @@ const LoginForm = () => {
   ) => {
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/auth/admin/login`,
+        `${API_BASE_URL}/auth/admin/login`,
         {
           email: values.email,
           password: values.password,

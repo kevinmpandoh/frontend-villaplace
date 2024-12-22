@@ -18,8 +18,11 @@ interface FilterState {
   averageRating: number | null;
 }
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const Category = () => {
-  const { data } = useFetchData("http://localhost:8000/api/villa", {
+  const { data } = useFetchData(`${API_BASE_URL}/villa`, {
     method: "GET",
     withCredentials: true,
   });

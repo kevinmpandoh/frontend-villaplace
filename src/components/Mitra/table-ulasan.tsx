@@ -5,6 +5,9 @@ import { Ulasan } from "@/types/Ulasan";
 import useFetchData from "../../hooks/useFetchData";
 import ButtonDetail from "../BookingAdmin/ButtonDetail";
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const TableUlasan = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -17,7 +20,7 @@ const TableUlasan = () => {
   const [selectedUlasan, setSelectedUlasan] = useState<Ulasan | null>(null);
 
   const { data: ulasanData, loading: ulasanLoading } = useFetchData(
-    "http://localhost:8000/api/ulasan/owner",
+    `${API_BASE_URL}/ulasan/owner`,
     { withCredentials: true }
   );
 
