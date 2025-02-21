@@ -5,7 +5,7 @@ import useFetchData from "@/hooks/useFetchData";
 import VillaCard from "@/components/VillaCardCategory";
 import { VillaProps } from "@/types/Villa";
 import RatingFilter from "@/components/ui/RatingFilter";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 
 // Filter types
 interface FilterState {
@@ -26,8 +26,9 @@ const Category = () => {
     method: "GET",
     withCredentials: true,
   });
-  const searchParams = useSearchParams();
-  const search = searchParams.get("search");
+  // const searchParams = useSearchParams();
+  // const search = searchParams.get("search");
+  const search = "villa";
 
   // State management
   const [searchQuery, setSearchQuery] = useState(search || "");
