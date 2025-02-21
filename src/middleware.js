@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
-export function middleware() {
+export function middleware(request) {
   const tokenUser = request.cookies.get("tokenUser");
+
   const tokenAdmin = request.cookies.get("tokenAdmin");
   const tokenOwner = request.cookies.get("tokenOwner");
 

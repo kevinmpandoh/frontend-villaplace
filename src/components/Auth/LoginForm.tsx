@@ -42,8 +42,10 @@ const LoginForm = () => {
 
       if (res.status === 200) {
         if (isUser) {
+          localStorage.setItem("tokenUser", JSON.stringify(res.data.token));
           router.push("/");
         } else {
+          localStorage.setItem("tokenOwner", JSON.stringify(res.data.token));
           router.push("/dashboard/mitra");
         }
       }

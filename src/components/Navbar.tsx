@@ -13,39 +13,77 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-interface NavbarProps {
-  token: { name: string; value: string }[];
-}
+// interface NavbarProps {
+//   // token: { name: string; value: string }[];
+// }
 
-const Navbar = ({ token }: NavbarProps) => {
+const Navbar = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [tokenUser, setTokenUser] = useState<string>("");
+  const [tokenAdmin, setTokenAdmin] = useState<string>("");
+  const [tokenOwner, setTokenOwner] = useState<string>("");
 
-  const tokenAdmin = token.filter((cookie) => cookie.name === "tokenAdmin");
-  const tokenUser = token.filter((cookie) => cookie.name === "tokenUser");
-  const tokenOwner = token.filter((cookie) => cookie.name === "tokenOwner");
+  // if (typeof window !== "undefined") {
+  //   value = localStorage.getItem("tokenUser") || "";
+  // }
+
+  // const token = [];
+  // const tokenLocalUser = localStorage.getItem("tokenUser");
+  // const tokenLocalOwner = localStorage.getItem("tokenOwner");
+  // const tokenLocalAdmin = localStorage.getItem("tokenAdmin");
+
+  // if (tokenLocalUser) {
+  //   token.push({ name: "tokenUser", value: tokenLocalUser });
+  // } else if (tokenLocalOwner) {
+  //   token.push({ name: "tokenOwner", value: tokenLocalOwner });
+  // } else if (tokenLocalAdmin) {
+  //   token.push({ name: "tokenAdmin", value: tokenLocalAdmin });
+  // } else {
+  //   token.push({ name: "token", value: "" });
+  // }
+
+  // const tokenAdmin = token.filter((cookie) => cookie.name === "tokenAdmin");
+  // const tokenUser = token.filter((cookie) => cookie.name === "tokenUser");
+  // const tokenOwner = token.filter((cookie) => cookie.name === "tokenOwner");
 
   const currentPath = usePathname();
 
   useEffect(() => {
-    const checkToken = () => {
-      if (
-        tokenAdmin.length > 0 ||
-        tokenUser.length > 0 ||
-        tokenOwner.length > 0
-      ) {
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-      }
-    };
+    const tokenLocalUser = localStorage.getItem("tokenUser");
+    const tokenLocalOwner = localStorage.getItem("tokenOwner");
+    const tokenLocalAdmin = localStorage.getItem("tokenAdmin");
 
-    const intervalId = setInterval(() => {
-      setIsLoading(true);
-      checkToken();
-    }, 1000);
+    if (tokenLocalUser) {
+      setTokenUser(tokenLocalUser);
+    } else if (tokenLocalOwner) {
+      setTokenOwner(tokenLocalOwner);
+    } else if (tokenLocalAdmin) {
+      setTokenAdmin(tokenLocalAdmin);
+    }
 
-    return () => clearInterval(intervalId);
-  }, [tokenAdmin, tokenUser, tokenOwner]); // Hapus jika error
+    setIsLoading(false);
+  }, []);
+
+  // useEffect(() => {
+  //   const checkToken = () => {
+  //     if (
+  //       tokenAdmin.length ||
+  //       tokenUser.length > 0 ||
+  //       tokenOwner.length > 0
+  //     ) {
+  //       setIsLoading(false);
+  //     } else {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   const intervalId = setInterval(() => {
+  //     setIsLoading(true);
+  //     checkToken();
+  //   }, 1000);
+
+  //   return () => clearInterval(intervalId);
+  // }, [tokenAdmin, tokenUser, tokenOwner]); // Hapus jika error
 
   const NavLinks = () => (
     <ul className="flex flex-col md:flex-row md:gap-10 gap-6">
@@ -150,12 +188,10 @@ const Navbar = ({ token }: NavbarProps) => {
                 </div>
                 <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
               </div>
-            ) : tokenUser.length > 0 ? (
+            ) : tokenUser ? (
               <DropdownUser />
-            ) : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
-              <Link
-                href={`/dashboard/${tokenAdmin.length > 0 ? "admin" : "mitra"}`}
-              >
+            ) : tokenAdmin || tokenOwner ? (
+              <Link href={`/dashboard/${tokenAdmin ? "admin" : "mitra"}`}>
                 <button className="text-primary hover:bg-green-100 border-2 border-primary font-semibold rounded-lg text-sm px-4 py-2 text-center me-2 mb-2">
                   Dashboard
                 </button>
@@ -186,14 +222,10 @@ const Navbar = ({ token }: NavbarProps) => {
                       </div>
                       <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
                     </div>
-                  ) : tokenUser.length > 0 ? (
+                  ) : tokenUser ? (
                     <DropdownUser />
-                  ) : tokenAdmin.length > 0 || tokenOwner.length > 0 ? (
-                    <Link
-                      href={`/dashboard/${
-                        tokenAdmin.length > 0 ? "admin" : "mitra"
-                      }`}
-                    >
+                  ) : tokenAdmin || tokenOwner ? (
+                    <Link href={`/dashboard/${tokenAdmin ? "admin" : "mitra"}`}>
                       <button className="text-primary hover:bg-green-100 border-2 border-primary font-semibold rounded-lg text-sm px-4 py-2 text-center">
                         Dashboard
                       </button>
