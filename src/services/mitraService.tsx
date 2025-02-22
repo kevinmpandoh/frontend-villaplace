@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Mitra } from "../types/Mitra";
 
-const API_BASE_URL = "http://localhost:8000/api";
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}/` || "http://localhost:8000/api";
 
 export const getDashboardData = async (query: string) => {
   try {
@@ -12,8 +13,11 @@ export const getDashboardData = async (query: string) => {
       }
     );
     return response.data;
-  } catch (error: any) {
-    throw error.response ? error.response.data : error;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    }
+    throw error instanceof Error ? error.message : "An unknown error occurred";
   }
 };
 
@@ -26,15 +30,15 @@ export const updateMitra = async (
       withCredentials: true,
     });
     return response.data;
-  } catch (error: any) {
-    throw error.response ? error.response.data : error;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    }
+    throw error instanceof Error ? error.message : "An unknown error occurred";
   }
 };
 
-export const uploadProfilePicture = async (
-  id: string,
-  file: File
-): Promise<any> => {
+export const uploadProfilePicture = async (id: string, file: File) => {
   const formData = new FormData();
   formData.append("profile_picture", file);
 
@@ -49,8 +53,11 @@ export const uploadProfilePicture = async (
       }
     );
     return response.data;
-  } catch (error: any) {
-    throw error.response ? error.response.data : error;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    }
+    throw error instanceof Error ? error.message : "An unknown error occurred";
   }
 };
 
@@ -67,8 +74,11 @@ export const changePassword = async (data: {
       }
     );
     return response.data;
-  } catch (error: any) {
-    throw error.response ? error.response.data : error;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    }
+    throw error instanceof Error ? error.message : "An unknown error occurred";
   }
 };
 
@@ -80,7 +90,10 @@ export const deleteMitra = async (
       withCredentials: true,
     });
     return response.data;
-  } catch (error: any) {
-    throw error.response?.data || error.message || "Failed to delete mitra";
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    }
+    throw error instanceof Error ? error.message : "An unknown error occurred";
   }
 };

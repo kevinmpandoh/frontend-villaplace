@@ -8,14 +8,13 @@ import { calculateDays } from "@/utils/calculateDays";
 interface DetailPesananProps {
   pesananId: string;
 }
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
 
 const DetailPesanan: React.FC<DetailPesananProps> = ({ pesananId }) => {
-  const { data } = useFetchData(
-    `http://localhost:8000/api/pesanan/${pesananId}`,
-    {
-      withCredentials: true,
-    }
-  );
+  const { data } = useFetchData(`${API_BASE_URL}/pesanan/${pesananId}`, {
+    withCredentials: true,
+  });
 
   return (
     <>
@@ -64,7 +63,7 @@ const DetailPesanan: React.FC<DetailPesananProps> = ({ pesananId }) => {
               <span className="mr-3">:</span>
               <div className="flex flew-wrap gap-2">
                 {data?.data?.villa.fasilitas?.map(
-                  (fasilitas: any, index: number) => (
+                  (fasilitas: string, index: number) => (
                     <p key={index} className="font-semibold">
                       {fasilitas}
                       {", "}

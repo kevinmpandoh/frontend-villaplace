@@ -13,13 +13,13 @@ interface DetailPembayaranProps {
   paymentId: string;
 }
 
+const API_BASE_URL =
+  `${process.env.API_BASE_URL}` || "http://localhost:8000/api";
+
 const DetailPayment: React.FC<DetailPembayaranProps> = ({ paymentId }) => {
-  const { data } = useFetchData(
-    `http://localhost:8000/api/pembayaran/${paymentId}`,
-    {
-      withCredentials: true,
-    }
-  );
+  const { data } = useFetchData(`${API_BASE_URL}/pembayaran/${paymentId}`, {
+    withCredentials: true,
+  });
 
   return (
     <>

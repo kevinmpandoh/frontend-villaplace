@@ -43,9 +43,14 @@ interface Villa {
       foto_profile: string;
     };
     komentar: string;
+    rating: number;
+    createdAt: string;
   }[];
   starPercentage: number[];
 }
+
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
 
 const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
   const [detailVilla, setDetailVilla] = useState<Villa | null>(null);
@@ -66,7 +71,7 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
       if (!token.length) return;
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/favorite/villa/${villaId}`,
+          `${API_BASE_URL}/favorite/villa/${villaId}`,
           {
             withCredentials: true,
           }
@@ -107,7 +112,7 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
     try {
       if (isFavorited) {
         await axios.delete(
-          `http://localhost:8000/api/favorite/detail/${detailVilla._id}`,
+          `${API_BASE_URL}/favorite/detail/${detailVilla._id}`,
           {
             withCredentials: true,
           }
@@ -121,7 +126,7 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
         });
       } else {
         await axios.post(
-          "http://localhost:8000/api/favorite",
+          `${API_BASE_URL}/favorite`,
           { villa: detailVilla._id },
           {
             withCredentials: true,
@@ -178,14 +183,14 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
   };
 
   const { data, error, loading } = useFetchData(
-    `http://localhost:8000/api/villa/${villaId}`,
+    `${API_BASE_URL}/villa/${villaId}`,
     {
       withCredentials: true,
     }
   );
 
   useEffect(() => {
-    if (data) {
+    if (data && data) {
       setDetailVilla(data.data);
     }
   }, [data]);

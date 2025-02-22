@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faStar,
-  faStarHalfAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
 import { Ulasan } from "@/types/Ulasan";
 import useFetchData from "../../hooks/useFetchData";
 import ButtonDetail from "../BookingAdmin/ButtonDetail";
+
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
 
 const TableUlasan = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,7 +20,7 @@ const TableUlasan = () => {
   const [selectedUlasan, setSelectedUlasan] = useState<Ulasan | null>(null);
 
   const { data: ulasanData, loading: ulasanLoading } = useFetchData(
-    "http://localhost:8000/api/ulasan/owner",
+    `${API_BASE_URL}/ulasan/owner`,
     { withCredentials: true }
   );
 
@@ -65,6 +65,7 @@ const TableUlasan = () => {
       villaId: ulasan.villa?._id || "",
       user: ulasan.user,
       villa: ulasan.villa,
+      pesanan: ulasan.pesanan,
     }));
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -120,7 +121,10 @@ const TableUlasan = () => {
           <tbody>
             {currentData.length > 0 ? (
               currentData.map((ulasan, idx) => (
-                <tr key={idx} className="hover:bg-gray-50">
+                <tr
+                  key={idx}
+                  className="hover:bg-gray-50 border border-gray-300"
+                >
                   <td className="p-3 text-center">
                     {indexOfFirstItem + idx + 1}
                   </td>
@@ -168,9 +172,7 @@ const TableUlasan = () => {
                     </div>
                   </td>
                   <td className="p-3 text-center">
-                    <ButtonDetail
-                      onClick={() => openModal(ulasan)}
-                    />
+                    <ButtonDetail onClick={() => openModal(ulasan)} />
                   </td>
                 </tr>
               ))
@@ -200,8 +202,10 @@ const TableUlasan = () => {
               <div className="flex space-x-1">
                 {(() => {
                   const pages: JSX.Element[] = [];
-                  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-                  
+                  const totalPages = Math.ceil(
+                    filteredData.length / itemsPerPage
+                  );
+
                   // Fungsi untuk menambahkan nomor halaman
                   const pushPage = (pageNum: number) => {
                     pages.push(
@@ -235,7 +239,8 @@ const TableUlasan = () => {
                   // Selalu tampilkan halaman pertama
                   pushPage(1);
 
-                  if (totalPages <= 5) { // Ubah dari 7 ke 5 untuk mobile
+                  if (totalPages <= 5) {
+                    // Ubah dari 7 ke 5 untuk mobile
                     // Jika total halaman 5 atau kurang, tampilkan semua
                     for (let i = 2; i < totalPages; i++) {
                       pushPage(i);
@@ -243,25 +248,25 @@ const TableUlasan = () => {
                   } else {
                     // Logika untuk halaman dengan ellipsis
                     if (currentPage > 3) {
-                      pushEllipsis('start');
+                      pushEllipsis("start");
                     }
                     // Tampilkan halaman di sekitar halaman saat ini
                     let start = Math.max(2, currentPage - 1);
                     let end = Math.min(totalPages - 1, currentPage + 1);
-                    
+
                     if (currentPage <= 3) {
                       end = 4;
                     }
                     if (currentPage >= totalPages - 2) {
                       start = totalPages - 3;
                     }
-                    
+
                     for (let i = start; i <= end; i++) {
                       pushPage(i);
                     }
-                    
+
                     if (currentPage < totalPages - 2) {
-                      pushEllipsis('end');
+                      pushEllipsis("end");
                     }
                   }
 
@@ -277,9 +282,16 @@ const TableUlasan = () => {
               {/* Next Button */}
               <button
                 onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredData.length / itemsPerPage)))
+                  setCurrentPage((prev) =>
+                    Math.min(
+                      prev + 1,
+                      Math.ceil(filteredData.length / itemsPerPage)
+                    )
+                  )
                 }
-                disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
+                disabled={
+                  currentPage === Math.ceil(filteredData.length / itemsPerPage)
+                }
                 className="p-1.5 sm:p-2 text-sm sm:text-md bg-brown-500 text-white rounded disabled:bg-gray-300"
               >
                 Next

@@ -8,6 +8,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 interface VillaFormData {
   nama: string;
   lokasi: string;
@@ -73,7 +76,7 @@ const VillaForm = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/villa",
+          `${API_BASE_URL}/villa`,
           {
             nama: values.nama,
             lokasi: values.lokasi,
@@ -95,7 +98,7 @@ const VillaForm = () => {
         });
 
         await axios.post(
-          `http://localhost:8000/api/villa/${villaId}/upload-villa`,
+          `${API_BASE_URL}/villa/${villaId}/upload-villa`,
           imageFormData,
           {
             withCredentials: true,

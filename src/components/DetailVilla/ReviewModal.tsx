@@ -2,8 +2,21 @@ import React from "react";
 import Image from "next/image";
 import RatingStar from "./RatingStar";
 
+interface Ulasan {
+  rating: number;
+  komentar: string;
+  createdAt: string;
+  user: {
+    nama: string;
+    foto_profile: string;
+  };
+}
+
+const BASE_URL_BACKEND =
+  process.env.NEXT_PUBLIC_BASE_URL_BACKEND || "http://localhost:8000";
+
 interface ReviewModalProps {
-  ulasan: any;
+  ulasan: Ulasan[] | undefined;
   setIsModalReviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -14,10 +27,10 @@ const ReviewModal = ({ ulasan, setIsModalReviewOpen }: ReviewModalProps) => {
         <h2 className="text-xl font-semibold mb-4">Ulasan Pengguna</h2>
         {/* Konten review yang bisa digulir */}
         <div className="flex-1 overflow-auto space-y-4">
-          {ulasan.map((ulasan: any, index: any) => (
+          {ulasan?.map((ulasan: Ulasan, index: number) => (
             <div key={index} className="flex gap-4 items-start">
               <Image
-                src={`http://localhost:8000/images/user-profile/${ulasan.user.foto_profile}`}
+                src={`${BASE_URL_BACKEND}/images/user-profile/${ulasan.user.foto_profile}`}
                 alt="User"
                 width={40}
                 height={40}

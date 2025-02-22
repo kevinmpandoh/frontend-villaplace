@@ -6,6 +6,8 @@ interface ProfilePictureUploaderProps {
   userId: string;
   role: string;
 }
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
 
 const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
   userId,
@@ -49,12 +51,13 @@ const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
 
   const handleUpload = async () => {
     if (!imagePreview) {
-      Swal.fire({
+      await Swal.fire({
         title: "File belum dipilih",
         text: "Silakan pilih file terlebih dahulu.",
         icon: "warning",
         confirmButtonText: "OK",
       });
+      return;
     }
 
     try {
@@ -62,14 +65,10 @@ const ProfilePictureUploader: React.FC<ProfilePictureUploaderProps> = ({
       const fileInput = document.getElementById("upload") as HTMLInputElement;
       if (fileInput.files) {
         formData.append("foto_profile", fileInput.files[0]);
-        await axios.post(
-          `http://localhost:8000/api/${role}/${userId}/upload`,
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-            withCredentials: true,
-          }
-        );
+        await axios.post(`${API_BASE_URL}/${role}/${userId}/upload`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
         Swal.fire({
           title: "Upload Berhasil!",
           text: "Foto profile berhasil diupload.",
