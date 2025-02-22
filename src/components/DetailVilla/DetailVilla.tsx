@@ -60,9 +60,27 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const router = useRouter();
 
-  const tokenAdmin = token.filter((cookie) => cookie.name === "tokenAdmin");
-  const tokenUser = token.filter((cookie) => cookie.name === "tokenUser");
-  const tokenOwner = token.filter((cookie) => cookie.name === "tokenOwner");
+  const [tokenUser, setTokenUser] = useState<string>("");
+  const [tokenAdmin, setTokenAdmin] = useState<string>("");
+  const [tokenOwner, setTokenOwner] = useState<string>("");
+
+  useEffect(() => {
+    const tokenLocalUser = localStorage.getItem("tokenUser");
+    const tokenLocalOwner = localStorage.getItem("tokenOwner");
+    const tokenLocalAdmin = localStorage.getItem("tokenAdmin");
+
+    if (tokenLocalUser) {
+      setTokenUser(tokenLocalUser);
+    } else if (tokenLocalOwner) {
+      setTokenOwner(tokenLocalOwner);
+    } else if (tokenLocalAdmin) {
+      setTokenAdmin(tokenLocalAdmin);
+    }
+  }, []);
+
+  // const tokenAdmin = token.filter((cookie) => cookie.name === "tokenAdmin");
+  // const tokenUser = token.filter((cookie) => cookie.name === "tokenUser");
+  // const tokenOwner = token.filter((cookie) => cookie.name === "tokenOwner");
 
   useEffect(() => {
     const fetchFavoriteStatus = async () => {
@@ -89,7 +107,7 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
   const handleFavoriteClick = async () => {
     if (!detailVilla) return;
 
-    if (!tokenUser.length && !tokenOwner.length && !tokenAdmin.length) {
+    if (!tokenUser && !tokenOwner && !tokenAdmin) {
       Swal.fire({
         title: "Login Diperlukan",
         text: "Silakan login terlebih dahulu untuk menambahkan villa ke favorit.",
@@ -99,7 +117,7 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
       return;
     }
 
-    if (tokenOwner.length || tokenAdmin.length) {
+    if (tokenOwner || tokenAdmin) {
       Swal.fire({
         title: "Tambahkan ke Favorit",
         text: "Anda tidak dapat menambahkan villa ke favorit sebagai pemilik atau admin.",
@@ -148,7 +166,7 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
   const handleBookingClick = () => {
     if (!detailVilla) return;
 
-    if (!tokenUser.length && !tokenOwner.length && !tokenAdmin.length) {
+    if (!tokenUser && !tokenOwner && !tokenAdmin) {
       Swal.fire({
         title: "Login Diperlukan",
         text: "Silakan login terlebih dahulu untuk memesan villa.",
@@ -160,7 +178,7 @@ const DetailVilla: React.FC<DetailVillaProps> = ({ villaId, token }) => {
 
     console.log(tokenOwner, tokenAdmin, "tokenOwner, tokenAdmin");
 
-    if (tokenOwner.length || tokenAdmin.length) {
+    if (tokenOwner || tokenAdmin) {
       Swal.fire({
         title: "Pesan Villa",
         text: "Anda tidak dapat memesan villa sebagai pemilik atau admin.",

@@ -169,8 +169,10 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
 
       if (response.status === 200) {
         if (role === "admin") {
+          localStorage.removeItem("tokenAdmin");
           router.push("/auth/login/admin");
         } else {
+          localStorage.removeItem("tokenOwner");
           router.push("/auth/login");
         }
       }

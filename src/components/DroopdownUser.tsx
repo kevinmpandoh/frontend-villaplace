@@ -31,6 +31,7 @@ const DropdownUser: React.FC = () => {
       );
 
       if (response.status === 200) {
+        localStorage.removeItem("tokenUser");
         router.push("/auth/login");
       }
     } catch (error) {
