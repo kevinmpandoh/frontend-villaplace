@@ -46,6 +46,7 @@ const LoginForm = () => {
       );
 
       if (res.status === 200) {
+        localStorage.setItem("tokenAdmin", JSON.stringify(res.data.token));
         router.push("/dashboard/admin");
       }
     } catch (error: unknown) {
