@@ -1,20 +1,20 @@
 import Booking from "@/components/BookingUser/Booking";
 import axios from "axios";
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 async function getDataVilla({ villaId }: { villaId: string }) {
   if (!villaId) {
     return null;
   }
 
-  const response = await axios.get(
-    `http://localhost:8000/api/villa/${villaId}`,
-    {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const response = await axios.get(`${API_BASE_URL}/villa/${villaId}`, {
+    withCredentials: true,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   return response.data.data;
 }
@@ -25,7 +25,7 @@ async function getBookingDates({ villaId }: { villaId: string }) {
       return [];
     }
     const response = await axios.get(
-      `http://localhost:8000/api/villa/${villaId}/booked-dates`,
+      `${API_BASE_URL}/villa/${villaId}/booked-dates`,
       {
         withCredentials: true,
         headers: {

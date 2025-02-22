@@ -2,15 +2,18 @@ import { render, screen } from "@testing-library/react";
 import VillaCard from "../VillaCardCategory"; // Pastikan path sesuai
 import { VillaProps } from "@/types/Villa";
 import "@testing-library/jest-dom";
-import userEvent from "@testing-library/user-event";
 import { useRouter } from "next/navigation";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("next/image", () => ({ src, alt }: any) => <img src={src} alt={alt} />);
-jest.mock("../DetailVilla/RatingStar", () => ({ rating }: any) => <div data-testid="rating-star">{rating}</div>);
+jest.mock("next/image", () => ({ src, alt }: any) => (
+  <img src={src} alt={alt} />
+));
+jest.mock("../DetailVilla/RatingStar", () => ({ rating }: any) => (
+  <div data-testid="rating-star">{rating}</div>
+));
 
 describe("VillaCardCategory Component", () => {
   const mockVilla: VillaProps = {
@@ -20,14 +23,14 @@ describe("VillaCardCategory Component", () => {
     fasilitas: ["2 Kamar Tidur", "1 Kamar Mandi"],
     harga: 2500000,
     foto_villa: [
-        { 
-            url: "villa.jpg", 
-            _id: "456",
-            __v: 0, 
-            filepath: "villa.jpg", 
-            villa: "Villa Bagus",
-            name: "villa.jpg" 
-        }
+      {
+        url: "villa.jpg",
+        _id: "456",
+        __v: 0,
+        filepath: "villa.jpg",
+        villa: "Villa Bagus",
+        name: "villa.jpg",
+      },
     ],
     averageRating: 4.5,
     commentCount: 10,

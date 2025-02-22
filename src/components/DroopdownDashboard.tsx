@@ -18,10 +18,14 @@ import { Admin } from "@/types/Admin";
 import { useFetchAdmin } from "@/hooks/useFetchAdmin";
 import EditProfileDashboardAdmin from "./Profile/EditProfileModalDashboardAdmin";
 import ChangePasswordAdmin from "./Change-password/ChangePasswordAdmin";
+import { FormikHelpers } from "formik";
 
 interface DropdownDashboardProps {
   role: string;
 }
+
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
 
 const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
   const router = useRouter();
@@ -31,14 +35,23 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState("profile");
 
-  const [mitraData, setMitraData] = useState<Mitra>();
-  const [adminData, setAdminData] = useState<Admin>();
+  const [mitraData, setMitraData] = useState<Mitra>({
+    _id: "",
+    nama: "",
+    email: "",
+    no_telepon: "",
+  });
+  const [adminData, setAdminData] = useState<Admin>({
+    _id: "",
+    nama: "",
+    email: "",
+  });
 
-  const { handleUpdateMitra: updateMitra, error: errorMitra } = useFetchMitra();
-  const { handleUpdateAdmin: updateAdmin, error: errorAdmin } = useFetchAdmin();
+  const { handleUpdateMitra: updateMitra } = useFetchMitra();
+  const { handleUpdateAdmin: updateAdmin } = useFetchAdmin();
 
   const { data } = useFetchData(
-    `http://localhost:8000/api/${
+    `${API_BASE_URL}/${
       role === "admin" ? "admin/current-admin" : "owner/current-owner"
     }`,
     {
@@ -49,7 +62,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
 
   useEffect(() => {
     if (role === "admin") {
-      if (data) {
+      if (data && data.data && data !== undefined) {
         setAdminData(data.data);
       }
     } else {
@@ -61,57 +74,91 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
 
   const handleUpdateMitra = async (
     values: Omit<Mitra, "_id">,
-    formikHelpers: any
+    formikHelpers: FormikHelpers<Omit<Mitra, "_id">>
   ) => {
     try {
       const updatedMitra = await updateMitra(data.data._id, values);
       setMitraData(updatedMitra.data);
       setMenuOpen("profile");
-    } catch (err: any) {
-      if (err.errors) {
-        const backendErrors = err.errors;
-        Object.keys(backendErrors).forEach((key) => {
-          formikHelpers.setFieldError(key, backendErrors[key]);
-        });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response && err.response.data && err.response.data.errors) {
+          const errors = err.response.data.errors;
+          Object.keys(errors).forEach((key) => {
+            formikHelpers.setFieldError(key, errors[key]);
+          });
+        } else {
+          Swal.fire({
+            title: "Gagal!",
+            text: "Gagal memperbarui profil. Silakan coba lagi.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       } else {
-        Swal.fire({
-          title: "Gagal!",
-          text: "Gagal memperbarui profil. Silakan coba lagi.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        console.error("Unknown error:", err);
       }
+      // if (err.errors) {
+      //   const backendErrors = err.errors;
+      //   Object.keys(backendErrors).forEach((key) => {
+      //     formikHelpers.setFieldError(key, backendErrors[key]);
+      //   });
+      // } else {
+      //   Swal.fire({
+      //     title: "Gagal!",
+      //     text: "Gagal memperbarui profil. Silakan coba lagi.",
+      //     icon: "error",
+      //     confirmButtonText: "OK",
+      //   });
+      // }
     }
   };
   const handleUpdateAdmin = async (
     values: Omit<Admin, "_id">,
-    formikHelpers: any
+    formikHelpers: FormikHelpers<Omit<Admin, "_id">>
   ) => {
     try {
       const updatedAdmin = await updateAdmin(data.data._id, values);
       setAdminData(updatedAdmin.data);
       setMenuOpen("profile");
-    } catch (err: any) {
-      if (err.errors) {
-        const backendErrors = err.errors;
-        Object.keys(backendErrors).forEach((key) => {
-          formikHelpers.setFieldError(key, backendErrors[key]);
-        });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response && err.response.data && err.response.data.errors) {
+          const errors = err.response.data.errors;
+          Object.keys(errors).forEach((key) => {
+            formikHelpers.setFieldError(key, errors[key]);
+          });
+        } else {
+          Swal.fire({
+            title: "Gagal!",
+            text: "Gagal memperbarui profil. Silakan coba lagi.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       } else {
-        Swal.fire({
-          title: "Gagal!",
-          text: "Gagal memperbarui profil. Silakan coba lagi.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        console.error("Unknown error:", err);
       }
+      // if (err.errors) {
+      //   const backendErrors = err.errors;
+      //   Object.keys(backendErrors).forEach((key) => {
+      //     formikHelpers.setFieldError(key, backendErrors[key]);
+      //   });
+      // } else {
+      //   Swal.fire({
+      //     title: "Gagal!",
+      //     text: "Gagal memperbarui profil. Silakan coba lagi.",
+      //     icon: "error",
+      //     confirmButtonText: "OK",
+      //   });
+      // }
     }
   };
 
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/auth/${
+        `${API_BASE_URL}/auth/${
           role === "admin" ? "admin/logout" : "owner/logout"
         }`,
         {},
@@ -175,7 +222,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
               {/* <span className="block text-xs">{user.data.email}</span> */}
             </div>
 
-            <span className="h-12 w-12 rounded-full border">
+            <div className="h-12 w-12 rounded-full border">
               <Image
                 width={112}
                 height={112}
@@ -183,7 +230,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
                 className="rounded-full object-cover w-full h-full"
                 alt="User"
               />
-            </span>
+            </div>
 
             <svg
               className="hidden fill-current sm:block"
@@ -269,7 +316,7 @@ const DropdownDashboard: React.FC<DropdownDashboardProps> = ({ role }) => {
       {/* <!-- Modal Start --> */}
       {modalOpen && (
         <Modal title="Pengaturan" onClose={() => setModalOpen(false)}>
-          <section className="flex-col h-full my-5 flex xl:flex-row max-w-screen-xl mx-auto px-4">
+          <section className="flex-col h-full  flex xl:flex-row max-w-screen-xl mx-auto px-4">
             <SidebarProfileDashboard
               data={adminData || mitraData}
               setMenuOpen={setMenuOpen}

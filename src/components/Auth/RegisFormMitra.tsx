@@ -14,23 +14,23 @@ interface FormValues {
   confirmPassword: string;
 }
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const RegisFormMitra = () => {
   const router = useRouter();
 
   const handleSubmit = async (
     values: FormValues,
-    { setFieldError }: FormikHelpers<FormValues>
+    { setFieldError, setSubmitting }: FormikHelpers<FormValues>
   ) => {
     try {
-      const res = await axios.post(
-        "http://localhost:8000/api/auth/owner/register",
-        {
-          nama: values.nama,
-          email: values.email,
-          no_telepon: values.no_telepon,
-          password: values.password,
-        }
-      );
+      const res = await axios.post(`${API_BASE_URL}/auth/owner/register`, {
+        nama: values.nama,
+        email: values.email,
+        no_telepon: values.no_telepon,
+        password: values.password,
+      });
 
       if (res.status === 201) {
         await Swal.fire({
@@ -42,10 +42,15 @@ const RegisFormMitra = () => {
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        if (error.response && error.response.data && error.response.data.errors) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.errors
+        ) {
           const errors = error.response.data.errors;
+
           console.log(errors.password);
-  
+
           // Set error pada field yang relevan
           if (errors.nama) {
             setFieldError("nama", errors.nama[0]);
@@ -62,7 +67,12 @@ const RegisFormMitra = () => {
         } else {
           setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
         }
-      } 
+      } else {
+        console.error("Unknown error:", error);
+        setFieldError("email", "Terjadi kesalahan yang tidak diketahui");
+      }
+    } finally {
+      setSubmitting(false);
     }
   };
 

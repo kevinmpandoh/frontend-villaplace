@@ -6,14 +6,16 @@ import {
   deletePayment,
   updatePayment,
 } from "@/services/paymentService";
-import React, { useState } from "react";
+import AddPayment from "@/types/AddPayment";
+import Payment from "@/types/Payment";
+import { useState } from "react";
 
 const useFetchPayment = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<string | null | unknown>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const handleGetAllPayment = async (query: any) => {
+  const handleGetAllPayment = async (query: string) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -45,7 +47,7 @@ const useFetchPayment = () => {
     }
   };
 
-  const handleGetAllPaymentOwner = async (query: any) => {
+  const handleGetAllPaymentOwner = async (query: string) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -61,7 +63,7 @@ const useFetchPayment = () => {
     }
   };
 
-  const handleCreatePayment = async (dataPayment: any) => {
+  const handleCreatePayment = async (dataPayment: AddPayment) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -71,7 +73,7 @@ const useFetchPayment = () => {
       setSuccess(true);
 
       return result;
-    } catch (err: any) {
+    } catch (err) {
       setError(err);
       throw err;
     } finally {
@@ -79,7 +81,7 @@ const useFetchPayment = () => {
     }
   };
 
-  const handleUpdatePayment = async (id: string, dataPayment: any) => {
+  const handleUpdatePayment = async (id: string, dataPayment: Payment) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -87,7 +89,7 @@ const useFetchPayment = () => {
       const result = await updatePayment(id, dataPayment);
       setSuccess(true);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       setError(err);
       throw err;
     } finally {
@@ -105,7 +107,7 @@ const useFetchPayment = () => {
       setSuccess(true);
 
       return result;
-    } catch (err: any) {
+    } catch (err) {
       setError(err);
       throw err;
     } finally {

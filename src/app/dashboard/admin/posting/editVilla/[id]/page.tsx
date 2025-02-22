@@ -19,9 +19,11 @@ interface Villa {
   fasilitas: [];
 }
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const VillaForm = () => {
   const { id } = useParams();
-  const [ setImages] = useState<{ file: File; timestamp: number }[]>([]);
   const validationSchema = Yup.object({
     nama: Yup.string().required("Nama Villa harus diisi."),
     lokasi: Yup.string().required("Lokasi harus diisi."),
@@ -57,10 +59,9 @@ const VillaForm = () => {
   useEffect(() => {
     const getDataByID = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/villa/${id}`,
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${API_BASE_URL}/villa/${id}`, {
+          withCredentials: true,
+        });
         const data = response.data.data;
         setVilla({
           ...data,
@@ -99,12 +100,10 @@ const VillaForm = () => {
           ],
         };
 
-        const response = await axios.put(
-          `http://localhost:8000/api/villa/${id}`,
-          updatedVilla,
-          { withCredentials: true }
-        );
-        const villaData = response.data.data;
+        await axios.put(`${API_BASE_URL}/villa/${id}`, updatedVilla, {
+          withCredentials: true,
+        });
+
         Swal.fire({
           icon: "success",
           title: "Villa Updated!",
@@ -112,24 +111,20 @@ const VillaForm = () => {
         }).then(() => {
           window.location.href = "/dashboard/admin/posting";
         });
-      } catch (error: unknown) {
-        Swal.fire({
-          icon: "error",
-          title: "Error Updating Villa",
-          text: error instanceof Error ? error.message : "Unknown error",
-        });
+      } catch (error) {
+        if (error instanceof Error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error Updating Villa",
+            text: error.message,
+          });
+        } else {
+          console.error("Unknown error:", error);
+        }
       }
     },
   });
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files).map((file) => ({
-        file,
-        timestamp: Date.now(),
-      }));
-      setImages((prevImages) => [...prevImages, ...files]);
-    }
-  };
+
   const handleArrayChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     field: "kategori"
@@ -171,16 +166,14 @@ const VillaForm = () => {
         photoId: villa.foto_villa[index]._id,
       }));
 
-      const res = await axios.put(
-        `http://localhost:8000/api/villa/${id}/edit-villa-images/${villa.foto_villa[index]._id}`,
+      await axios.put(
+        `${API_BASE_URL}/villa/${id}/edit-villa-images/${villa.foto_villa[index]._id}`,
         { foto_villa: files[0].file, photoId: files[0].photoId },
         {
           headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         }
       );
-
-      setImages((prevImages) => [...prevImages, ...files]);
 
       setVilla((prevVilla) => {
         const updatedFotoVilla = [...prevVilla.foto_villa];

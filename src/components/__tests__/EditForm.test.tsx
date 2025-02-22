@@ -1,8 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import EditForm from "../EditForm";
 import axios from "axios";
-import userEvent from "@testing-library/user-event";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 jest.mock("axios");
 jest.mock("next/navigation", () => ({
@@ -37,7 +36,9 @@ describe("Komponen EditForm", () => {
     expect(await screen.findByDisplayValue("Villa Indah")).toBeInTheDocument();
     expect(screen.getByDisplayValue("Bali")).toBeInTheDocument();
     expect(screen.getByDisplayValue("3000000")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("Villa dengan pemandangan laut")).toBeInTheDocument();
+    expect(
+      screen.getByDisplayValue("Villa dengan pemandangan laut")
+    ).toBeInTheDocument();
     expect(screen.getByText("WIFI")).toBeInTheDocument();
   });
 
@@ -57,7 +58,9 @@ describe("Komponen EditForm", () => {
     fireEvent.change(inputKategori, { target: { value: "" } });
     fireEvent.blur(inputKategori);
 
-    expect(await screen.findByText("Kategori harus diisi.")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Kategori harus diisi.")
+    ).toBeInTheDocument();
   });
 
   test("menangani penggantian gambar dengan fungsi handleReplaceImage", async () => {
@@ -84,8 +87,12 @@ describe("Komponen EditForm", () => {
     fireEvent.blur(inputKamar);
     fireEvent.blur(inputKamarMandi);
 
-    expect(await screen.findByText("Jumlah kamar tidak boleh kurang dari 1.")).toBeInTheDocument();
-    expect(await screen.findByText("Jumlah kamar mandi tidak boleh kurang dari 1.")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Jumlah kamar tidak boleh kurang dari 1.")
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText("Jumlah kamar mandi tidak boleh kurang dari 1.")
+    ).toBeInTheDocument();
   });
 
   test("mengirimkan data yang diubah saat form dikirim", async () => {

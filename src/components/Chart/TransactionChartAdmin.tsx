@@ -3,9 +3,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
 
+interface PembayaranItem {
+  bulan: string;
+  totalPembayaran: number;
+}
+
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
 
 const TransactionAreaChart = () => {
   const [filter, setFilter] = useState<"1-6" | "7-12">("7-12");
@@ -23,7 +30,7 @@ const TransactionAreaChart = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/admin/dashboard?range=${filter}`,
+        `${API_BASE_URL}/admin/dashboard?range=${filter}`,
         {
           withCredentials: true,
         }
@@ -32,7 +39,9 @@ const TransactionAreaChart = () => {
 
       // Buat data pembayaran dengan nilai default 0 untuk bulan yang tidak ada
       const pembayaranData = bulanMapping[filter].map((bulan) => {
-        const item = data.pembayaranData.find((p: any) => p.bulan === bulan);
+        const item = data.pembayaranData.find(
+          (p: PembayaranItem) => p.bulan === bulan
+        );
         return item ? item.totalPembayaran : 0;
       });
 

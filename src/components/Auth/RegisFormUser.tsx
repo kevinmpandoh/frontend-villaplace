@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
-import * as Yup from "yup";
 import registerValidationSchema from "@/validations/register";
 
 // Definisi tipe untuk nilai awal form
@@ -15,6 +14,8 @@ interface FormValues {
   password: string;
   confirmPassword: string;
 }
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
 
 const RegisFormUser: React.FC = () => {
   const router = useRouter();
@@ -24,15 +25,12 @@ const RegisFormUser: React.FC = () => {
     { setSubmitting, setFieldError }: FormikHelpers<FormValues>
   ) => {
     try {
-      const res = await axios.post(
-        "http://localhost:8000/api/auth/user/register",
-        {
-          nama: values.nama,
-          email: values.email,
-          no_telepon: values.no_telepon,
-          password: values.password,
-        }
-      );
+      const res = await axios.post(`${API_BASE_URL}/auth/user/register`, {
+        nama: values.nama,
+        email: values.email,
+        no_telepon: values.no_telepon,
+        password: values.password,
+      });
 
       if (res.status === 201) {
         await Swal.fire({
@@ -42,27 +40,35 @@ const RegisFormUser: React.FC = () => {
         });
         router.push("/auth/login");
       }
-    } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.errors) {
-        const errors = error.response.data.errors;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.errors
+        ) {
+          const errors = error.response.data.errors;
 
-        console.log(errors.email);
+          console.log(errors.email);
 
-        // Set error pada field yang relevan
-        if (errors.nama) {
-          setFieldError("nama", errors.nama[0]);
-        }
-        if (errors.email) {
-          setFieldError("email", "Email sudah digunakan");
-        }
-        if (errors.no_telepon) {
-          setFieldError("no_telepon", "Nomor Telepon sudah digunakan");
-        }
-        if (errors.password) {
-          setFieldError("password", errors.password[0]);
+          // Set error pada field yang relevan
+          if (errors.nama) {
+            setFieldError("nama", errors.nama[0]);
+          }
+          if (errors.email) {
+            setFieldError("email", "Email sudah digunakan");
+          }
+          if (errors.no_telepon) {
+            setFieldError("no_telepon", "Nomor Telepon sudah digunakan");
+          }
+          if (errors.password) {
+            setFieldError("password", errors.password[0]);
+          }
+        } else {
+          setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
         }
       } else {
-        setFieldError("email", "Terjadi kesalahan, silakan coba lagi nanti"); // Default error jika field spesifik tidak ditemukan
+        console.error("Unknown error:", error);
       }
     } finally {
       setSubmitting(false);

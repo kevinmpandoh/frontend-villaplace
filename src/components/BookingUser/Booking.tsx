@@ -8,10 +8,22 @@ import useFetchBooking from "@/hooks/useFetchBooking";
 import { calculateRentalDays } from "@/utils/calculateDays";
 import Swal from "sweetalert2";
 import generateBookingId from "@/utils/generateBookingId";
-// import { useRouter } from "next/navigation";
+import { VillaProps } from "@/types/Villa";
+
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
+interface BookingValues {
+  fullName: string;
+  email: string;
+  guests: number;
+  checkInDate: string;
+  checkOutDate: string;
+  notes: string;
+}
 
 interface BookingProps {
-  villa: any;
+  villa: VillaProps;
   bookedDates: { tanggal_mulai: string; tanggal_selesai: string }[];
 }
 
@@ -26,17 +38,13 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
   });
   const [rentalDays, setRentalDays] = useState(0);
 
-  // const router = useRouter();
-
   const { handleCreatePayment } = useFetchPayment();
   const { handleCreateBooking } = useFetchBooking();
-
-  console.log("formData", formData);
 
   const [tokenMidtrans, setTokenMidtrans] = useState(null);
   const [modal, setModal] = useState(false);
 
-  const handleChange = (e: { target: { name: string; value: any } }) => {
+  const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
@@ -50,7 +58,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
     }
   };
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values: BookingValues) => {
     // Swal.fire({
     //    title: "Pesan Villa",
     //    text: "Apakah anda yakin ingin memesan villa ini?",
@@ -98,7 +106,7 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/pembayaran/transaksi",
+        `${API_BASE_URL}/pembayaran/transaksi`,
         dataPayment,
         {
           headers: {
@@ -115,7 +123,6 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
 
   useEffect(() => {
     const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-
     const scriptTag = document.createElement("script");
     scriptTag.src = midtransUrl;
 
@@ -170,9 +177,10 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
 
           window.location.href = "/user/bookings";
         },
+
         onPending: async (result) => {
           const midtransData = await axios.get(
-            `http://localhost:8000/api/pembayaran/status/${result.order_id}`,
+            `${API_BASE_URL}/pembayaran/status/${result.order_id}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -244,7 +252,16 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
       alert("Error");
       console.log(err);
     }
-  }, [formData, handleCreateBooking, handleCreatePayment, modal, rentalDays, tokenMidtrans, villa._id, villa.harga]);
+  }, [
+    formData,
+    handleCreateBooking,
+    handleCreatePayment,
+    modal,
+    rentalDays,
+    tokenMidtrans,
+    villa._id,
+    villa.harga,
+  ]);
 
   return (
     <div className="max-w-7xl  mx-auto   p-4">
@@ -255,7 +272,6 @@ const Booking: React.FC<BookingProps> = ({ villa, bookedDates }) => {
               handleChange={handleChange}
               handleSubmit={handleSubmit}
               bookingDate={bookedDates}
-              villa={villa}
             />
             <BookingSummary
               villa={villa}

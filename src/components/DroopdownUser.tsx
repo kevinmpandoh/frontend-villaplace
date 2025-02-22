@@ -6,13 +6,16 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import useFetchData from "@/hooks/useFetchData";
 
+const API_BASE_URL =
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}` || "http://localhost:8000/api";
+
 const DropdownUser: React.FC = () => {
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
-  const { data } = useFetchData("http://localhost:8000/api/user/current-user", {
+  const { data } = useFetchData(`${API_BASE_URL}/user/current-user`, {
     method: "GET",
     withCredentials: true,
   });
@@ -20,7 +23,7 @@ const DropdownUser: React.FC = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/auth/user/logout",
+        `${API_BASE_URL}/auth/user/logout`,
         {},
         {
           withCredentials: true,
@@ -78,7 +81,7 @@ const DropdownUser: React.FC = () => {
               {/* <span className="block text-xs">{user.data.email}</span> */}
             </div>
 
-            <span className="h-12 w-12 rounded-full border">
+            <div className="h-12 w-12 rounded-full border">
               <Image
                 width={112}
                 height={112}
@@ -86,7 +89,7 @@ const DropdownUser: React.FC = () => {
                 className="rounded-full object-cover w-full h-full"
                 alt="User"
               />
-            </span>
+            </div>
 
             <svg
               className="hidden fill-current sm:block"
